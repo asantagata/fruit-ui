@@ -2,9 +2,10 @@
   "name": "fruitui",
   "version": "1.0.0",
   "description": "A vanilla JS toolkit for reactive UI",
-  "main": "src/index.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "terser .\\src\\index.js -o .\\dist\\fruit.js"
   },
   "keywords": [
     "fruit",

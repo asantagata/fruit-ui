@@ -27,15 +27,12 @@
             width: 150px;
         }
     </style>
-    <script type="importmap">
-        {"imports": {"fruit": "../src/index.js"}}
-    </script>
 </head>
 <body style="background: #ccc">
     <div id="div"></div>
 </body>
 <script type="module">
-    import { replaceWith } from 'fruit';
+    import { replaceWith } from 'https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/build/index.js';
 
     function child(name, modifyList, newGuy) {
         return {
