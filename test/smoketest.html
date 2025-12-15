@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:,">
+    <title>Hi</title>
+    <style>
+        @keyframes fade {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+
+        #parent {
+            display: flex;
+            gap: 20px;
+            flex-direction: column;
+        }
+
+        #parent > div {
+            animation: fade 0.5s ease;
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        #parent > div > * {
+            width: 150px;
+        }
+    </style>
+    <script type="importmap">
+        {"imports": {"fruit": "../src/index.js"}}
+    </script>
+</head>
+<body style="background: #ccc">
+    <div id="div"></div>
+</body>
+<script type="module">
+    import { replaceWith } from 'fruit';
+
+    function child(name, modifyList, newGuy) {
+        return {
+            state() {
+                return {
+                    i: 0
+                };
+            },
+            render() {
+                return {
+                    children: [
+                        {children: name},
+                        {tag: 'button', children: `clicked ${this.state.i} times`, on: {click() {this.setState.i(this.state.i + 1)}}},
+                        {tag: 'button', children: `make me first`, on: {click() {modifyList(l => [name, ...l.filter(x => x !== name)])}}},
+                        {tag: 'button', children: `delete me`, on: {click() {modifyList(l => l.filter(x => x !== name))}}},
+                        {tag: 'button', children: `create newguy here vvv`, on: {click() {modifyList(l => {
+                            l.splice(l.indexOf(name) + 1, 0, newGuy());
+                            return l;
+                        })}}},
+                        {
+                            children: {tag: 'button', children: Date.now(), binding: 'date', on: {
+                                click() {this.bindings.date.rerender()},
+                            }}
+                        }
+                    ]
+                }
+            }
+        }
+    }
+
+    function parent() {
+        const names = ['apple', 'banana', 'christopher', 'diana', 'eee', 'flu', 'glue', 'hue', 'ieaux', 'jieu', 'kueue', 'loo', 'moo', 'new', 'ooh', 'pew', 'q', 'rue', 'shoo', '2', 'u', 'vue', 'woo!', 'xanadu', 'you', 'zoo'];
+        const startN = 5;
+        return {
+            state() {
+                return {
+                    array: names.slice(0, startN),
+                    i: startN
+                };
+            },
+            render() {
+                return {
+                    id: 'parent',
+                    children: this.state.array.map((v) => ({...child(
+                        v, 
+                        (fn) => { // modifyList fn
+                            this.setState.array(fn(this.state.array));
+                        }, 
+                        () => { // newGuy fn
+                            return names[(this.state.i++) % 26] + (Math.floor((this.state.i + 4) / 26) || '')
+                        }), key: v, binding: v}) // additional/per-component traits
+                    )
+                }
+            }
+        }
+    }
+
+    replaceWith(document.getElementById("div"), parent());
+
+</script>
+</html>
