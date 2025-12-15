@@ -70,4 +70,5 @@ There are three ways to use FRUIT in your projects:
 Ongoing development on FRUIT focuses on:
 - Thorough, interactive, user-facing documentation
 - Basic built-in components
+
 This project's initial release is currently not yet finished, so contributions aren't currently being sought out.

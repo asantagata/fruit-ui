@@ -47,6 +47,7 @@
  * @property {() => void} [rerender] - The rerender function, post-mount.
  * @property {BoundTemplateProducer} [producer] - The producer function, post-mount.
  * @property {object} state - The component's state.
+ * @property {object} setState - Functions to set the component's state with automatic reactivity.
  * @property {Object.<string, Binding>} bindings - The component's bindings.
  */
 
