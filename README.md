@@ -65,7 +65,7 @@ Smaller apps don't always warrant large, complex frameworks, but directly interf
 
 TODO. As it stands, you can clone this repo and use `npx serve .` to view the contents of the "test" directory.
 
-The options will be: standard NPM installation and importable or cloneable [https://terser.org/](terser) builds.
+The options will be: standard NPM installation and importable or cloneable [terser](https://terser.org) builds.
 
 ## Contributing
 
