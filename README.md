@@ -62,13 +62,15 @@ Smaller apps don't always warrant large, complex frameworks, but directly interf
 
 There are three ways to use FRUIT in your projects:
 - Download and copy the [Terser-compressed JS file](/dist/fruit.js) file into your project. (This is a compressed version built with Terser; you can just as well use the [non-compressed version](/src/index.js).) Then you can use `import { create, replaceWith, appendChild, insertBefore } from "./modules/fruit.js"` or `<script type="module" src="./modules/fruit.js">` to access FRUIT in your JS apps.
-- Access via browser loading, i.e., `import { create, replaceWith, appendChild, insertBefore } from "https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/dist/fruit.js"`.
+- Access via browser loading, i.e., `import { create, replaceWith, appendChild, insertBefore } from "https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/dist/fruit.js"`. (On first NPM release, it will be preferable to use the jsdelivr NPM link.)
 - With NPM installed, run `npm install fruit-ui`. Then use `import { create, replaceWith, appendChild, insertBefore } from "fruit-ui"`. (As of writing, an NPM package has not yet been set up. So, this will not yet work!)
 
 ## Contributing
 
 Ongoing development on FRUIT focuses on:
 - Thorough, interactive, user-facing documentation
+- Benchmarks to compare against other JS frameworks
+- A "useMemo" equivalent
 - Basic built-in components
 
 This project's initial release is currently not yet finished, so contributions aren't currently being sought out.

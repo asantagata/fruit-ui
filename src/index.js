@@ -152,7 +152,7 @@ function createElementFromTemplate(template, onMounts, producer = null) {
         }
         return element;
     }
-    const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, ...rest} = template;
+    const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, ...rest} = template;
     const element = document.createElement(template.tag || 'div');
     if (template.class) {
         switch (typeof template.class) {
