@@ -3,7 +3,7 @@
 FRUIT is a lightweight, zero-dependency UI framework written in JS for JS apps. It uses nested JavaScript objects to represent DOM elements, i.e.,
 
 ```javascript
-import { appendChild } from "@fruit/core";
+import { appendChild } from "@fruit-ui/core";
 
 const Paragraph = {
     tag: 'p',
@@ -21,7 +21,7 @@ appendChild(document.body, Paragraph);
 FRUIT is powerful, efficient, and feature-packed. In addition to objects representing static elements, users can write stateful, reactive components, i.e.,
 
 ```javascript
-import { appendChild } from "@fruit/core";
+import { appendChild } from "@fruit-ui/core";
 
 const Counter = {
     state() {
@@ -64,8 +64,8 @@ Smaller apps don't always warrant heavyweight frameworks, but interfacing with t
 
 There are three ways to use FRUIT in your projects:
 - Download and copy the [Terser-compressed JS file](https://github.com/asantagata/fruit-ui/blob/main/dist/index.js) file into your project. (This is a compressed version built with Terser; you can just as well use the [non-compressed version](https://github.com/asantagata/fruit-ui/blob/main/src/index.js).) Then you can use `import { create, replaceWith, appendChild, insertBefore } from "./modules/fruit.js"` or `<script type="module" src="./modules/fruit.js">` to access FRUIT in your JS apps.
-- Access via browser loading, i.e., `import { create, replaceWith, appendChild, insertBefore } from "https://cdn.jsdelivr.net/npm/@fruit/core@latest/index.js"`.
-- With NPM installed, run `npm install @fruit/core`. Then use `import { create, replaceWith, appendChild, insertBefore } from "@fruit/core"`.
+- Access via browser loading, i.e., `import { create, replaceWith, appendChild, insertBefore } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/index.js"`.
+- With NPM installed, run `npm install @fruit-ui/core`. Then use `import { create, replaceWith, appendChild, insertBefore } from "@fruit-ui/core"`.
 
 ## Contributing
 

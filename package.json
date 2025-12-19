@@ -1,5 +1,5 @@
 {
-  "name": "@fruit/core",
+  "name": "@fruit-ui/core",
   "version": "1.0.0",
   "description": "A vanilla JS toolkit for reactive UI",
   "main": "dist/index.js",
