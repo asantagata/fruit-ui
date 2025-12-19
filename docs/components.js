@@ -18,7 +18,7 @@ const sidebar = {
                 },
                 {
                     tag: 'a',
-                    href: '/',
+                    href: '/fruit-ui/',
                     id: 'logo',
                     children: [{tag: 'span', children: '🥭'}, ' FRUIT']
                 }
