@@ -1,0 +1,150 @@
+* {
+    font-family: "Roboto Condensed", sans-serif;
+    box-sizing: border-box;
+}
+
+:root {
+    --pink: #ff659b;
+    --yellow: #ffc861;
+    --sidebar: #ebe5e6;
+    --back: #faf6f7;
+    --md: 0.5rem;
+}
+
+body {
+    margin: 0;
+    background: var(--back);
+    display: flex;
+    max-height: 100dvh;
+    overflow-x: hidden;
+    color: #100e0f;
+}
+
+#sidebar {
+    height: 100dvh;
+    width: 300px;
+    background: var(--sidebar);
+}
+
+#sidebar-upper {
+    background: linear-gradient(70deg, var(--pink), var(--yellow));
+    min-height: 15dvh;
+    font-size: x-large;
+    color: white;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    padding: var(--md);
+}
+
+#logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+#logo > span {
+    color: transparent;
+    text-shadow: 0 0 0 #fff;
+}
+
+#sidebar a {
+    color: inherit;
+    text-decoration: none;
+}
+
+#chevron {
+    display: none;
+}
+
+#sidebar-index {
+    padding: var(--md);
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar-index a {
+    padding: var(--md);
+    border-radius: var(--md);
+}
+
+#sidebar-index a:hover {
+    background: #03000119;
+}
+
+#sidebar-index a:active {
+    background: #03000129;
+}
+
+@media (max-aspect-ratio: 2/3) {
+    body {
+        flex-direction: column;
+    }
+
+    #sidebar-index {
+        height: 0;
+        padding: 0;
+        overflow-y: hidden;
+    }
+
+    #sidebar-upper {
+        min-height: 0;
+        align-items: center;
+        justify-content: start;
+    }
+
+    #logo {
+        flex-grow: 0;
+    }
+
+    #sidebar {
+        height: calc(2em + 2 * var(--md));
+        width: 100dvw;
+        position: sticky;
+        top: 0;
+        transition: height 0.2s, flex-shrink 0.2s;
+    }
+
+    #chevron {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    #sidebar:has(#chevron-input:checked) {
+        height: 100dvh;
+        flex-shrink: 0;
+    }
+
+    #sidebar:has(#chevron-input:checked) + article {
+        flex-shrink: 1;
+        padding: 0;
+    }
+
+    article {
+        transition: height 0.2s, flex-shrink 0.2s, padding 0.2s;
+        height: 100%;
+    }
+
+    #chevron-input:checked + #sidebar-upper > #chevron {
+        transform: rotate(90deg);
+    }
+
+    #chevron-input:checked ~ #sidebar-index {
+        height: unset;
+        padding: var(--md);
+    }
+}
+
+#chevron-input {
+    display: none;
+}
+
+article {
+    overflow-y: auto;
+    padding: var(--md);
+    height: 100dvh;
+    flex-grow: 1;
+}
