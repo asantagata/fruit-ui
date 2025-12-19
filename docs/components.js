@@ -18,7 +18,7 @@ const sidebar = {
                 },
                 {
                     tag: 'a',
-                    href: '/fruit-ui/',
+                    href: './',
                     id: 'logo',
                     children: [{tag: 'span', children: '🥭'}, ' FRUIT']
                 }
@@ -27,7 +27,7 @@ const sidebar = {
         {
             id: 'sidebar-index',
             children: [
-                { name: 'FRUIT', url: '/' },
+                { name: 'FRUIT', url: './' },
             ].map(entry => ({
                 tag: 'a',
                 href: entry.url,
