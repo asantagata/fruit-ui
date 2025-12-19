@@ -54,9 +54,9 @@ FRUIT's features include:
 
 with all special functional features (state, controlled rerendering, bindings) accessed through the `this` argument.
 
-## Why FRUIT over React, Svelte etc.?
+## Why FRUIT over other front-end frameworks?
 
-Smaller apps don't always warrant large, complex frameworks, but directly interfacing with the DOM directly is a hassle. The ability to declare and mutate state reactively is crucial in web apps with any amount of interactivity. Working in FRUIT and vanilla JS means no complex hidden logic to keep track of, no build step, and no separation of languages for your UI and your internal logic.
+Smaller apps don't always warrant heavyweight frameworks, but interfacing with the DOM directly is a hassle. The ability to declare and mutate state reactively is crucial in web apps with any amount of interactivity. Working in FRUIT and vanilla JS means no complex hidden logic to keep track of, no build step, and no separation of languages for your UI and your internal logic.
 
 ## Getting started
 
