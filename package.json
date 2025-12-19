@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A vanilla JS toolkit for reactive UI",
   "main": "dist/index.js",
+  "homepage": "https://asantagata.github.io/fruit-ui/",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "terser .\\src\\index.js -o .\\dist\\index.js"
