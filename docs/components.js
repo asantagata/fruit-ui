@@ -27,10 +27,10 @@ const sidebar = {
         {
             id: 'sidebar-index',
             children: [
-                { name: 'FRUIT', url: './' },
+                { name: 'FRUIT', href: './' },
             ].map(entry => ({
                 tag: 'a',
-                href: entry.url,
+                href: entry.href,
                 children: entry.name
             }))
         }
