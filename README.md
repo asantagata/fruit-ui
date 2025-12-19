@@ -54,7 +54,7 @@ FRUIT's features include:
 
 with all special functional features (state, controlled rerendering, bindings) accessed through the `this` argument.
 
-Documentation is available for FRUIT [here](/).
+Documentation is available for FRUIT [here](https://asantagata.github.io/fruit-ui/).
 
 ## Why FRUIT over other front-end frameworks?
 
@@ -70,7 +70,7 @@ There are three ways to use FRUIT in your projects:
 ## Contributing
 
 Ongoing development on FRUIT focuses on:
-- Thorough, interactive, user-facing documentation (available [here](/))
+- Thorough, interactive, user-facing documentation (available [here](https://asantagata.github.io/fruit-ui/))
 - Benchmarks to compare against other JS frameworks
 - A "useMemo" equivalent
 - Basic built-in components
