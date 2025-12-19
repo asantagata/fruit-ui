@@ -19,5 +19,10 @@
     "reactive"
   ],
   "author": "asantagata",
-  "license": "ISC"
+  "license": "ISC",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asantagata/fruit-ui.git"
+  }
 }
