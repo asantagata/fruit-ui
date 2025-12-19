@@ -3,6 +3,11 @@
     box-sizing: border-box;
 }
 
+code, code > * {
+    font-family: "Roboto Mono", monospace;
+    font-size: small;
+}
+
 :root {
     --pink: #ff659b;
     --yellow: #ffc861;
@@ -24,6 +29,7 @@ body {
     height: 100dvh;
     width: 300px;
     background: var(--sidebar);
+    flex-shrink: 0;
 }
 
 #sidebar-upper {
@@ -34,7 +40,6 @@ body {
     display: flex;
     align-items: stretch;
     justify-content: stretch;
-    padding: var(--md);
 }
 
 #logo {
@@ -91,7 +96,8 @@ body {
     #sidebar-upper {
         min-height: 0;
         align-items: center;
-        justify-content: start;
+        justify-content: space-between;
+        padding: var(--md);
     }
 
     #logo {
@@ -115,7 +121,6 @@ body {
     
     #sidebar:has(#chevron-input:checked) {
         height: 100dvh;
-        flex-shrink: 0;
     }
 
     #sidebar:has(#chevron-input:checked) + article {
@@ -148,3 +153,15 @@ article {
     height: 100dvh;
     flex-grow: 1;
 }
+
+pre { background: #1d191b; padding: var(--md) }
+.token.alphanumeric { color: #85bae0; }
+.token.symbolic { color: #dde9f1; }
+.token.declare { color: #6388f4; }
+.token.ctrlflow { color: #c385e0; }
+.token.number { color: #b7ecbf; }
+.token.function { color: #eaddb1; }
+.token.object { color: #46bca0; }
+.token.comment { color: #41714f; }
+.token.string { color: #e09a85; }
+.token.this { color: #ed78b1; }
