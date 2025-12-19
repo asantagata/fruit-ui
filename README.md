@@ -54,6 +54,8 @@ FRUIT's features include:
 
 with all special functional features (state, controlled rerendering, bindings) accessed through the `this` argument.
 
+Documentation is available for FRUIT [here](/).
+
 ## Why FRUIT over other front-end frameworks?
 
 Smaller apps don't always warrant heavyweight frameworks, but interfacing with the DOM directly is a hassle. The ability to declare and mutate state reactively is crucial in web apps with any amount of interactivity. Working in FRUIT and vanilla JS means no complex hidden logic to keep track of, no build step, and no separation of languages for your UI and your internal logic.
@@ -61,9 +63,9 @@ Smaller apps don't always warrant heavyweight frameworks, but interfacing with t
 ## Getting started
 
 There are three ways to use FRUIT in your projects:
-- Download and copy the [Terser-compressed JS file](/dist/fruit.js) file into your project. (This is a compressed version built with Terser; you can just as well use the [non-compressed version](/src/index.js).) Then you can use `import { create, replaceWith, appendChild, insertBefore } from "./modules/fruit.js"` or `<script type="module" src="./modules/fruit.js">` to access FRUIT in your JS apps.
-- Access via browser loading, i.e., `import { create, replaceWith, appendChild, insertBefore } from "https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/dist/fruit.js"`. (On first NPM release, it will be preferable to use the jsdelivr NPM link.)
-- With NPM installed, run `npm install @fruit/core`. Then use `import { create, replaceWith, appendChild, insertBefore } from "@fruit/core"`. (As of writing, an NPM package has not yet been set up. So, this will not yet work!)
+- Download and copy the [Terser-compressed JS file](/dist/index.js) file into your project. (This is a compressed version built with Terser; you can just as well use the [non-compressed version](/src/index.js).) Then you can use `import { create, replaceWith, appendChild, insertBefore } from "./modules/fruit.js"` or `<script type="module" src="./modules/fruit.js">` to access FRUIT in your JS apps.
+- Access via browser loading, i.e., `import { create, replaceWith, appendChild, insertBefore } from "https://cdn.jsdelivr.net/npm/@fruit/core@latest/index.js"`.
+- With NPM installed, run `npm install @fruit/core`. Then use `import { create, replaceWith, appendChild, insertBefore } from "@fruit/core"`.
 
 ## Contributing
 

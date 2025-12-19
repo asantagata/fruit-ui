@@ -1,15 +1,15 @@
 {
-  "name": "fruitui",
+  "name": "@fruit/core",
   "version": "1.0.0",
   "description": "A vanilla JS toolkit for reactive UI",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "terser .\\src\\index.js -o .\\dist\\fruit.js"
+    "build": "terser .\\src\\index.js -o .\\dist\\index.js"
   },
   "keywords": [
     "fruit",
-    "fruitui",
+    "core",
     "js",
     "json",
     "vanilla",
