@@ -1,3 +1,5 @@
+function url(str) { return `/fruit-ui/${str}`; }
+
 const sidebar = {
     id: 'sidebar',
     children: [
@@ -18,7 +20,7 @@ const sidebar = {
                 },
                 {
                     tag: 'a',
-                    href: './',
+                    href: url(''),
                     id: 'logo',
                     children: [{tag: 'span', children: '🥭'}, ' FRUIT']
                 }
@@ -27,7 +29,7 @@ const sidebar = {
         {
             id: 'sidebar-index',
             children: [
-                { name: 'FRUIT', href: './' },
+                { name: 'FRUIT', href: url('') },
             ].map(entry => ({
                 tag: 'a',
                 href: entry.href,
