@@ -3,7 +3,7 @@
 FRUIT is a lightweight, zero-dependency UI framework written in JS for JS apps. It uses nested JavaScript objects to represent DOM elements, i.e.,
 
 ```javascript
-import { appendChild } from "fruitui";
+import { appendChild } from "@fruit/core";
 
 const Paragraph = {
     tag: 'p',
@@ -21,7 +21,7 @@ appendChild(document.body, Paragraph);
 FRUIT is powerful, efficient, and feature-packed. In addition to objects representing static elements, users can write stateful, reactive components, i.e.,
 
 ```javascript
-import { appendChild } from "fruitui";
+import { appendChild } from "@fruit/core";
 
 const Counter = {
     state() {
@@ -33,7 +33,7 @@ const Counter = {
             children: `I've been clicked ${this.state.i} times!`,
             on: {
                 click() {
-                    this.setState.i(i + 1);
+                    this.setState.i(this.state.i + 1);
                 }
             }
         }
@@ -63,7 +63,7 @@ Smaller apps don't always warrant heavyweight frameworks, but interfacing with t
 There are three ways to use FRUIT in your projects:
 - Download and copy the [Terser-compressed JS file](/dist/fruit.js) file into your project. (This is a compressed version built with Terser; you can just as well use the [non-compressed version](/src/index.js).) Then you can use `import { create, replaceWith, appendChild, insertBefore } from "./modules/fruit.js"` or `<script type="module" src="./modules/fruit.js">` to access FRUIT in your JS apps.
 - Access via browser loading, i.e., `import { create, replaceWith, appendChild, insertBefore } from "https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/dist/fruit.js"`. (On first NPM release, it will be preferable to use the jsdelivr NPM link.)
-- With NPM installed, run `npm install fruit-ui`. Then use `import { create, replaceWith, appendChild, insertBefore } from "fruit-ui"`. (As of writing, an NPM package has not yet been set up. So, this will not yet work!)
+- With NPM installed, run `npm install @fruit/core`. Then use `import { create, replaceWith, appendChild, insertBefore } from "@fruit/core"`. (As of writing, an NPM package has not yet been set up. So, this will not yet work!)
 
 ## Contributing
 

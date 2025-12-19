@@ -20,14 +20,14 @@ const sidebar = {
                     tag: 'a',
                     href: '/',
                     id: 'logo',
-                    children: [{tag: 'span', children: '🥭'}, ' FRUIT UI']
+                    children: [{tag: 'span', children: '🥭'}, ' FRUIT']
                 }
             ]
         },
         {
             id: 'sidebar-index',
             children: [
-                { name: 'Fruit UI', url: '/' },
+                { name: 'FRUIT', url: '/' },
             ].map(entry => ({
                 tag: 'a',
                 href: entry.url,
@@ -78,8 +78,10 @@ function tokenize(code) {
             curToken = {text: codePointContent, type: type};
         }
     }
-    if (curToken.type)
+    if (curToken.type && curToken.type !== TokenTypes.WHITESPACE)
         tokens.push(curToken);
+    if (tokens[tokens.length - 1].type === TokenTypes.NEWLINE)
+        tokens.splice(tokens.length - 1, 1);
     return tokens;
 }
 
@@ -87,10 +89,10 @@ function SyntaxHighlighting(code) {
     const declareKeywords = new Set(['const', 'function', 'let', 'new', 'document']);
     const ctrlflowKeywords = new Set(['break', 'do', 'while', 'for', 'in', 'of', 'if', 'else', 'return', 'import', 'from']);
     const tokens = tokenize(code);
-    console.log([...tokens]);
     let currentType = null;
     let insideStringBreak = false;
     let lastOpeningQuote = null;
+    let lastOpeningQuoteInsideStringBreak = null;
     for (let i = 0; i < tokens.length; i++) {
         let skipThisCurrentTypeAssignment = false;
         const token = tokens[i];
@@ -99,18 +101,29 @@ function SyntaxHighlighting(code) {
         else if (currentType === TokenTypes.COMMENT && token.type === TokenTypes.NEWLINE)
             currentType = null;
         else if (currentType !== TokenTypes.COMMENT && token.type === TokenTypes.QUOTE) {
-            if (currentType === TokenTypes.STRING && lastOpeningQuote === token.text) {
-                currentType = null;
-                lastOpeningQuote = null;
-            } else if (!lastOpeningQuote) {
-                currentType = TokenTypes.STRING;
-                lastOpeningQuote = token.text;
+            if (insideStringBreak) {
+                if (currentType === TokenTypes.STRING && lastOpeningQuoteInsideStringBreak === token.text) {
+                    currentType = null;
+                    lastOpeningQuoteInsideStringBreak = null;
+                } else if (!lastOpeningQuoteInsideStringBreak) {
+                    currentType = TokenTypes.STRING;
+                    lastOpeningQuoteInsideStringBreak = token.text;
+                }
+            } else {
+                if (currentType === TokenTypes.STRING && lastOpeningQuote === token.text) {
+                    currentType = null;
+                    lastOpeningQuote = null;
+                } else if (!lastOpeningQuote) {
+                    currentType = TokenTypes.STRING;
+                    lastOpeningQuote = token.text;
+                }
             }
+            
         }
         else if (currentType === TokenTypes.STRING && token.text.startsWith('${')) {
             currentType = null;
             insideStringBreak = true;
-        } else if (insideStringBreak && token.text.endsWith('}')) {
+        } else if (insideStringBreak && token.text.includes('}')) {
             currentType = TokenTypes.STRING;
             insideStringBreak = false;
             skipThisCurrentTypeAssignment = true;
@@ -137,6 +150,21 @@ function SyntaxHighlighting(code) {
             }
         }
     }
+
+    let mIndent = Number.POSITIVE_INFINITY;
+    for (let i = 0; i < tokens.length; i++) {
+        const token = tokens[i];
+        if (token.type === TokenTypes.WHITESPACE && (i === 0 || tokens[i - 1].type === TokenTypes.NEWLINE)) {
+            mIndent = Math.min(mIndent, token.text.length);
+        }
+    }
+
+    for (let i = 0; i < tokens.length; i++) {
+        const token = tokens[i];
+        if (token.type === TokenTypes.WHITESPACE && (i === 0 || tokens[i - 1].type === TokenTypes.NEWLINE)) {
+            token.text = token.text.substring(mIndent + 1);
+        }
+    }
     
     return {
         tag: 'pre',
@@ -147,12 +175,26 @@ function SyntaxHighlighting(code) {
     };
 }
 
-function Codeblock(snippet) {
+function Example(code, result) {
     return {
+        class: 'example',
         children: [
-            SyntaxHighlighting(snippet.code),
-            snippet.result
+            SyntaxHighlighting(code),
+            {
+                class: 'resultbox',
+                children: result
+            }
         ]
     }
 }
 
+function initializeArticle(document, replaceWith, SNIPPETS) {
+    replaceWith(document.getElementById('sidebar'), sidebar);
+
+    Array.from(article.getElementsByTagName('pre')).forEach(pre => {
+        const example = Example(pre.innerText, SNIPPETS[pre.dataset.ref]);
+        replaceWith(pre, example);
+    });
+}
+    
+    

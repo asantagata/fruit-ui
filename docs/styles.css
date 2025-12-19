@@ -82,9 +82,77 @@ body {
     background: #03000129;
 }
 
-@media (max-aspect-ratio: 2/3) {
+
+#chevron-input {
+    display: none;
+}
+
+article {
+    overflow-y: auto;
+    padding: var(--md);
+    height: 100dvh;
+    flex-grow: 1;
+}
+
+pre { 
+    background: #1d191b; 
+    padding: var(--md);
+    border-radius: var(--md);
+    overflow: auto;
+    margin: 0;
+}
+.token.this { color: #ec71ae; }
+.token.function { color: #f3a58e; }
+.token.symbolic { color: #fff4f2; }
+.token.alphanumeric { color: #f7c7c1; }
+.token.ctrlflow { color: #fd9eba; }
+.token.declare { color: #f68272; }
+.token.number { color: #f6efb3; }
+.token.object { color: #f5cf78; }
+.token.string { color: #bde48c; }
+.token.comment { color: #689f6d; }
+
+.example {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--md);
+}
+
+.resultbox, .resultbox * {
+    font-size: large;
+}
+
+.resultbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sidebar);
+    padding: var(--md);
+    border-radius: var(--md);
+}
+
+button {
+    background: var(--pink);
+    color: white;
+    padding: var(--md);
+    border-radius: var(--md);
+    cursor: pointer;
+    outline: 0;
+    border: 0;
+    box-shadow: 0 3px 2px #0002;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+@media (max-aspect-ratio: 2/3) or (max-width: 600px) {
     body {
         flex-direction: column;
+    }
+
+    .example {
+        grid-template-columns: 1fr;
     }
 
     #sidebar-index {
@@ -142,26 +210,3 @@ body {
         padding: var(--md);
     }
 }
-
-#chevron-input {
-    display: none;
-}
-
-article {
-    overflow-y: auto;
-    padding: var(--md);
-    height: 100dvh;
-    flex-grow: 1;
-}
-
-pre { background: #1d191b; padding: var(--md) }
-.token.alphanumeric { color: #85bae0; }
-.token.symbolic { color: #dde9f1; }
-.token.declare { color: #6388f4; }
-.token.ctrlflow { color: #c385e0; }
-.token.number { color: #b7ecbf; }
-.token.function { color: #eaddb1; }
-.token.object { color: #46bca0; }
-.token.comment { color: #41714f; }
-.token.string { color: #e09a85; }
-.token.this { color: #ed78b1; }
