@@ -473,6 +473,20 @@ function deepEqual(a, b) {
 }
 
 /**
+ * Returns true iff a component has a memo (functional or otherwise) and it is satisfied.
+ * @param {This} this - the This.
+ * @param {Component} component - the Component.
+ * @returns {boolean} whether the memo exists and is satisfied.
+ */
+function evaluateMemo(component) {
+    if (component.memo && this.memo) {
+        // for functional memos: rerender if returns false
+        if (typeof component.memo === 'function') return !!component.memo.call(this);
+        return deepEqual(component.memo, this.memo);
+    } else return false;
+}
+
+/**
  * Rerenders a component HTMLElement from a Component, preserving state but updating the producer.
  * @param {HTMLElement} element - the element.
  * @param {Component} component - the Component.
@@ -480,7 +494,7 @@ function deepEqual(a, b) {
  */
 function rerenderChildComponent(element, component, onMounts) {
     const cmpThis = thisRecord[element.dataset.componentId];
-    if (component.memo && cmpThis.memo && deepEqual(component.memo, cmpThis.memo)) {
+    if (evaluateMemo.call(cmpThis, component)) {
         return;
     }
     cmpThis.producer = component.render.bind(cmpThis);
@@ -496,7 +510,7 @@ function rerenderChildComponent(element, component, onMounts) {
  */
 function recreateKeyedChildComponent(component, componentId, onMounts) {
     const cmpThis = thisRecord[componentId];
-    if (component.memo && cmpThis.memo && deepEqual(component.memo, cmpThis.memo)) {
+    if (evaluateMemo.call(cmpThis, component)) {
         return cmpThis.element;
     }
     cmpThis.producer = component.render.bind(cmpThis);

@@ -60,8 +60,8 @@
                     ]
                 }
             },
-            memo: {
-                name
+            memo() {
+                return this.state.i % 2 === 0
             }
         }
     }
