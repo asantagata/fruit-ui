@@ -49,6 +49,7 @@
  * @property {object} state - The component's state.
  * @property {object} setState - Functions to set the component's state with automatic reactivity.
  * @property {Object.<string, Binding>} bindings - The component's bindings.
+ * @property {object} [memo] - The component's memo, if given.
  */
 
 /**
@@ -64,6 +65,8 @@
  * @property {TemplateProducer} render - The main render function.
  * @property {() => Object.<string, any>} [state] - The initializer for local state.
  * @property {string} [key] - The element's key, used to distinguish re-ordered siblings and preserve state.
+ * @property {string} [binding] - The element's binding.
+ * @property {object} [memo] - The element's memoized props, used to control rerendering.
  */
 
 /**
@@ -108,11 +111,12 @@ function enqueueToRerender(componentId) {
  * Create a new This.
  * @returns {This} the new This.
  */
-function createThis() {
+function createThis(component) {
     return {
         state: {},
         setState: {},
-        bindings: {}
+        bindings: {},
+        memo: component.memo
     };
 }
 
@@ -232,10 +236,11 @@ function createElementFromTemplate(template, onMounts, producer = null) {
 /**
  * Binds a TemplateProducer to a new This.
  * @param {TemplateProducer} producer - the TemplateProducer.
+ * @param {Component} component - the Component to which the TemplateProducer belongs.
  * @returns {BoundTemplateProducer} - the BoundTemplateProducer.
  */
-function bindTemplateProducer(producer) {
-    const newThis = createThis();
+function bindTemplateProducer(producer, component) {
+    const newThis = createThis(component);
     const boundProducer = producer.bind(newThis);
     boundProducer.this = newThis;
     boundProducer.componentId = `component-${globalComponentCount++}`;
@@ -277,7 +282,7 @@ function createElementFromElementable(elementable, onMounts) {
  * @returns {HTMLElement} - An HTMLElement.
  */
 function createElementFromComponent(component, onMounts) {
-    const boundProducer = bindTemplateProducer(component.render);
+    const boundProducer = bindTemplateProducer(component.render, component);
     thisRecord[boundProducer.componentId] = boundProducer.this;
     boundProducer.this.state = component.state ? component.state() : {};
     const template = boundProducer();
@@ -439,6 +444,35 @@ function rerenderElementFromTemplate(element, template, onMounts) {
 }
 
 /**
+ * Determines whether two values are deeply equal.
+ * @param {*} a 
+ * @param {*} b 
+ * @returns {boolean} whether they are equal.
+ */
+function deepEqual(a, b) {
+    if (typeof a !== typeof b) return false;
+    if (typeof a === 'function') return true;
+    if (typeof a === 'object' && a !== null) {
+        if (typeof a[Symbol.iterator] === "function") { // is iterable
+            if (a.length === b.length && a.size === b.size) {
+                const itA = a[Symbol.iterator](), itB = b[Symbol.iterator]();
+                while (true) {
+                    const nextA = itA.next(), nextB = itB.next();
+                    if (nextA.done === nextB.done) {
+                        if (!deepEqual(nextA.value, nextB.value)) return false;
+                        if (nextA.done) return true;
+                    } else return false;
+                }
+            } else return false;
+        } else {
+            const keysA = Object.keys(a), keysB = Object.keys(b);
+            if (keysA.length !== keysB.length) return false;
+            return keysB.every(keyB => keyB in a && deepEqual(keysA[keyB], keysB[keyB]));
+        }
+    } else return a === b;
+}
+
+/**
  * Rerenders a component HTMLElement from a Component, preserving state but updating the producer.
  * @param {HTMLElement} element - the element.
  * @param {Component} component - the Component.
@@ -446,6 +480,9 @@ function rerenderElementFromTemplate(element, template, onMounts) {
  */
 function rerenderChildComponent(element, component, onMounts) {
     const cmpThis = thisRecord[element.dataset.componentId];
+    if (component.memo && cmpThis.memo && deepEqual(component.memo, cmpThis.memo)) {
+        return;
+    }
     cmpThis.producer = component.render.bind(cmpThis);
     rerenderElementFromTemplate.call(cmpThis, element, cmpThis.producer(), onMounts);
 }
@@ -459,6 +496,9 @@ function rerenderChildComponent(element, component, onMounts) {
  */
 function recreateKeyedChildComponent(component, componentId, onMounts) {
     const cmpThis = thisRecord[componentId];
+    if (component.memo && cmpThis.memo && deepEqual(component.memo, cmpThis.memo)) {
+        return cmpThis.element;
+    }
     cmpThis.producer = component.render.bind(cmpThis);
     const template = cmpThis.producer();
     const element = createElementFromTemplate.call(cmpThis, giveTemplateComponentMetadata(template, componentId, component.key, component.binding), onMounts, cmpThis.producer);
