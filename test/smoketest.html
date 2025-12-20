@@ -32,7 +32,7 @@
     <div id="div"></div>
 </body>
 <script type="module">
-    import { replaceWith } from '../src/index.js';
+    import * as fruit from '../src/index.js';
 
     function child(name, modifyList, newGuy) {
         return {
@@ -93,7 +93,7 @@
         }
     }
 
-    replaceWith(document.getElementById("div"), parent());
+    fruit.replaceWith(document.getElementById("div"), parent());
 
 </script>
 </html>

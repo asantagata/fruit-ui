@@ -734,7 +734,7 @@ function create(elementable, includeOnMounts = false) {
 function replaceWith(element, elementable) {
     const {element: newElement, onMounts} = create(elementable, true);
     element.replaceWith(newElement);
-    onMounts.forEach(om => om());
+    handleOnMounts(onMounts);
 }
 
 /**
@@ -745,7 +745,7 @@ function replaceWith(element, elementable) {
 function appendChild(element, elementable) {
     const {element: newElement, onMounts} = create(elementable, true);
     element.appendChild(newElement);
-    onMounts.forEach(om => om());
+    handleOnMounts(onMounts);
 }
 
 /**
@@ -757,7 +757,15 @@ function appendChild(element, elementable) {
 function insertBefore(parentElement, nextSiblingElement, elementable) {
     const {element: newElement, onMounts} = create(elementable, true);
     parentElement.insertBefore(newElement, nextSiblingElement);
+    handleOnMounts(onMounts);
+}
+
+/**
+ * Handles onMounts functions returned by `create` with `includeOnMounts = true`.
+ * @param {Function[]} onMounts 
+ */
+function handleOnMounts(onMounts) {
     onMounts.forEach(om => om());
 }
 
-export { create, replaceWith, appendChild, insertBefore };
+export { create, replaceWith, appendChild, insertBefore, handleOnMounts };

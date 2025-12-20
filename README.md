@@ -51,6 +51,7 @@ FRUIT's features include:
 - Keys to preserve state among re-ordered siblings
 - An on-mount listener and handler methods
 - Bindings to elements within components
+- "Memo" options to make child components rerender conditionally
 
 with all special functional features (state, controlled rerendering, bindings) accessed through the `this` argument.
 
@@ -63,16 +64,15 @@ Smaller apps don't always warrant heavyweight frameworks, but interfacing with t
 ## Getting started
 
 There are three ways to use FRUIT in your projects:
-- Download and copy the [Terser-compressed JS file](https://github.com/asantagata/fruit-ui/blob/main/dist/index.js) file into your project. (This is a compressed version built with Terser; you can just as well use the [non-compressed version](https://github.com/asantagata/fruit-ui/blob/main/src/index.js) which uses JSDoc annotations.) Then you can use `import { create, replaceWith, appendChild, insertBefore } from "./modules/fruit.js"` or `<script type="module" src="./modules/fruit.js">` to access FRUIT in your JS apps.
-- Access via browser loading, i.e., `import { create, replaceWith, appendChild, insertBefore } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js"`.
-- With NPM installed, run `npm install @fruit-ui/core`. Then use `import { create, replaceWith, appendChild, insertBefore } from "@fruit-ui/core"`.
+- Download and copy the [Terser-compressed JS file](https://github.com/asantagata/fruit-ui/blob/main/dist/index.js) file into your project. (This is a compressed version built with Terser; you can just as well use the [non-compressed version](https://github.com/asantagata/fruit-ui/blob/main/src/index.js) which uses JSDoc annotations.) Then you can use `import \* as fruit from "./modules/fruit.js"` or `<script type="module" src="./modules/fruit.js">` to access FRUIT in your JS apps.
+- Access via browser loading, i.e., `import \* as fruit from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js"`.
+- With NPM installed, run `npm install @fruit-ui/core`. Then use `import \* as fruit from "@fruit-ui/core"`.
 
 ## Contributing
 
 Ongoing development on FRUIT focuses on:
 - Thorough, interactive, user-facing documentation (available [here](https://asantagata.github.io/fruit-ui/))
-- Benchmarks to compare against other JS frameworks
-- A "useMemo" equivalent
+- Benchmarks against other JS frameworks
 - Basic built-in components
 
 This project's initial release is currently not yet finished, so contributions aren't currently being sought out.
