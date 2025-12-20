@@ -11,9 +11,22 @@ code, code > * {
 :root {
     --pink: #ff659b;
     --yellow: #ffc861;
-    --sidebar: #ebe5e6;
-    --back: #faf6f7;
+    --sidebar: #eee9ea;
+    --back: #f7f2f3;
     --md: 0.5rem;
+    --sm: 0.25rem;
+    --xs: 0.1rem;
+    --accent: #d35176;
+}
+
+a { color: var(--accent) }
+
+code:not(pre > code) {
+    background: var(--sidebar);
+    display: inline;
+    padding: var(--xs) var(--sm);
+    border-radius: var(--sm);
+    
 }
 
 body {
@@ -101,16 +114,32 @@ pre {
     overflow: auto;
     margin: 0;
 }
-.token.this { color: #ec71ae; }
-.token.function { color: #f3a58e; }
-.token.symbolic { color: #fff4f2; }
-.token.alphanumeric { color: #f7c7c1; }
-.token.ctrlflow { color: #fd9eba; }
-.token.declare { color: #f68272; }
-.token.number { color: #f6efb3; }
-.token.object { color: #f5cf78; }
-.token.string { color: #bde48c; }
-.token.comment { color: #689f6d; }
+
+ul > li {
+    margin: 1rem 0;
+}
+
+.dark-code > .token.this { color: #ec71ae; }
+.dark-code > .token.function { color: #f3a58e; }
+.dark-code > .token.symbolic { color: #fff4f2; }
+.dark-code > .token.alphanumeric { color: #f7c7c1; }
+.dark-code > .token.ctrlflow { color: #fd9eba; }
+.dark-code > .token.declare { color: #f68272; }
+.dark-code > .token.number { color: #f6efb3; }
+.dark-code > .token.object { color: #f5cf78; }
+.dark-code > .token.string { color: #bde48c; }
+.dark-code > .token.comment { color: #689f6d; }
+
+.light-code > .token.this { color: hsl(246, 80%, 58%); }
+.light-code > .token.function { color: #ea512b; }
+.light-code > .token.symbolic { color: hsl(340, 37%, 17%); }
+.light-code > .token.alphanumeric { color: hsl(335, 68%, 46%); }
+.light-code > .token.ctrlflow { color: hsl(210, 70%, 47%); }
+.light-code > .token.declare { color: hsl(0, 70%, 36%); }
+.light-code > .token.number { color: hsl(340, 93%, 27%); }
+.light-code > .token.object { color: hsl(34, 94%, 40%); }
+.light-code > .token.string { color: hsl(82, 63%, 33%); }
+.light-code > .token.comment { color: hsl(150, 27%, 31%); }
 
 .example {
     display: grid;

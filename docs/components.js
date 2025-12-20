@@ -30,6 +30,7 @@ const sidebar = {
             id: 'sidebar-index',
             children: [
                 { name: 'FRUIT', href: url('') },
+                { name: 'Getting Started', href: url('getting-started') },
             ].map(entry => ({
                 tag: 'a',
                 href: entry.href,
@@ -52,7 +53,8 @@ const TokenTypes = {
     COMMENT: 'comment', 
     STRING: 'string',
     QUOTE: 'quote',
-    THIS: 'this'
+    THIS: 'this',
+    CURLY: 'curly'
 }
 
 function codePointType(codePoint) {
@@ -64,6 +66,8 @@ function codePointType(codePoint) {
         return TokenTypes.ALPHANUMERIC;
     if (codePoint === 39 || codePoint === 34 || codePoint === 96)
         return TokenTypes.QUOTE;
+    if (codePoint === 123 || codePoint === 125 || codePoint === 36)
+        return TokenTypes.CURLY;
     return TokenTypes.SYMBOLIC;
 }
 
@@ -87,9 +91,9 @@ function tokenize(code) {
     return tokens;
 }
 
-function SyntaxHighlighting(code) {
+function SyntaxHighlighting(code, inline = true) {
     const declareKeywords = new Set(['const', 'function', 'let', 'new', 'document']);
-    const ctrlflowKeywords = new Set(['break', 'do', 'while', 'for', 'in', 'of', 'if', 'else', 'return', 'import', 'from']);
+    const ctrlflowKeywords = new Set(['break', 'do', 'while', 'for', 'in', 'of', 'if', 'else', 'return', 'import', 'from', 'as']);
     const tokens = tokenize(code);
     let currentType = null;
     let insideStringBreak = false;
@@ -145,7 +149,7 @@ function SyntaxHighlighting(code) {
                 token.type = TokenTypes.OBJECT;
             } else if (declareKeywords.has(token.text)) {
                 token.type = TokenTypes.DECLARE_KEYWORD;
-            } else if (ctrlflowKeywords.has(token.text)) {
+            } else if (ctrlflowKeywords.has(token.text) || (i > 0 && (tokens[i - 1].text.endsWith('<') || tokens[i - 1].text.endsWith('</')))) {
                 token.type = TokenTypes.CTRLFLOW_KEYWORD;
             } else if (token.text === 'this') {
                 token.type = TokenTypes.THIS;
@@ -167,13 +171,21 @@ function SyntaxHighlighting(code) {
             token.text = token.text.substring(mIndent + 1);
         }
     }
+
+    const codeBlock = {
+        tag: 'code',
+        children: tokens.map(({text, type}) => ({tag: 'span', class: `token ${type === TokenTypes.CURLY ? TokenTypes.SYMBOLIC : type}`, children: text}))
+    };
     
+    if (inline) {
+        codeBlock.class = 'light-code';
+        return codeBlock;
+    }
+
+    codeBlock.class = 'dark-code';
     return {
         tag: 'pre',
-        children: {
-            tag: 'code',
-            children: tokens.map(({text, type}) => ({tag: 'span', class: `token ${type}`, children: text}))
-        }
+        children: codeBlock
     };
 }
 
@@ -181,7 +193,7 @@ function Example(code, result) {
     return {
         class: 'example',
         children: [
-            SyntaxHighlighting(code),
+            SyntaxHighlighting(code, false),
             {
                 class: 'resultbox',
                 children: result
@@ -190,12 +202,38 @@ function Example(code, result) {
     }
 }
 
-function initializeArticle(document, replaceWith, SNIPPETS) {
+function initializeArticle(document, replaceWith, SNIPPETS = null) {
     replaceWith(document.getElementById('sidebar'), sidebar);
 
+    const article = document.getElementById('article');
+    
+    Array.from(article.getElementsByTagName('code')).forEach(code => {
+        if (code.dataset.lang === 'shell') {
+            const words = code.innerText.split(' ');
+            const highlighted = {
+                tag: 'code',
+                class: 'light-code',
+                children: [
+                    {tag: 'span', class: 'token ctrlflow', children: words[0]},
+                    ' ',
+                    {tag: 'span', class: 'token alphanumeric', children: words.slice(1).join(' ')}
+                ]
+            }
+            replaceWith(code, highlighted);
+        } else {
+            const highlighted = SyntaxHighlighting(code.innerText);
+            replaceWith(code, highlighted);
+        }
+    });
+
     Array.from(article.getElementsByTagName('pre')).forEach(pre => {
-        const example = Example(pre.innerText, SNIPPETS[pre.dataset.ref]);
-        replaceWith(pre, example);
+        if (pre.dataset.ref) {
+            const example = Example(pre.innerText, SNIPPETS[pre.dataset.ref]);
+            replaceWith(pre, example);
+        } else {
+            const highlighted = SyntaxHighlighting(pre.innerText, false);
+            replaceWith(pre, highlighted);
+        }
     });
 }
     
