@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started</title>
+</head>
+<body>
+    <div id="sidebar"></div>
+    <article id="article">
+        <h1>Getting Started</h1>
+        <p>Setting up FRUIT is quick and easy. You do not need to make a new project to use FRUIT; you can easily integrate it alongside existing web projects. FRUIT makes it easy to embellish static HTML pages with stateful, reactive functionality.</p>
+        <p>There are three ways to add FRUIT to a project:</p>
+        <ul>
+            <li>
+                Download and copy the <a href="https://github.com/asantagata/fruit-ui/blob/main/dist/index.js" target="_blank">compressed JS file</a> into your project. (This is a compressed version built with Terser; you can just as well use the <a href="https://github.com/asantagata/fruit-ui/blob/main/src/index.js" target="_blank">non-compressed version</a> which uses JSDoc annotations.) Then you can use <code>import * as fruit from "./modules/fruit.js"</code> or <code>&lt;script&nbsp;type="module" src="./modules/fruit.js"&gt;&lt;/script&gt;</code> to access FRUIT in your JS apps.
+            </li>
+            <li>
+                Access via browser loading, i.e., <code>import * as fruit from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js"</code>.
+            </li>
+            <li>
+                With NPM installed, run <code data-lang="shell">npm install @fruit-ui/core</code>. Then use <code>import * as fruit from "@fruit-ui/core"</code>.
+            </li>
+        </ul>
+    </article>
+</body>
+<script src="./components.js"></script>
+<script type="module">
+    import { replaceWith } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js";
+
+    initializeArticle(document, replaceWith);
+</script>
+</html>
