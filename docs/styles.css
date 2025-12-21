@@ -132,7 +132,7 @@ ul > li {
 
 .light-code > .token.this { color: hsl(246, 80%, 58%); }
 .light-code > .token.function { color: #ea512b; }
-.light-code > .token.symbolic { color: hsl(340, 37%, 17%); }
+.light-code > .token.symbolic { color: hsl(343, 6%, 17%) }
 .light-code > .token.alphanumeric { color: hsl(335, 68%, 46%); }
 .light-code > .token.ctrlflow { color: hsl(210, 70%, 47%); }
 .light-code > .token.declare { color: hsl(0, 70%, 36%); }
