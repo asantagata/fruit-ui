@@ -75,4 +75,4 @@ Ongoing development on FRUIT focuses on:
 - Benchmarks against other JS frameworks
 - Basic built-in components
 
-This project's initial release is currently not yet finished, so contributions aren't currently being sought out.
+Contributions aren't currently being sought out. Please feel free to open an issue or reach out to [asantagata225@gmail.com](mailto:asantagata225@gmail.com) with any suggestions etc.
