@@ -210,7 +210,7 @@ function createElementFromTemplate(template, onMounts, producer = null) {
     }
     if (template.innerHTML) {
         element.innerHTML = template.innerHTML;
-    } else if ('children' in template) {
+    } else if (template.children !== undefined) {
         if (Array.isArray(template.children)) {
             element.replaceChildren(
                 ...template.children.map(ct => createElementFromElementable.call(this, ct, onMounts))
