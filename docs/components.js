@@ -1,4 +1,4 @@
-import { Router, navigate } from "https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/router/src/router.js";
+import { Router, navigate } from "./router.js"; // change to npm link when available
 import { examples } from "./examples.js";
 
 const ARTICLES = [
