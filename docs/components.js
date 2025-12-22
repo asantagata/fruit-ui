@@ -11,6 +11,12 @@ const ARTICLES = [
     {title: 'Getting Started', url: 'getting-started', mdPath: './md/getting-started.md', section: 'core'}
 ];
 
+const CHEVRON_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>`;
+
+function getArticleRoute(article) {
+    return `${article.section}-${article.url}`;
+}
+
 const Sidebar = {
     id: 'sidebar',
     children: [
@@ -27,7 +33,7 @@ const Sidebar = {
                     id: 'chevron',
                     tag: 'label',
                     for: 'chevron-input',
-                    innerHTML: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>`
+                    innerHTML: CHEVRON_RIGHT
                 },
                 {
                     id: 'logo',
@@ -44,7 +50,7 @@ const Sidebar = {
                         class: 'index-entry',
                         children: entry.title,
                         on: {click() {
-                            navigate(`${entry.section}-${entry.url}`);
+                            navigate(getArticleRoute(entry));
                             document.getElementById('chevron-input').checked = false;
                         }}
                     }))
@@ -307,6 +313,28 @@ function Markdown(text, article) {
     return paragraphs;
 }
 
+function Next(article) {
+    const index = ARTICLES.indexOf(article);
+    const next = ARTICLES[index + 1];
+    if (!next) return {};
+    else return {
+        id: 'next-button',
+        children: {
+            children: [
+                {children: [
+                    {tag: 'p', children: 'NEXT UP'},
+                    {tag: 'h3', children: next.title},
+                    {tag: 'p', children: next.section.toUpperCase()},
+                ]},
+                {innerHTML: CHEVRON_RIGHT}
+            ],
+            on: {click() {
+                navigate(getArticleRoute(next))
+            }}
+        },
+    }
+}
+
 function Article(article) {
     return {title: article.title, route: async () => {
         const response = await fetch(article.mdPath);
@@ -315,7 +343,7 @@ function Article(article) {
         return {
             tag: 'article',
             id: 'article',
-            children: Markdown(text, article)
+            children: [...Markdown(text, article), Next(article)]
         }
     }};
 }

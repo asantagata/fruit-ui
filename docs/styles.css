@@ -17,6 +17,7 @@ code, code > * {
     --sm: 0.25rem;
     --xs: 0.1rem;
     --accent: #d35176;
+    --bold-opacity: 0.5;
 }
 
 a { color: var(--accent) }
@@ -88,7 +89,7 @@ body {
 }
 
 .section-name {
-    opacity: 0.5;
+    opacity: var(--bold-opacity);
     font-size: small;
     font-weight: bold;
     cursor: default;
@@ -182,6 +183,35 @@ button {
 
 button:active {
     transform: translateY(1px);
+}
+
+#next-button > div {
+    background: var(--sidebar);
+    padding: var(--md);
+    text-align: right;
+    display: flex;
+    gap: var(--md);
+    border-radius: var(--md);
+    justify-content: right;
+    align-items: center;
+    cursor: pointer;
+}
+
+#next-button {
+    display: flex;
+    justify-content: right;
+}
+
+#next-button p {
+    opacity: var(--bold-opacity);
+    font-size: small;
+    font-weight: bold;
+    margin: 0;
+}
+
+#next-button h3 {
+    margin: 0;
+    padding: var(--md) 0;
 }
 
 @media (max-aspect-ratio: 2/3) or (max-width: 600px) {
