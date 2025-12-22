@@ -327,6 +327,7 @@ export const Body = {
         Sidebar,
         Router(new Proxy({}, {
             get(o, p, r) {
+                console.log(ARTICLES);
                 if (p === '/' || p === '') return Article(ARTICLES[0]);
                 const delimeterIndex = p.indexOf('-');
                 const section = p.slice(0, delimeterIndex), article = p.slice(delimeterIndex + 1);
