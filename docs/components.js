@@ -1,6 +1,18 @@
-function url(str) { return `/fruit-ui/${str}`; }
+// import { Router, navigate } from "https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/router/src/router.js";
+import { Router, navigate } from "../router/src/router.js";
+import { examples } from "./examples.js";
 
-const sidebar = {
+const ARTICLES = [
+    {title: 'FRUIT', url: 'index', mdPath: './md/index.md', section: 'core', 
+        results: {
+            fun: examples['core-fun'],
+            counter: examples['core-counter']
+        }
+    },
+    {title: 'Getting Started', url: 'getting-started', mdPath: './md/getting-started.md', section: 'core'}
+];
+
+const Sidebar = {
     id: 'sidebar',
     children: [
         {
@@ -19,23 +31,26 @@ const sidebar = {
                     innerHTML: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>`
                 },
                 {
-                    tag: 'a',
-                    href: url(''),
                     id: 'logo',
-                    children: [{tag: 'span', children: '🥭'}, ' FRUIT']
+                    children: [{tag: 'span', children: '🥭'}, ' FRUIT'],
+                    on: {click() {navigate('')}}
                 }
             ]
         },
         {
             id: 'sidebar-index',
-            children: [
-                { name: 'FRUIT', href: url('') },
-                { name: 'Getting Started', href: url('getting-started') },
-            ].map(entry => ({
-                tag: 'a',
-                href: entry.href,
-                children: entry.name
-            }))
+            children: Object.entries(Object.groupBy(ARTICLES, a => a.section)).flatMap(([sectionName, entries]) => ([
+                    {class: 'section-name', children: sectionName.toUpperCase()},
+                    ...entries.map(entry => ({
+                        class: 'index-entry',
+                        children: entry.title,
+                        on: {click() {
+                            navigate(`${entry.section}-${entry.url}`);
+                            document.getElementById('chevron-input').checked = false;
+                        }}
+                    }))
+                ]
+            ))
         }
     ]
 }
@@ -91,7 +106,7 @@ function tokenize(code) {
     return tokens;
 }
 
-function SyntaxHighlighting(code, inline = true) {
+function JSSyntaxHighlighting(code, mode) {
     const declareKeywords = new Set(['const', 'function', 'let', 'new', 'document']);
     const ctrlflowKeywords = new Set(['break', 'do', 'while', 'for', 'in', 'of', 'if', 'else', 'return', 'import', 'from', 'as']);
     const tokens = tokenize(code);
@@ -172,69 +187,151 @@ function SyntaxHighlighting(code, inline = true) {
         }
     }
 
-    const codeBlock = {
+    return {
         tag: 'code',
+        class: `${mode}-code`,
         children: tokens.map(({text, type}) => ({tag: 'span', class: `token ${type === TokenTypes.CURLY ? TokenTypes.SYMBOLIC : type}`, children: text}))
     };
-    
-    if (inline) {
-        codeBlock.class = 'light-code';
-        return codeBlock;
-    }
-
-    codeBlock.class = 'dark-code';
-    return {
-        tag: 'pre',
-        children: codeBlock
-    };
 }
 
-function Example(code, result) {
-    return {
-        class: 'example',
-        children: [
-            SyntaxHighlighting(code, false),
-            {
-                class: 'resultbox',
-                children: result
-            }
-        ]
-    }
-}
-
-function initializeArticle(document, replaceWith, SNIPPETS = null) {
-    replaceWith(document.getElementById('sidebar'), sidebar);
-
-    const article = document.getElementById('article');
-    
-    Array.from(article.getElementsByTagName('code')).forEach(code => {
-        if (code.dataset.lang === 'shell') {
-            const words = code.innerText.split(' ');
-            const highlighted = {
+function SyntaxHighlighting(code, mode = 'dark', lang = 'js') {
+    switch (lang) {
+        case 'shell': {
+            const words = code.split(' ');
+            return {
                 tag: 'code',
-                class: 'light-code',
+                class: `${mode}-code`,
                 children: [
                     {tag: 'span', class: 'token ctrlflow', children: words[0]},
                     ' ',
                     {tag: 'span', class: 'token alphanumeric', children: words.slice(1).join(' ')}
                 ]
             }
-            replaceWith(code, highlighted);
+        }
+        case 'js': return JSSyntaxHighlighting(code, mode);
+    }
+}
+
+function Markdown(text, article) {
+    const lines = text.split('\n').filter(t => t.trim().length > 0);
+
+    // recognize codeblocks
+    let currentCodeblock = null;
+    for (let i = lines.length - 1; i >= 0; i--) {
+        const line = lines[i];
+        if (currentCodeblock !== null) {
+            if (line.startsWith('```')) {
+                const code = currentCodeblock.join('\n');
+                const pre = {
+                    tag: 'pre',
+                    children: SyntaxHighlighting(code)
+                };
+                if (line.startsWith('```{')) {
+                    const tag = line.slice(4, -2);
+                    lines.splice(i, currentCodeblock.length + 2, {
+                        class: 'example',
+                        children: [
+                            pre,
+                            {class: 'resultbox', children: article.results[tag]}
+                        ]
+                    });
+                } else {
+                    lines.splice(i, currentCodeblock.length + 2, pre);
+                }
+                currentCodeblock = null;
+            } else {
+                currentCodeblock.unshift(line);
+            }
         } else {
-            const highlighted = SyntaxHighlighting(code.innerText);
-            replaceWith(code, highlighted);
+            if (line.startsWith('```')) {
+                currentCodeblock = [];
+            }
+        }
+    }
+
+    // use proper tags for singular non-Ps
+    const paragraphs = lines.map(text => {
+        if (text.children) return text;
+        if (text.startsWith('## ')) return {tag: 'h1', children: [text.slice(3)]}
+        if (text.startsWith('### ')) return {tag: 'h2', children: [text.slice(4)]}
+        if (text.startsWith('- ')) return {tag: 'li', children: [text.slice(2)]}
+        return {tag: 'p', children: [text]}
+    });
+
+    // recognize inline md
+    const delimeters = [
+        {split: /(\`[^\`]+?\`)/g, into: (t) => {
+            const slicedT = t.slice(1, -1);
+            if (/^{\w+}/.test(slicedT)) {
+                const closingCurlyIndex = slicedT.indexOf('}');
+                const lang = slicedT.slice(1, closingCurlyIndex), code = slicedT.slice(closingCurlyIndex + 1);
+                return SyntaxHighlighting(code, 'light', lang);
+            }
+            return SyntaxHighlighting(slicedT, 'light');
+        }},
+        {split: /(\[[^\]]+?\]\([^\)]+?\))/g, into: (t) => {
+            const slicedT = t.slice(1, -1);
+            const [text, url] = slicedT.split('](');
+            return {tag: 'a', href: url, target: '_blank', children: text}
+        }},
+        {split: /(\*[^\*]+?\*)/g, into: (t) => ({tag: 'i', children: t.slice(1, -1)})}
+    ]
+
+    paragraphs.forEach(p => {
+        if (!p.tag) return;
+        for (let i = p.children.length - 1; i >= 0; i -= 2) {
+            const pChild = p.children[i];
+            delimeters.forEach(d => {
+                const splitPChild = pChild.split(d.split);
+                if (splitPChild.length === 1) return;
+                p.children.splice(i, 1, ...splitPChild.map((t, i) => i % 2 ? d.into(t) : t));
+            })
         }
     });
 
-    Array.from(article.getElementsByTagName('pre')).forEach(pre => {
-        if (pre.dataset.ref) {
-            const example = Example(pre.innerText, SNIPPETS[pre.dataset.ref]);
-            replaceWith(pre, example);
+    // group LI
+    let currentUl = null;
+    for (let i = paragraphs.length - 1; i >= 0; i--) {
+        const p = paragraphs[i];
+        if (p.tag === 'li') {
+            if (currentUl === null)
+                currentUl = {tag: 'ul', children: [p]};
+            else
+                currentUl.children.unshift(p);
         } else {
-            const highlighted = SyntaxHighlighting(pre.innerText, false);
-            replaceWith(pre, highlighted);
+            if (currentUl) {
+                paragraphs.splice(i + 1, currentUl.children.length, currentUl);
+                currentUl = null;
+            }
         }
-    });
+    }
+    return paragraphs;
 }
-    
-    
+
+function Article(article) {
+    return {title: article.title, route: async () => {
+        const response = await fetch(article.mdPath);
+        if (!response.ok) return {};
+        const text = await response.text();
+        return {
+            tag: 'article',
+            id: 'article',
+            children: Markdown(text, article)
+        }
+    }};
+}
+
+export const Body = {
+    tag: 'body',
+    children: [
+        Sidebar,
+        Router(new Proxy({}, {
+            get(o, p, r) {
+                if (p === '/' || p === '') return Article(ARTICLES[0]);
+                const delimeterIndex = p.indexOf('-');
+                const section = p.slice(0, delimeterIndex), article = p.slice(delimeterIndex + 1);
+                return Article(ARTICLES.find(a => a.url === article && a.section === section));
+            }
+        }))
+    ]
+}

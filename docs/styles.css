@@ -43,6 +43,9 @@ body {
     width: 300px;
     background: var(--sidebar);
     flex-shrink: 0;
+    display: flex;
+    justify-content: stretch;
+    flex-direction: column;
 }
 
 #sidebar-upper {
@@ -60,6 +63,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-grow: 1;
+    cursor: pointer;
 }
 
 #logo > span {
@@ -67,7 +71,7 @@ body {
     text-shadow: 0 0 0 #fff;
 }
 
-#sidebar a {
+.index-entry {
     color: inherit;
     text-decoration: none;
 }
@@ -80,18 +84,27 @@ body {
     padding: var(--md);
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
-#sidebar-index a {
+.section-name {
+    opacity: 0.5;
+    font-size: small;
+    font-weight: bold;
+    cursor: default;
+}
+
+.index-entry {
     padding: var(--md);
     border-radius: var(--md);
+    cursor: pointer;
 }
 
-#sidebar-index a:hover {
+.index-entry:hover {
     background: #03000119;
 }
 
-#sidebar-index a:active {
+.index-entry:active {
     background: #03000129;
 }
 
@@ -100,7 +113,7 @@ body {
     display: none;
 }
 
-article {
+#router {
     overflow-y: auto;
     padding: var(--md);
     height: 100dvh;
@@ -130,7 +143,7 @@ ul > li {
 .dark-code > .token.string { color: #bde48c; }
 .dark-code > .token.comment { color: #689f6d; }
 
-.light-code > .token.this { color: hsl(246, 80%, 58%); }
+.light-code > .token.this { color: hsl(335, 67%, 55%); }
 .light-code > .token.function { color: #ea512b; }
 .light-code > .token.symbolic { color: hsl(343, 6%, 17%) }
 .light-code > .token.alphanumeric { color: hsl(335, 68%, 46%); }
@@ -191,10 +204,13 @@ button:active {
     }
 
     #sidebar-upper {
+        height: calc(2rem + 2 * var(--md));
+        flex-grow: 0;
         min-height: 0;
         align-items: center;
         justify-content: space-between;
         padding: var(--md);
+        flex-shrink: 0;
     }
 
     #logo {
@@ -202,7 +218,7 @@ button:active {
     }
 
     #sidebar {
-        height: calc(2em + 2 * var(--md));
+        height: calc(2rem + 2 * var(--md));
         width: 100dvw;
         position: sticky;
         top: 0;
@@ -220,12 +236,12 @@ button:active {
         height: 100dvh;
     }
 
-    #sidebar:has(#chevron-input:checked) + article {
+    #sidebar:has(#chevron-input:checked) + #router {
         flex-shrink: 1;
         padding: 0;
     }
 
-    article {
+    #router {
         transition: height 0.2s, flex-shrink 0.2s, padding 0.2s;
         height: 100%;
     }
@@ -235,7 +251,8 @@ button:active {
     }
 
     #chevron-input:checked ~ #sidebar-index {
-        height: unset;
+        height: 100%;
         padding: var(--md);
+        overflow-y: auto;
     }
 }

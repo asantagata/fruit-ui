@@ -13,94 +13,18 @@
 <body>
     <div id="sidebar"></div>
     <article id="article">
-        <h1>The <i>Functional-Reactivity UI Toolkit</i> (FRUIT)</h1>
-        <h2>What is FRUIT?</h2>
-        <p>FRUIT is a lightweight, zero-dependency UI framework written in JavaScript for JavaScript apps. It uses nested JavaScript objects to represent DOM elements, i.e.,</p>
-        <pre data-ref="writing-in-fruit-is-fun">
-            import { appendChild } from '@fruit-ui/core';
-
-            const Paragraph = {
-                tag: 'p',
-                children: [
-                    'Writing in ',
-                    {tag: 'strong', style: {color: 'blue'}, children: 'FRUIT'},
-                    ' is fun!'
-                ]
-            };
-
-            // to append an element to the DOM
-            appendChild(document.body, Paragraph);
+        <h1>Title</h1>
+        <p>Content</p>
+        <pre data-ref="example">
+            'HelloWorld'
         </pre>
-        <p>FRUIT is powerful, efficient, and feature-packed. In addition to objects representing static elements, users can write stateful, reactive components, i.e.,</p>
-        <pre data-ref="counter">
-            import { appendChild } from '@fruit-ui/core';
-
-            const Counter = {
-                state() {
-                    return {i: 0}; // initialize state
-                },
-                render() {
-                    return {
-                        tag: 'button',
-                        children: `I've been clicked ${this.state.i} time${this.state.i === 1 ? '' : 's'}!`,
-                        on: {
-                            click() {
-                                this.setState.i(this.state.i + 1);
-                            }
-                        }
-                    }
-                }
-            }
-                
-            appendChild(document.body, Counter);
-        </pre>
-        <p>FRUIT's features include:</p>
-        <ul>
-            <li>Intuitive element and component syntax</li>
-            <li>Implicit props-passing between components</li>
-            <li>Preserved, optionally reactive state</li>
-            <li>Smooth, efficient rerendering with support for transitions and animations</li>
-            <li>Keys to preserve state among re-ordered siblings</li>
-            <li>An on-mount listener and handler methods</li>
-            <li>Bindings to elements within components</li>
-        </ul>
-        <p>with all special functional features (state, controlled rerendering, bindings) accessed through the <code>this</code> argument.</p>
-        <h2>Why use FRUIT over other front-end frameworks?</h2>
-        <p>Smaller apps don't always warrant large, complex frameworks, but interfacing with the DOM directly is a hassle. The ability to declare and mutate state reactively is crucial in web apps with any amount of interactivity. Working in FRUIT and vanilla JS means no complex hidden logic to keep track of, no build step, and no separation of languages for your UI and your internal logic.</p>
-
     </article>
 </body>
-<script src="./components.js"></script>
+<script src="./components.js" type="module"></script>
 <script type="module">
     import { replaceWith } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js";
+    import { Body } from "./components.js";
 
-    const SNIPPETS = {
-        "writing-in-fruit-is-fun": {
-            tag: 'p',
-            children: [
-                'Writing in ',
-                {tag: 'strong', style: {color: '#2a68d4'}, children: 'FRUIT'},
-                ' is fun!'
-            ]
-        },
-        "counter": {
-            state() {
-                return {i: 0}; // initialize state
-            },
-            render() {
-                return {
-                    tag: 'button',
-                    children: `I've been clicked ${this.state.i} time${this.state.i === 1 ? '' : 's'}!`,
-                    on: {
-                        click() {
-                            this.setState.i(this.state.i + 1);
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-    initializeArticle(document, replaceWith, SNIPPETS);
+    replaceWith(document.body, Body);
 </script>
 </html>
