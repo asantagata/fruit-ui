@@ -54,13 +54,10 @@
     }
 
     const Content = router.Router({
-        '': () => 'You are now on: home',
-        'about': () => 'You are now on: about',
-        'contact': () => 'You are now on: contact',
-        '*': (name) => `You are on an unknown page called ${name}`
-    }, {
-        '*': 'Router',
-        'about': 'Router - ABOUT page'
+        '': {title: 'Home', route: () => 'You are now on: Home'},
+        'about': {title: 'About', route: () => 'You are now on: About'},
+        'contact': {route: () => 'You are now on: Contact'},
+        '*': {title: 'Uh oh!', route: (page) => `You are now on: ${page}`},
     });
 
     fruit.replaceWith(document.getElementById("div"), {

@@ -10,51 +10,42 @@ function getPage() {
 }
 
 /**
- * Get the correct item for a page.
- * @param {Object.<string, *>} routes - the collection of items.
- * @param {string} page - the page to index the routes.
- * @param {boolean} isFunctional - whether the expected result is a function.
- * @returns {*} the corresponding item.
+ * Get the correct route for a page.
+ * @param {Object.<string, *>} routes - the collection of routes.
+ * @param {string} page - the page name to index the routes.
+ * @returns {object} the corresponding route.
  */
-function getPageItem(routes, page, isFunctional) {
+function getRoute(routes, page) {
     if (routes[page]) return routes[page];
     if (routes[`/${page}`]) return routes[`/${page}`];
     if (routes['*']) return routes['*'];
     if (routes['/*']) return routes['/*'];
-    return isFunctional ? () => undefined : '';
+    return {};
 }
 
 /**
  * A basic router component.
- * @param {Object.<string, () => object>} routes - the collection of routes.
- * @param {Object.<string, string>} [titles] - the collection of titles.
+ * @param {Object.<string, () => {route: object, title?: string}>} routes - the collection of routes.
  * @returns {object} a component.
  */
-function Router(routes, titles) {
+function Router(routes) {
     return {
         render() {
             const page = getPage();
-            const route = getPageItem(routes, page)();
+            const route = getRoute(routes, page);
+            const element = route.route(page);
             return {
-                children: typeof route === 'object' ? {...route, key: page} : route,
+                children: typeof element === 'object' ? {...element, key: page} : element,
                 id: 'router',
                 dataset: { receivePageChanges: true },
                 on: {
                     pagechange() {
                         this.rerender();
-                        if (titles) {
-                            const title = getPageItem(titles, getPage());
-                            if (title)
-                                document.title = title;
-                        }
+                        document.title = getRoute(routes, getPage()).title ?? document.title;
                     },
                     mount() {
                         window.onpopstate = () => broadcastPageChange(getPage());
-                        if (titles) {
-                            const title = getPageItem(titles, getPage());
-                            if (title)
-                                document.title = title;
-                        }
+                        document.title = route.title ?? document.title;
                     }
                 }
             }
