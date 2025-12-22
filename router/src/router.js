@@ -50,6 +50,11 @@ function Router(routes, titles) {
                     },
                     mount() {
                         window.onpopstate = () => broadcastPageChange(getPage());
+                        if (titles) {
+                            const title = getPageItem(titles, getPage());
+                            if (title)
+                                document.title = title;
+                        }
                     }
                 }
             }
