@@ -1,5 +1,4 @@
-// import { Router, navigate } from "https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/router/src/router.js";
-import { Router, navigate } from "../router/src/router.js";
+import { Router, navigate } from "https://cdn.jsdelivr.net/gh/asantagata/fruit-ui/router/src/router.js";
 import { examples } from "./examples.js";
 
 const ARTICLES = [
