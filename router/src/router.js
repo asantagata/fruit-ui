@@ -44,14 +44,22 @@ function Router(routes) {
                 } else {
                     return route.route(page);
                 }
-            })()
+            })();
             return {
                 children: typeof element === 'object' ? {...element, key: page} : element,
                 id: 'router',
                 dataset: { receivePageChanges: true },
                 on: {
                     pagechange() {
-                        this.rerender();
+                        const page = getPage();
+                        const route = getRoute(routes, page);
+                        if (Object.getPrototypeOf(route.route).constructor.name === "AsyncFunction") {
+                            route.route(page).then(v => {
+                                replaceWith(this.element.firstChild, v);
+                            });
+                        } else {
+                            this.rerender();
+                        }
                         document.title = getRoute(routes, getPage()).title ?? document.title;
                     },
                     mount() {
