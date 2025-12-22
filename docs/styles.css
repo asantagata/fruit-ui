@@ -128,10 +128,6 @@ pre {
     margin: 0;
 }
 
-ul > li {
-    margin: 1rem 0;
-}
-
 .dark-code > .token.this { color: #ec71ae; }
 .dark-code > .token.function { color: #f3a58e; }
 .dark-code > .token.symbolic { color: #fff4f2; }

@@ -227,6 +227,7 @@ function Markdown(text, article) {
                 };
                 if (line.startsWith('```{')) {
                     const tag = line.slice(4, -2);
+                    console.log(article, tag);
                     lines.splice(i, currentCodeblock.length + 2, {
                         class: 'example',
                         children: [
