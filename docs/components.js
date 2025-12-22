@@ -296,17 +296,19 @@ function Markdown(text, article) {
         {split: /(\*[^\*]+?\*)/g, into: (t) => ({tag: 'i', children: t.slice(1, -1)})}
     ]
 
-    paragraphs.forEach(p => {
-        if (!p.tag) return;
-        for (let i = p.children.length - 1; i >= 0; i -= 2) {
-            const pChild = p.children[i];
-            delimeters.forEach(d => {
+    for (let pi = 0; pi < paragraphs.length; pi++) {
+        const p = paragraphs[pi];
+        if (!p.tag) continue;
+        for (let di = 0; di < delimeters.length; di++) {
+            const d = delimeters[di];
+            for (let i = p.children.length - 1; i >= 0; i -= 2) {
+                const pChild = p.children[i];
                 const splitPChild = pChild.split(d.split);
-                if (splitPChild.length === 1) return;
+                if (splitPChild.length === 1) continue;
                 p.children.splice(i, 1, ...splitPChild.map((t, i) => i % 2 ? d.into(t) : t));
-            })
+            }
         }
-    });
+    }
 
     // group LI
     let currentUl = null;
