@@ -226,7 +226,7 @@ function Markdown(text, article) {
                     children: SyntaxHighlighting(code)
                 };
                 if (line.startsWith('```{')) {
-                    const tag = line.slice(4, -1);
+                    const tag = line.trim().slice(4, -1);
                     lines.splice(i, currentCodeblock.length + 2, {
                         class: 'example',
                         children: [
