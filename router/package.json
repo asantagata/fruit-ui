@@ -1,0 +1,30 @@
+{
+  "name": "@fruit-ui/router",
+  "version": "1.0.0",
+  "description": "A basic router component for FRUIT",
+  "main": "src/router.js",
+  "homepage": "https://asantagata.github.io/fruit-ui/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "terser .\\src\\router.js -o .\\dist\\router.js"
+  },
+  "keywords": [
+    "fruit",
+    "core",
+    "js",
+    "json",
+    "vanilla",
+    "ui",
+    "dom",
+    "react",
+    "reactive",
+    "router"
+  ],
+  "author": "asantagata",
+  "license": "ISC",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asantagata/fruit-ui.git"
+  }
+}

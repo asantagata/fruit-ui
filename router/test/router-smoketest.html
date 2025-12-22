@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:,">
+    <title>Router</title>
+    <style>
+        .selected {color: blue}
+        li {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body style="background: #ccc">
+    <div id="div"></div>
+</body>
+<script type="module">
+    import * as fruit from '../../core/src/index.js';
+    import * as router from '../src/router.js';
+
+    const Header = {
+        state() {
+            return {
+                page: router.getPage()
+            }
+        },
+        render() {
+            return {
+                tag: 'ul',
+                children: [
+                    {name: 'Home', href: ''},
+                    {name: 'About', href: 'about'},
+                    {name: 'Contact', href: 'contact'},
+                    {name: 'Bwjfbg', href: 'hfjgbsdjf'}
+                ].map(({name, href}) => ({
+                    tag: 'li',
+                    children: name,
+                    class: {selected: href === this.state.page},
+                    on: {
+                        click() {
+                            router.navigate(href);
+                        },
+                    }
+                })),
+                dataset: {receivePageChanges: true},
+                on: {
+                    pagechange(e) {
+                        this.setState.page(e.detail.page);
+                    }
+                }
+            }
+        }
+    }
+
+    const Content = router.Router({
+        '': () => 'You are now on: home',
+        'about': () => 'You are now on: about',
+        'contact': () => 'You are now on: contact',
+        '*': (name) => `You are on an unknown page called ${name}`
+    }, {
+        '*': 'Router',
+        'about': 'Router - ABOUT page'
+    });
+
+    fruit.replaceWith(document.getElementById("div"), {
+        children: [Header, Content]
+    });
+
+</script>
+</html>
