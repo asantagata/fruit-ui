@@ -1,4 +1,6 @@
-const PARAM_NAME = 'page'
+import { replaceWith } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js";
+
+const PARAM_NAME = 'page';
 
 /**
  * Get the current page.
@@ -25,7 +27,7 @@ function getRoute(routes, page) {
 
 /**
  * A basic router component.
- * @param {Object.<string, () => {route: object, title?: string}>} routes - the collection of routes.
+ * @param {Object.<string, {route: () => object, title?: string}>} routes - the collection of routes.
  * @returns {object} a component.
  */
 function Router(routes) {
@@ -33,7 +35,16 @@ function Router(routes) {
         render() {
             const page = getPage();
             const route = getRoute(routes, page);
-            const element = route.route(page);
+            let element = (() => {
+                if (Object.getPrototypeOf(route.route).constructor.name === "AsyncFunction") {
+                    route.route(page).then(v => {
+                        replaceWith(this.element.firstChild, v);
+                    });
+                    return {};
+                } else {
+                    return route.route(page);
+                }
+            })()
             return {
                 children: typeof element === 'object' ? {...element, key: page} : element,
                 id: 'router',
@@ -49,7 +60,8 @@ function Router(routes) {
                     }
                 }
             }
-        }
+        },
+        memo: {page: getPage()}
     }
 }
 
