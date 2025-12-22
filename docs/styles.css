@@ -195,6 +195,7 @@ button:active {
     justify-content: right;
     align-items: center;
     cursor: pointer;
+    min-width: 20%;
 }
 
 #next-button {

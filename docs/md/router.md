@@ -8,4 +8,4 @@ This router provides four components:
 - the `pagechange` event. Elements with `data-receive-page-changes` will receive the `pagechange` event which can be listened for like any other event. This event is broadcast when the `navigate` function is called or forward/back methods are used in the browser. (It is *not*, however, broadcast on page load.) Within the listener, the new route can be accessed using `event.detail.page`.
 - the `getPage` function, which returns the current path.
 
-More thorough ocumentation for FRUIT Router will be available soon.
+Documentation for FRUIT Router will be available soon.
