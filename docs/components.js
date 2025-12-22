@@ -226,8 +226,7 @@ function Markdown(text, article) {
                     children: SyntaxHighlighting(code)
                 };
                 if (line.startsWith('```{')) {
-                    const tag = line.slice(4, -2);
-                    console.log(article, tag);
+                    const tag = line.slice(4, -1);
                     lines.splice(i, currentCodeblock.length + 2, {
                         class: 'example',
                         children: [
@@ -327,7 +326,6 @@ export const Body = {
         Sidebar,
         Router(new Proxy({}, {
             get(o, p, r) {
-                console.log(ARTICLES);
                 if (p === '/' || p === '') return Article(ARTICLES[0]);
                 const delimeterIndex = p.indexOf('-');
                 const section = p.slice(0, delimeterIndex), article = p.slice(delimeterIndex + 1);
