@@ -55,9 +55,11 @@ function Router(routes) {
                         const route = getRoute(routes, page);
                         if (Object.getPrototypeOf(route.route).constructor.name === "AsyncFunction") {
                             route.route(page).then(v => {
+                                this.element.scrollTo(0, 0);
                                 replaceWith(this.element.firstChild, v);
                             });
                         } else {
+                            this.element.scrollTo(0, 0);
                             this.rerender();
                         }
                         document.title = getRoute(routes, getPage()).title ?? document.title;
