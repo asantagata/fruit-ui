@@ -215,6 +215,11 @@ button:active {
     padding: var(--md) 0;
 }
 
+.selected, .selected:hover, .selected:active {
+    background: #f3cfdb;
+    cursor: default;
+}
+
 @media (max-aspect-ratio: 2/3) or (max-width: 600px) {
     body {
         flex-direction: column;

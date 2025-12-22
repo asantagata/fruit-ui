@@ -1,4 +1,4 @@
-import { Router, navigate } from "./router.js"; // change to npm link when available
+import { Router, navigate, getPage } from "./router.js"; // change to npm link when available
 import { examples } from "./examples.js";
 
 const ARTICLES = [
@@ -19,46 +19,59 @@ function getArticleRoute(article) {
 }
 
 const Sidebar = {
-    id: 'sidebar',
-    children: [
-        {
-            tag: 'input',
-            type: 'checkbox',
-            id: 'chevron-input',
-            autocomplete: 'off'
-        },
-        {
-            id: 'sidebar-upper',
+    render() {
+        const page = getPage();
+        return {
+            id: 'sidebar',
+            dataset: {receivePageChanges: true},
+            on: {pagechange() {this.rerender()}},
             children: [
                 {
-                    id: 'chevron',
-                    tag: 'label',
-                    for: 'chevron-input',
-                    innerHTML: CHEVRON_RIGHT
+                    tag: 'input',
+                    type: 'checkbox',
+                    id: 'chevron-input',
+                    autocomplete: 'off'
                 },
                 {
-                    id: 'logo',
-                    children: [{tag: 'span', children: '🥭'}, ' FRUIT'],
-                    on: {click() {navigate('')}}
+                    id: 'sidebar-upper',
+                    children: [
+                        {
+                            id: 'chevron',
+                            tag: 'label',
+                            for: 'chevron-input',
+                            innerHTML: CHEVRON_RIGHT
+                        },
+                        {
+                            id: 'logo',
+                            children: [{tag: 'span', children: '🥭'}, ' FRUIT'],
+                            on: {click() {navigate('')}}
+                        }
+                    ]
+                },
+                {
+                    id: 'sidebar-index',
+                    children: Object.entries(Object.groupBy(ARTICLES, a => a.section)).flatMap(([sectionName, entries]) => ([
+                            {class: 'section-name', children: sectionName.toUpperCase()},
+                            ...entries.map(entry => {
+                                const fullRouteName = getArticleRoute(entry);
+                                return {
+                                    class: {
+                                        'index-entry': true,
+                                        'selected': fullRouteName === page
+                                    },
+                                    children: entry.title,
+                                    on: {click() {
+                                        navigate(fullRouteName);
+                                        document.getElementById('chevron-input').checked = false;
+                                    }}
+                                };
+                            })
+                        ]
+                    ))
                 }
             ]
-        },
-        {
-            id: 'sidebar-index',
-            children: Object.entries(Object.groupBy(ARTICLES, a => a.section)).flatMap(([sectionName, entries]) => ([
-                    {class: 'section-name', children: sectionName.toUpperCase()},
-                    ...entries.map(entry => ({
-                        class: 'index-entry',
-                        children: entry.title,
-                        on: {click() {
-                            navigate(getArticleRoute(entry));
-                            document.getElementById('chevron-input').checked = false;
-                        }}
-                    }))
-                ]
-            ))
         }
-    ]
+    }
 }
 
 const TokenTypes = {
