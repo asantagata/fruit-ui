@@ -649,6 +649,21 @@ function rerenderChildren(element, template, onMounts) {
                 childEl.remove();
             }
         }
+    } else if (tmChildrenArray.length === 0 && elChildrenArray.length > 0) {
+        // delete all children
+        for (let i = elChildrenArray.length - 1; i >= 0; i--) {
+            let childEl = elChildrenArray[i];
+            if ('componentId' in childEl.dataset) delete thisRecord[childEl.dataset.componentId];
+            if ('binding' in childEl.dataset) delete this.bindings[childEl.dataset.binding];
+            childEl.remove();
+        }
+    } else if (tmChildrenArray.length > 0 && elChildrenArray.length === 0) {
+        // create all children
+        for (let i = 0; i < tmChildrenArray.length; i++) {
+            let childTm = tmChildrenArray[i];
+            const newChild = createElementFromElementable.call(this, childTm, onMounts);
+            element.appendChild(newChild);
+        }
     }
 
     // handle bindings

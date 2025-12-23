@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:,">
+    <title>Hi</title>
+    <style>
+        @keyframes fade {
+            0% {opacity: 0}
+            100% {opacity: 1}
+        }
+
+        #parent {
+            display: flex;
+            gap: 20px;
+            flex-direction: column;
+        }
+
+        #parent > div {
+            animation: fade 0.5s ease;
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        #parent > div > * {
+            width: 150px;
+        }
+    </style>
+</head>
+<body style="background: #ccc">
+</body>
+<script type="module">
+    import * as fruit from '../src/index.js';
+
+    // [text, text] to [text, element, text]
+    fruit.appendChild(document.body, {
+        state() { return { children: ['hello', 'world'] } },
+        render() {
+            return {
+                children: this.state.children,
+                on: {click() {this.setState.children(['helloo', {children: 'DIV'}, 'worldd'])}}
+            }
+        }
+    });
+
+    // [element] to [text]
+    fruit.appendChild(document.body, {
+        state() { return { children: {children: 'DIV'} } },
+        render() {
+            return {
+                children: this.state.children,
+                on: {click() {this.setState.children('helloo')}}
+            }
+        }
+    });
+
+    // [text] to [element]
+    fruit.appendChild(document.body, {
+        state() { return { children: 'helloo' } },
+        render() {
+            return {
+                children: this.state.children,
+                on: {click() {this.setState.children({children: 'DIV'})}}
+            }
+        }
+    });
+</script>
+</html>
