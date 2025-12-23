@@ -75,6 +75,8 @@ Inversely, you can deliberately use keys to trick FRUIT into deleting and re-cre
 
 ### No keys
 
+(You'll find this example does not work. That's deliberate! See the explanation below.)
+
 ```{without}
 function Item(name, makeFirst, makeLast) {
     return {

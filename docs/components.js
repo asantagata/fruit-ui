@@ -74,7 +74,7 @@ const Sidebar = {
                         {
                             id: 'logo',
                             children: [{tag: 'span', children: '🥭'}, ' FRUIT'],
-                            on: {click() {navigate('')}}
+                            on: {click() {navigate('core-index')}}
                         }
                     ]
                 },
@@ -87,7 +87,7 @@ const Sidebar = {
                                 return {
                                     class: {
                                         'index-entry': true,
-                                        'selected': fullRouteName === page
+                                        'selected': fullRouteName === page || (fullRouteName === 'core-index' && page === '')
                                     },
                                     children: {...Markdown(entry.title)[0], tag: 'span'},
                                     on: {click() {
