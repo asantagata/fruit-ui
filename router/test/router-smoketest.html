@@ -55,7 +55,11 @@
 
     const Content = router.Router({
         '': {title: 'Home', route: () => 'You are now on: Home'},
-        'about': {title: 'About', route: () => 'You are now on: About'},
+        'about': {title: 'About', route: async () => {
+            let x = await fetch('/');
+            console.log(x);
+            return 'You are now on: About';
+        }},
         'contact': {route: () => 'You are now on: Contact'},
         '*': {title: 'Uh oh!', route: (page) => `You are now on: ${page}`},
     });

@@ -1,4 +1,4 @@
-import { replaceWith } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js";
+import { appendChild } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js";
 
 const PARAM_NAME = 'page';
 
@@ -28,9 +28,10 @@ function getRoute(routes, page) {
 /**
  * A basic router component.
  * @param {Object.<string, {route: () => object, title?: string}>} routes - the collection of routes.
+ * @param {boolean} scroll - whether to scroll to (0, 0) on page change.
  * @returns {object} a component.
  */
-function Router(routes) {
+function Router(routes, scroll = true) {
     return {
         render() {
             const page = getPage();
@@ -38,7 +39,8 @@ function Router(routes) {
             let element = (() => {
                 if (Object.getPrototypeOf(route.route).constructor.name === "AsyncFunction") {
                     route.route(page).then(v => {
-                        replaceWith(this.element.firstChild, v);
+                        this.element.replaceChildren();
+                        appendChild(this.element, v);
                     });
                     return {};
                 } else {
@@ -55,11 +57,14 @@ function Router(routes) {
                         const route = getRoute(routes, page);
                         if (Object.getPrototypeOf(route.route).constructor.name === "AsyncFunction") {
                             route.route(page).then(v => {
-                                this.element.scrollTo(0, 0);
-                                replaceWith(this.element.firstChild, v);
+                                if (scroll)
+                                    this.element.scrollTo(0, 0);
+                                this.element.replaceChildren();
+                                appendChild(this.element, v);
                             });
                         } else {
-                            this.element.scrollTo(0, 0);
+                            if (scroll)
+                                this.element.scrollTo(0, 0);
                             this.rerender();
                         }
                         document.title = getRoute(routes, getPage()).title ?? document.title;
