@@ -14,18 +14,20 @@ Non-contextual functions are declared with an arrow (`=>`). They might or might 
 
 ```
 render() {
-    children: this.state.users.map(user => ({
-        children: [
-            {tag: 'b', children: user.name},
-            ': ',
+    return {
+        children: this.state.users.map(user => ({
+            children: [
+                {tag: 'b', children: user.name},
+                ': ',
 
-            // since we used an arrow function above,
-            // we can reference this.state inside
+                // since we used an arrow function above,
+                // we can reference this.state inside
 
-            this.state.boats
-                .find(boat => boat.ownerId === user.id).location
-        ]
-    }))
+                this.state.boats
+                    .find(boat => boat.ownerId === user.id).location
+            ]
+        }))
+    };
 }
 ```
 
@@ -73,21 +75,23 @@ This is the only `this` property not unique to components, and the only one whic
 
 ```
 render() {
-    class: 'parent',
-    children: {
-        class: 'child',
-        on: { 
-            click() {
-                // this.element is the top-level element,
-                // in this case .parent
-                console.log(this.element);
+    return {
+        class: 'parent',
+        children: {
+            class: 'child',
+            on: { 
+                click() {
+                    // this.element is the top-level element,
+                    // in this case .parent
+                    console.log(this.element);
 
-                // this.target is the calling element,
-                // in this case .child
-                console.log(this.child);
-            } 
+                    // this.target is the calling element,
+                    // in this case .child
+                    console.log(this.child);
+                } 
+            }
         }
-    }
+    };
 }
 ```
 

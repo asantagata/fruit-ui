@@ -21,7 +21,7 @@ The canonical example of a component is the `Counter`, seen here:
                 }
             }
         }
-    }
+    };
 }
 ```
 
@@ -48,7 +48,7 @@ render() {
                 console.log(ref); 
             }
         }
-    }
+    };
 }
 ```
 
@@ -101,7 +101,7 @@ const Record = (user) => ({
                 {tag: 'p', children: `Name: ${user.name}`},
                 {tag: 'p', children: `Last rendered: ${Date.now()}`},
             ]
-        }
+        };
     },
     memo: user
 });
@@ -135,7 +135,7 @@ const Record = (user) => ({
                     children: this.state.users.map(user => Record(user))
                 }
             ]
-        }
+        };
     }
 }
 ```
