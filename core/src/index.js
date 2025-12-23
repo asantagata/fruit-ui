@@ -116,7 +116,7 @@ function createThis(component) {
         state: {},
         setState: {},
         bindings: {},
-        memo: structuredClone(component.memo)
+        memo: deepClone(component.memo)
     };
 }
 
@@ -473,6 +473,21 @@ function deepEqual(a, b) {
 }
 
 /**
+ * Deep clones a value.
+ * @param {*} value - the value. 
+ * @returns {*} - the clone.
+ */
+function deepClone(value) {
+    if (typeof value === 'object') {
+        if (value === null) return null;
+        if (Array.isArray(value)) return value.map(deepClone);
+        if (value instanceof Set) return new Set([...value].map(deepClone));
+        if (value instanceof Map) return new Map(value.entries().map(([k, v]) => [deepClone(k), deepClone(v)]));
+        return Object.fromEntries(Object.entries(value).map(([k,v]) => [k, deepClone(v)]));
+    } else return value;
+}
+
+/**
  * Returns true iff a component has a memo (functional or otherwise) and it is satisfied.
  * @param {This} this - the This.
  * @param {Component} component - the Component.
@@ -483,7 +498,7 @@ function evaluateMemo(component) {
         // for functional memos: rerender if returns false
         if (typeof component.memo === 'function') return !!component.memo.call(this);
         const equal = deepEqual(component.memo, this.memo);
-        this.memo = structuredClone(component.memo);
+        this.memo = deepClone(component.memo);
         return equal;
     } else return false;
 }
