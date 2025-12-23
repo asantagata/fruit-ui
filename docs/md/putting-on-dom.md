@@ -36,4 +36,4 @@ const Counter = {
 appendChild(document.body, Counter);
 ```
 
-You can use any of these methods to put your FRUIT components and templates on the DOM.
+*This concludes your formal training with *`[[pink]]@fruit-ui/core`*. Use producers to minimize code reuse, key your lists, and have fun!*
