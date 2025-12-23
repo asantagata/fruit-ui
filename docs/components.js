@@ -23,7 +23,13 @@ const ARTICLES = [
         }
     },
     {title: 'Superpowered `this`', url: 'this', mdPath: './md/this.md', section: 'core'},
-    {title: 'Keys', url: 'keys', mdPath: './md/keys.md', section: 'core'},
+    {title: 'Keys', url: 'keys', mdPath: './md/keys.md', section: 'core',
+        results: {
+            counter: examples['keys-resetable-counter'],
+            without: examples['keys-reorder'](false),
+            with: examples['keys-reorder'](true),
+        }
+    },
     {title: 'Bindings', url: 'bindings', mdPath: './md/bindings.md', section: 'core'},
     {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', mdPath: './md/putting-on-dom.md', section: 'core'},
 

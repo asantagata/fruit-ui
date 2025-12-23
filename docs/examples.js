@@ -111,5 +111,95 @@ export const examples = {
                 }
             }
         }
-    })()
+    })(),
+    'keys-resetable-counter': (() => {
+        const Counter = {
+            state() {
+                return {i: 0}; // initialize state
+            },
+            render() {
+                return {
+                    tag: 'button',
+                    children: `I've been clicked ${this.state.i} time${this.state.i === 1 ? '' : 's'}!`,
+                    on: {
+                        click() {
+                            this.setState.i(this.state.i + 1);
+                        }
+                    }
+                }
+            }
+        };
+
+        return {
+            state() {
+                return {key: 0}
+            },
+            render() {
+                return {
+                    style: {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 'var(--md)'
+                    },
+                    children: [
+                        {...Counter, key: `${this.state.key}`},
+                        {
+                            tag: 'button',
+                            children: 'Reset',
+                            on: {
+                                click() {
+                                    this.setState.key(this.state.key + 1);
+                                }
+                            },
+                            key: 'reset'
+                        }
+                    ]
+                }
+            }
+        }
+    })(),
+    'keys-reorder': (include) => {
+        function Item(name, makeFirst, makeLast) {
+            return {
+                state() {return {name}},
+                render() {
+                    return {
+                        class: 'keys-demo-list-item',
+                        children: [
+                            `props name: ${name}, state name: ${this.state.name}`,
+                            {
+                                children: [
+                                    {
+                                        tag: 'button',
+                                        children: 'make me first',
+                                        on: {click() { makeFirst() }}
+                                    },
+                                    {
+                                        tag: 'button',
+                                        children: 'make me last',
+                                        on: {click() { makeLast() }}
+                                    }
+                                ]
+                            }
+                        ]
+                    };
+                },
+                ...(include ? {key: name} : {})
+            }
+        }
+
+        return {
+            state() { return { list: ['Ape', 'Bomb', 'Chin', 'Duck', 'Ego'] }; },
+            render() {
+                return {
+                    class: 'keys-demo-list',
+                    children: this.state.list.map(name => Item(
+                        name,
+                        () => this.setState.list([name, ...this.state.list.filter(n => n !== name)]),
+                        () => this.setState.list([...this.state.list.filter(n => n !== name), name]),
+                    ))
+                };
+            }
+        }
+    }
 };

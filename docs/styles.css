@@ -260,17 +260,22 @@ button:active {
     border-radius: 50%;
 }
 
-.memo-demo, .memo-demo > div {
+.memo-demo, .memo-demo > div, .keys-demo-list {
     display: flex;
     flex-direction: column;
     gap: var(--md);
 }
 
-.memo-demo .record, input {
+.memo-demo .record, input, .keys-demo-list-item {
     background: var(--back);
     padding: var(--md);
     border-radius: var(--md);
     border: 2px solid #ff659b20;
+}
+
+.keys-demo-list-item > div {
+    display: flex;
+    gap: var(--md);
 }
 
 input {
