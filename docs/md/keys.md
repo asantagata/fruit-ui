@@ -127,7 +127,7 @@ function Item(name, makeFirst, makeLast) {
 }
 ```
 
-You might notice that the "props name" and "state name" start to differ and certain buttons stop working. Since listeners are not re-evaluated, the listener on each button becomes stale, referring to the same name as the "props" name. If "Abe" is moved from first to last, for instance, then the first card's listeners will still be "move Abe to last place," even though the card's props name now reads "Bomb." This is problematic and means our re-orderable list is very unstable.
+You might notice that the "props name" and "state name" start to differ and certain buttons stop working. Since listeners are not re-evaluated, the listener on each button becomes stale, referring to the same name as the "props" name. If "Ape" is moved from first to last, for instance, then the first card's listeners will still be "move Ape to last place," even though the card's props name now reads "Bomb." This is problematic and means our re-orderable list is very unstable.
 
 ### With keys
 

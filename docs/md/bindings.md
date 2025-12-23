@@ -36,7 +36,7 @@ In terms of bindings:
 - `[[green]]li` can access `[[green]]ul`, `[[blue]]SpecialLI`, and itself, and can be accessed by `[[green]]ul`, `[[green]]Listicle`, and itself.
 - `[[orange]]fieldset` can only access itself, and can only be accessed by `[[orange]]FieldsetContainer` and itself.
 
-That is: everything can access everything else in its same color (except the top-most component, which can be accessed with the `this.element` and `this.rerender()` methods instead), and everything can be accessed by everything in the color of the branch pointing to it.
+That is: everything can access everything else in its same color (except the top-most component, which can be accessed with the `this.element` and `this.rerender()` properties instead), and everything can be accessed by everything in the color of the branch pointing to it.
 
 ### Using bindings
 

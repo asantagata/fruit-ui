@@ -57,7 +57,7 @@ This is a maintained reference to the top-level `HTMLElement` of the component. 
 
 ### `this.rerender()`
 
-This function starts an immediate rerender on the component, starting from `this.element`. Rerenders are discussed in @[Components](core-components) If you are using `this.rerender()` in a listener, it is advisable for it to be the last operation in the listener.
+This function starts an immediate rerender on the component, starting from `this.element`. You can learn more about rerendering @[here](core-components#rerendering). If you are using `this.rerender()` in a listener, it is advisable for it to be the last operation in the listener.
 
 ### `this.state`
 
