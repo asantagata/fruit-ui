@@ -450,7 +450,6 @@ function rerenderElementFromTemplate(element, template, onMounts) {
  * @returns {boolean} whether they are equal.
  */
 function deepEqual(a, b) {
-    if (a === b) return true;
     if (typeof a !== typeof b) return false;
     if (typeof a === 'function') return true;
     if (typeof a === 'object' && a !== null) {
@@ -468,9 +467,9 @@ function deepEqual(a, b) {
         } else {
             const keysA = Object.keys(a), keysB = Object.keys(b);
             if (keysA.length !== keysB.length) return false;
-            return keysB.every(keyB => keyB in a && deepEqual(keysA[keyB], keysB[keyB]));
+            return keysB.every(keyB => keyB in a && deepEqual(a[keyB], b[keyB]));
         }
-    } else return false;
+    } else return (a === b);
 }
 
 /**
