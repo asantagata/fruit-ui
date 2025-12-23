@@ -201,5 +201,72 @@ export const examples = {
                 };
             }
         }
-    }
+    },
+    'bindings-example': (() => {
+        const Component = {
+            render() {
+                return {
+                    class: 'keys-demo-list-item',
+                    style: {color: 'black'},
+                    children: 'Component text'
+                }
+            }
+        }
+
+        return {
+            render() {
+                return {
+                    class: 'keys-demo-list',
+                    children: [
+                        {
+                            children: 'Child text',
+                            class: 'keys-demo-list-item',
+                            style: {color: 'black'},
+                            binding: 'my-child'
+                        },
+                        {
+                            ...Component,
+                            binding: 'my-component'
+                        },
+                        {
+                            tag: 'button',
+                            children: 'Make child blue',
+                            on: {
+                                click() {
+                                    this.bindings['my-child'].element.style.color = 'rgb(42, 104, 212)';
+                                }
+                            }
+                        },
+                        {
+                            tag: 'button',
+                            children: 'Make component blue',
+                            on: {
+                                click() {
+                                    this.bindings['my-component'].element.style.color = 'rgb(42, 104, 212)';
+                                }
+                            }
+                        },
+                        {
+                            tag: 'button',
+                            children: 'Reset component',
+                            on: {
+                                click() {
+                                    this.bindings['my-component'].rerender();
+                                }
+                            }
+                        },
+                        {
+                            tag: 'button',
+                            children: 'Reset all',
+                            on: {
+                                click() {
+                                    this.rerender();
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    })()
 };

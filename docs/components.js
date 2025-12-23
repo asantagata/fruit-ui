@@ -30,7 +30,11 @@ const ARTICLES = [
             with: examples['keys-reorder'](true),
         }
     },
-    {title: 'Bindings', url: 'bindings', mdPath: './md/bindings.md', section: 'core'},
+    {title: 'Bindings', url: 'bindings', mdPath: './md/bindings.md', section: 'core', 
+        results: {
+            example: examples['bindings-example']
+        }
+    },
     {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', mdPath: './md/putting-on-dom.md', section: 'core'},
 
     {title: 'FRUIT Router', url: 'index', mdPath: './md/router.md', section: 'router'}
@@ -227,6 +231,40 @@ function JSSyntaxHighlighting(code, mode) {
     };
 }
 
+function TreeSyntaxHighlighting(code) {
+    const colors = {
+        pink: TokenTypes.CTRLFLOW_KEYWORD,
+        orange: 'blue',
+        yellow: TokenTypes.SYMBOLIC,
+        green: 'green',
+        blue: 'orange',
+        pale: TokenTypes.OBJECT,
+    }
+    
+    const lines = code.split('\n').map(l => [...l.matchAll(/([├─│└ ]*)(\w+)\/([\w\+]+);(\w+)/g)]).flatMap(([match]) => {
+        const [_,branch,name,branchColor,nameColor] = match;
+        if (branchColor.indexOf('+') > 0) {
+            const [branch1, branch2] = branch.split('   ');
+            const [branch1Color, branch2Color] = branchColor.split('+');
+            return [
+                {tag: 'span', class: `token ${colors[branch1Color]}`, children: branch1},
+                {tag: 'span', class: `token ${colors[branch2Color]}`, children: `   ${branch2}`},
+                {tag: 'span', class: `token ${colors[nameColor]}`, children: `${name}\n`},
+            ]
+        }
+        return [
+            {tag: 'span', class: `token ${colors[branchColor]}`, children: branch},
+            {tag: 'span', class: `token ${colors[nameColor]}`, children: `${name}\n`},
+        ]
+    });
+
+    return {
+        tag: 'code',
+        class: `dark-code`,
+        children: lines
+    };
+}
+
 function SyntaxHighlighting(code, mode = 'dark', lang = 'js') {
     switch (lang) {
         case 'shell': {
@@ -239,8 +277,9 @@ function SyntaxHighlighting(code, mode = 'dark', lang = 'js') {
                     ' ',
                     {tag: 'span', class: 'token alphanumeric', children: words.slice(1).join(' ')}
                 ]
-            }
+            };
         }
+        case 'tree': return TreeSyntaxHighlighting(code);
         case 'js': return JSSyntaxHighlighting(code, mode);
     }
 }
@@ -255,21 +294,29 @@ function Markdown(text, article) {
         if (currentCodeblock !== null) {
             if (line.startsWith('```')) {
                 const code = currentCodeblock.join('\n');
-                const pre = {
-                    tag: 'pre',
-                    children: SyntaxHighlighting(code)
-                };
                 if (line.startsWith('```{')) {
                     const tag = line.trim().slice(4, -1);
                     lines.splice(i, currentCodeblock.length + 2, {
                         class: 'example',
                         children: [
-                            pre,
+                            {
+                                tag: 'pre',
+                                children: SyntaxHighlighting(code)
+                            },
                             {class: 'resultbox', children: article.results[tag]}
                         ]
                     });
+                } else if (line.startsWith('```[')) {
+                    const lang = line.trim().slice(4, -1);
+                    lines.splice(i, currentCodeblock.length + 2, {
+                        tag: 'pre',
+                        children: SyntaxHighlighting(code, 'dark', lang)
+                    })
                 } else {
-                    lines.splice(i, currentCodeblock.length + 2, pre);
+                    lines.splice(i, currentCodeblock.length + 2, {
+                        tag: 'pre',
+                        children: SyntaxHighlighting(code)
+                    });
                 }
                 currentCodeblock = null;
             } else {
@@ -300,6 +347,11 @@ function Markdown(text, article) {
                 const closingCurlyIndex = slicedT.indexOf('}');
                 const lang = slicedT.slice(1, closingCurlyIndex), code = slicedT.slice(closingCurlyIndex + 1);
                 return SyntaxHighlighting(code, 'light', lang);
+            } else if (/^\[\[\w+\]\]/.test(slicedT)) {
+                const closingBracketsIndex = slicedT.indexOf(']]');
+                const lang = slicedT.slice(2, closingBracketsIndex); 
+                const code = slicedT.slice(closingBracketsIndex + 2);
+                return {tag: 'code', class: 'light-code', children: {tag: 'span', class: `token ${lang}`, children: code}};
             }
             return SyntaxHighlighting(slicedT, 'light');
         }},

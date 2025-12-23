@@ -159,17 +159,23 @@ pre {
 .dark-code > .token.object { color: #f5cf78; }
 .dark-code > .token.string { color: #bde48c; }
 .dark-code > .token.comment { color: #689f6d; }
+.dark-code > .token.blue { color: rgb(129, 191, 223); }
+.dark-code > .token.orange { color: hsl(13, 90%, 74%); }
+.dark-code > .token.green { color: rgb(178, 235, 147); }
 
 .light-code > .token.this { color: hsl(335, 85%, 60%); }
-.light-code > .token.function { color: #e16720; }
+.light-code > .token.function, .light-code > .token.blue { color: #e16720; }
 .light-code > .token.symbolic { color: hsl(343, 6%, 17%) }
-.light-code > .token.alphanumeric { color: hsl(335, 68%, 46%); }
-.light-code > .token.ctrlflow { color: hsl(210, 70%, 47%); }
+.light-code > .token.alphanumeric, .light-code > .token.pink { color: hsl(335, 68%, 46%); }
+.light-code > .token.ctrlflow, .light-code > .token.orange { color: hsl(210, 70%, 47%); }
 .light-code > .token.declare { color: hsl(0, 70%, 36%); }
 .light-code > .token.number { color: hsl(340, 93%, 27%); }
 .light-code > .token.object { color: hsl(34, 94%, 40%); }
 .light-code > .token.string { color: hsl(82, 63%, 33%); }
 .light-code > .token.comment { color: hsl(150, 27%, 31%); }
+
+ /* { color: rgb(252, 190, 173); } */
+.light-code > .token.green { color: rgb(88, 148, 55); }
 
 .example {
     display: grid;
@@ -276,6 +282,10 @@ button:active {
 .keys-demo-list-item > div {
     display: flex;
     gap: var(--md);
+}
+
+.keys-demo-list-item { 
+    transition: color 0.2s ease-in-out;
 }
 
 input {
