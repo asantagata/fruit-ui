@@ -116,7 +116,7 @@ function createThis(component) {
         state: {},
         setState: {},
         bindings: {},
-        memo: component.memo
+        memo: structuredClone(component.memo)
     };
 }
 
@@ -450,6 +450,7 @@ function rerenderElementFromTemplate(element, template, onMounts) {
  * @returns {boolean} whether they are equal.
  */
 function deepEqual(a, b) {
+    if (a === b) return true;
     if (typeof a !== typeof b) return false;
     if (typeof a === 'function') return true;
     if (typeof a === 'object' && a !== null) {
@@ -469,7 +470,7 @@ function deepEqual(a, b) {
             if (keysA.length !== keysB.length) return false;
             return keysB.every(keyB => keyB in a && deepEqual(keysA[keyB], keysB[keyB]));
         }
-    } else return a === b;
+    } else return false;
 }
 
 /**
@@ -482,7 +483,10 @@ function evaluateMemo(component) {
     if (component.memo && this.memo) {
         // for functional memos: rerender if returns false
         if (typeof component.memo === 'function') return !!component.memo.call(this);
-        return deepEqual(component.memo, this.memo);
+        const equal = deepEqual(component.memo, this.memo);
+        this.memo = structuredClone(component.memo);
+        console.log(this.memo);
+        return equal;
     } else return false;
 }
 
