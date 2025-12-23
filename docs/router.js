@@ -1,4 +1,4 @@
-import { replaceWith } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@latest/src/index.js";
+import { replaceWith } from "https://cdn.jsdelivr.net/npm/@fruit-ui/core@1.2.6/src/index.js"; // fix this
 
 const PARAM_NAME = 'page';
 

@@ -12,6 +12,10 @@ h3 code, h3 code > * {
     font-size: medium;
 }
 
+h1 code, h1 code > * {
+    font-size: x-large;
+}
+
 #next-button h3 code, #sidebar code {
     background: hsla(321, 18%, 50%, 0.099);
     display: inline;

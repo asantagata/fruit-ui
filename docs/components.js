@@ -1,5 +1,5 @@
-// import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-ui/router@latest/src/router.js";
-import { Router, navigate, getPage } from "../router/src/router.js"; // fix this
+import { Router, navigate, getPage } from "./router.js";
+// import { Router, navigate, getPage } from "../router/src/router.js"; // fix this
 import { examples } from "./examples.js";
 
 const ARTICLES = [
