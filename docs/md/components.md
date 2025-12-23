@@ -27,6 +27,8 @@ The canonical example of a component is the `Counter`, seen here:
 
 By calling `this.setState.i` in the click listener, it is possible to dynamically alter the component's content without engaging in direct DOM manipulation (i.e. by changing the text node's `textContent` or the button's `innerHTML`.)
 
+While this component consists of one template (the `<button>`) and a text node, it is common for a component to contain many children, which may be templates or even other components. However, the root of the subtree defined in `render()` *must* be a template.
+
 ## Rerendering
 
 *Rerendering* is the act of updating a component's display and content to reflect changes in state. Assorted notes on rerendering:
@@ -74,7 +76,9 @@ The following is a more thorough guide to components.
 
 ### The `render()` property
 
-`render()` is the only mandatory property for a component. `render()` is a function returns a template (see @[Templates](core-templates)). This is the "recipe" for the component; it instructs FRUIT on how to display the component, not just initially, but every time it needs to be rerendered, such as on a `this.setState` call. `render()` is re-evaluated when the component is rerendered.
+`render()` is the only mandatory property for a component. `render()` is a function returns a template (see @[Templates](core-templates)). This is significant: `render()` cannot return another component (i.e. `render() { return { render() { ... } } }`) and cannot return a `string`.
+
+`render()` is the "recipe" for the component; it instructs FRUIT on how to display the component, not just initially, but every time it needs to be rerendered, such as on a `this.setState` call. `render()` is re-evaluated when the component is rerendered, so you can use mechanisms like the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator), [.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map), and even [IIFEs](https://developer.mozilla.org/en-US/docs/Glossary/IIFE) to achieve functional, state-dependent results.
 
 ### The `state()` property
 
@@ -136,9 +140,9 @@ const Record = (user) => ({
 }
 ```
 
-`memo()` allows you to define custom logic for halting rerendering. `memo()` can use `this`, similar to the `state()` and `render()`. If `memo()` returns a [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) value, the component will not rerender; otherwise, it will.
+`memo()` allows you to define custom logic for halting rerendering. `memo()` can use `this`, similar to the `state()` and `render()` functions. If `memo()` returns a [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) value, the component will not rerender; otherwise, it will.
 
-Neither `memo` nor `memo()` stop a component from rerendering itself; they only stop propagated rerender signals from ancestors. To stop a component from rerendering itself, you have to just *not* call `this.rerender()` or `this.setState`.
+Neither `memo` nor `memo()` stop a component from rerendering itself; they only stop propagated rerender signals from ancestors. To stop a component from rerendering itself directly, you have to just *not* call `this.rerender()` or `this.setState` within it.
 
 ### The `key` property
 
