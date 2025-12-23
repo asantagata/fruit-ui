@@ -485,7 +485,6 @@ function evaluateMemo(component) {
         if (typeof component.memo === 'function') return !!component.memo.call(this);
         const equal = deepEqual(component.memo, this.memo);
         this.memo = structuredClone(component.memo);
-        console.log(this.memo);
         return equal;
     } else return false;
 }
