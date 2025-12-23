@@ -1,0 +1,165 @@
+# Templates
+
+Templates are the fundamental building-block of FRUIT. They are JavaScript objects representing elements in HTML. Any valid HTML can be written in FRUIT using templates.
+
+```{demo}
+{
+    children: [
+        {tag: 'p', children: 'FRUIT is'},
+        {tag: 'ul', children: [
+            {tag: 'li', children: 'simple,'},
+            {
+                tag: 'li', 
+                style: {color: 'pink', fontFamily: 'serif'}, 
+                children: 'stylized,'
+            },
+            {
+                tag: 'li', children: {
+                    tag: 'button', 
+                    on: {click() {alert('See?')}}, 
+                    children: 'interactive,'
+                }
+            },
+            {
+                tag: 'li', 
+                children: {
+                    tag: 'b', 
+                    children: {
+                        tag: 'u', 
+                        children: {
+                            tag: 'i',
+                            children: 'nested,'
+                        }
+                    }
+                }
+            },
+            {
+                tag: 'li', children: [
+                    'and ', RainbowText('modular'), '.'
+                ]
+            }
+        ]}
+    ]
+}
+```
+
+## Syntax
+
+Templates are JavaScript objects representing HTML elements. Although FRUIT was implemented in vanilla JavaScript with JSDoc type annotations, here's a TypeScript-based signature for FRUIT templates (it's more readable this way):
+
+```
+type Template = Partial<({
+    class: string | string[] | Record<string, any>,
+    style: CSSStyleDeclaration,
+    dataset: Record<string, string>,
+    on: Record<string, (() => void) | ((event: Event) => void)>,
+    children: Template | Component | string | (Template | Component | string)[],
+    cloneFrom: HTMLElement,
+} & Record<string, string>)>
+```
+
+The following is a more thorough guide to templates.
+
+### No properties required
+
+As you may have noticed, `Template` type definition above is wrapped in the `Partial<...>` type function. This means that, while templates *can* have any of several properties, there are 0 *required* properties. The "default" template, `{}`, corresponds to `<div></div>`.
+
+### The `tag` property
+
+The `tag` property defines the element's tag. It must be a `string`, e.g., `'div'` or `'p'` or `'fieldset'`. As in HTML, it is case-insensitive. If omitted, `'div'` is used.
+
+### The `class` property
+
+The `class` property defines the element's class. This can be one of three types:
+- a string, which is treated as the element's class name (e.g., `{class: 'medium beige'}` corresponds to `<div class="medium beige"></div>`);
+- an array of strings, which are treated as the element's class list (e.g., `{class: ['large', 'green']}` corresponds to `<div class="large green"></div>`);
+- or an object, where each `{key: value}` pair consists of a class name and a condition which decides whether that class name will be used (e.g., `{class: {red: true, small: Math.random() < 0.5}}` corresponds to either `<div class="red small"></div>` or `<div class="red"></div>`.) While more abstruse in its syntax, this makes it far easier to use conditional class names. As with any JavaScript object attribute, you can reference classes that are not [valid JavaScript identifiers](https://developer.mozilla.org/en-US/docs/Glossary/Identifier) by wrapping them in quotes, e.g., `{class: {'light-blue': true}}`.
+
+### The `id` property
+
+The `id` property is a `string` defining the element's ID.
+
+### The `style` property
+
+The `style` property defines the element's style. It must be a `CSSStyleDeclaration`, which is the kind of object returned by `HTMLElement.style` and is indexable by camel-case versions of most CSS property names. `{style: {backgroundColor: 'green', borderTopLeftRadius: '20px'}}` corresponds to `<div style="background-color: green; border-top-left-radius: 20px"></div>`.
+
+### The `dataset` property
+
+The `dataset` property defines the element's [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset). It must be a `Record<string, string>`. As always when working with element datasets, keys are automatically converted from camel-case to `data`-prefixed kebab-case and vice-versa, e.g., `{dataset: {myName: 'asantagata', userID: 'user 5'}}` corresponds to `<div data-my-name="asantagata" data-user-i-d="user 5"></div>`.
+
+### The `on` property
+
+The `on` property defines the element's listeners. It must be a `Record<string, (() => void) | ((event: Event) => void)>`. The name of the function is taken as the type of the listener. (Despite this type signature, you must use named methods rather than anonymous (arrow-based) functions for listeners. This allows `this`-related logic to be consistent.)
+
+An element can have listeners for any valid [DOM event](https://www.w3schools.com/jsref/dom_obj_event.asp).
+
+```{on}
+{
+    tag: 'button',
+    children: 'Click or right-click me!',
+    on: {
+        click() { alert('You clicked!') },
+        contextmenu() { alert('You right-clicked!') }
+    }
+}
+```
+
+Listeners always have access to the `this.target` property. Inside of components, they also have access to other `this` properties. See @[Components](core-components) and @[Superpowered "this"](core-this) to learn more.
+
+### The `children` property
+
+The `children` property defines the element's children. This can be a `string`, a `Template`, a `Component`, or an `Array` of these types. If it is a `string`, `Templte` or `Component`, the given value is the element's only child. If it is an `Array`, the children appear in the given order. In either case, `string` entries correspond to text nodes.
+
+### The `innerHTML` property
+
+The `innerHTML` property defines the element's innerHTML as a `string`. This overrides the `children` property, if it exists. The string is not validated or tampered with by FRUIT.
+
+### The `cloneFrom` property
+
+The `cloneFrom` property replaces the element with a clone of a given `HTMLElement`. This overrides all other properties and is generally not suitable for most use cases.
+
+### The `key` property
+
+Templates can be given a key by assigning their `key` property. The key must be a string. To learn more, see @[keys](core-keys).
+
+### The `binding` property
+
+Templates can be given a binding by assigning their `binding` property. The binding must be a string. To learn more, see @[bindings](core-bindings).
+
+### Other properties
+
+All other properties on HTML elements, such as `<img>`'s `src`, `<a>`'s `href` or `<input>`'s `type` can be set with the name of the prop. As with any JavaScript object attribute, you can reference properties that are not [valid JavaScript identifiers](https://developer.mozilla.org/en-US/docs/Glossary/Identifier) by wrapping them in quotes, e.g., `{tag: 'button', 'aria-role': 'Close'}`.
+
+## Template Producers & Props
+
+FRUIT does not offer an inherent mechanism for templates to pass "[props](https://react.dev/learn/passing-props-to-a-component)" to one another. Instead, this can be done by creating *template producers*, or functions which return a template.
+
+```{props}
+function Circle(color) {
+    return {
+        style: {
+            borderRadius: '50%',
+            background: color
+        }
+    }
+}
+
+// ...
+
+{
+    style: {display: 'flex', gap: '1rem'},
+    children: [
+        Circle('#d35176'),
+        Circle('#ffc861'), 
+        Circle('#689f6d')
+    ]
+}
+```
+
+You can pass any type as a "prop" in this way, including other templates or components.
+
+While these parallel the notion of *components* from other front-end frameworks, they are not stateful or reactive, unlike FRUIT's @[Components](core-components).
+
+## Putting Templates On The DOM
+
+You can use any of several FRUIT methods such as `appendChild` and `create` to put FRUIT templates on the DOM. See @[Putting FRUIT on the DOM](core-putting-on-dom) to learn more.

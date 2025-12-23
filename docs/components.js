@@ -1,4 +1,4 @@
-import { Router, navigate, getPage } from "./router.js"; // change to npm link when available
+import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-ui/router@latest/src/router.js";
 import { examples } from "./examples.js";
 
 const ARTICLES = [
@@ -9,6 +9,19 @@ const ARTICLES = [
         }
     },
     {title: 'Getting Started', url: 'getting-started', mdPath: './md/getting-started.md', section: 'core'},
+    {title: 'Templates', url: 'templates', mdPath: './md/templates.md', section: 'core',
+        results: {
+            demo: examples['templates-demo'],
+            on: examples['templates-on'],
+            props: examples['templates-props']
+        }
+    },
+    {title: 'Components', url: 'components', mdPath: './md/components.md', section: 'core'},
+    {title: 'Superpowered `this`', url: 'this', mdPath: './md/this.md', section: 'core'},
+    {title: 'Keys', url: 'keys', mdPath: './md/keys.md', section: 'core'},
+    {title: 'Bindings', url: 'bindings', mdPath: './md/bindings.md', section: 'core'},
+    {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', mdPath: './md/putting-on-dom.md', section: 'core'},
+
     {title: 'FRUIT Router', url: 'index', mdPath: './md/router.md', section: 'router'}
 ];
 
@@ -59,7 +72,7 @@ const Sidebar = {
                                         'index-entry': true,
                                         'selected': fullRouteName === page
                                     },
-                                    children: entry.title,
+                                    children: {...Markdown(entry.title)[0], tag: 'span'},
                                     on: {click() {
                                         navigate(fullRouteName);
                                         document.getElementById('chevron-input').checked = false;
@@ -126,8 +139,8 @@ function tokenize(code) {
 }
 
 function JSSyntaxHighlighting(code, mode) {
-    const declareKeywords = new Set(['const', 'function', 'let', 'new', 'document']);
-    const ctrlflowKeywords = new Set(['break', 'do', 'while', 'for', 'in', 'of', 'if', 'else', 'return', 'import', 'from', 'as']);
+    const declareKeywords = new Set(['const', 'function', 'let', 'new', 'document', 'type']);
+    const ctrlflowKeywords = new Set(['break', 'do', 'while', 'for', 'in', 'of', 'if', 'else', 'return', 'import', 'from', 'as', 'string', 'any', 'void', 'true', 'false']);
     const tokens = tokenize(code);
     let currentType = null;
     let insideStringBreak = false;
@@ -189,21 +202,11 @@ function JSSyntaxHighlighting(code, mode) {
                 token.type = TokenTypes.THIS;
             }
         }
-    }
 
-    let mIndent = Number.POSITIVE_INFINITY;
-    for (let i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
-        if (token.type === TokenTypes.WHITESPACE && (i === 0 || tokens[i - 1].type === TokenTypes.NEWLINE)) {
-            mIndent = Math.min(mIndent, token.text.length);
-        }
-    }
-
-    for (let i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
-        if (token.type === TokenTypes.WHITESPACE && (i === 0 || tokens[i - 1].type === TokenTypes.NEWLINE)) {
-            token.text = token.text.substring(mIndent + 1);
-        }
+        if (i > 1 && token.type === TokenTypes.NUMBER && tokens[i - 1].type === TokenTypes.SYMBOLIC && tokens[i - 2].type === TokenTypes.NUMBER && tokens[i - 1].text === '.')
+            tokens[i - 1].type = TokenTypes.NUMBER;
+        if (i > 1 && token.type === TokenTypes.ALPHANUMERIC && tokens[i - 1].type === TokenTypes.SYMBOLIC && tokens[i - 2].type === TokenTypes.ALPHANUMERIC && tokens[i - 1].text === '-')
+            tokens[i - 1].type = TokenTypes.ALPHANUMERIC;
     }
 
     return {
@@ -232,7 +235,7 @@ function SyntaxHighlighting(code, mode = 'dark', lang = 'js') {
 }
 
 function Markdown(text, article) {
-    const lines = text.split('\n').filter(t => t.trim().length > 0);
+    const lines = text.split('\n');
 
     // recognize codeblocks
     let currentCodeblock = null;
@@ -269,10 +272,11 @@ function Markdown(text, article) {
     }
 
     // use proper tags for singular non-Ps
-    const paragraphs = lines.map(text => {
+    const paragraphs = lines.filter(t => t.children || t.trim().length > 0).map(text => {
         if (text.children) return text;
-        if (text.startsWith('## ')) return {tag: 'h1', children: [text.slice(3)]}
-        if (text.startsWith('### ')) return {tag: 'h2', children: [text.slice(4)]}
+        if (text.startsWith('# ')) return {tag: 'h1', children: [text.slice(2)]}
+        if (text.startsWith('## ')) return {tag: 'h2', children: [text.slice(3)]}
+        if (text.startsWith('### ')) return {tag: 'h3', children: [text.slice(4)]}
         if (text.startsWith('- ')) return {tag: 'li', children: [text.slice(2)]}
         return {tag: 'p', children: [text]}
     });
@@ -287,6 +291,11 @@ function Markdown(text, article) {
                 return SyntaxHighlighting(code, 'light', lang);
             }
             return SyntaxHighlighting(slicedT, 'light');
+        }},
+        {split: /(@\[[^\]]+?\]\([^\)]+?\))/g, into: (t) => {
+            const slicedT = t.slice(2, -1);
+            const [text, url] = slicedT.split('](');
+            return {tag: 'span', class: 'a', on: {click() {navigate(url)}}, target: '_blank', children: text}
         }},
         {split: /(\[[^\]]+?\]\([^\)]+?\))/g, into: (t) => {
             const slicedT = t.slice(1, -1);
@@ -339,7 +348,7 @@ function Next(article) {
             children: [
                 {children: [
                     {tag: 'p', children: 'NEXT UP'},
-                    {tag: 'h3', children: next.title},
+                    {tag: 'h3', children: {...Markdown(next.title)[0], tag: 'span'}},
                     {tag: 'p', children: `FRUIT/${next.section.toUpperCase()}`},
                 ]},
                 {innerHTML: CHEVRON_RIGHT}
@@ -352,7 +361,7 @@ function Next(article) {
 }
 
 function Article(article) {
-    return {title: article.title, route: async () => {
+    return {title: `${article.title} | FRUIT Docs`, route: async () => {
         const response = await fetch(article.mdPath);
         if (!response.ok) return {};
         const text = await response.text();

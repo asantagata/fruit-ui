@@ -1,4 +1,4 @@
-## FRUIT Router
+# FRUIT Router
 
 This is a basic router component for [FRUIT](https://www.npmjs.com/package/@fruit-ui/core). It uses search params for routes, which minimizes server-side requirements. Its basic principles can be extended to RegExp-matched routes and could be applied to create a path-based router.
 

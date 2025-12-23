@@ -1,6 +1,6 @@
-## The *Functional-Reactivity UI Toolkit* (FRUIT)
+# The *Functional-Reactivity UI Toolkit* (FRUIT)
 
-### What is FRUIT?
+## What is FRUIT?
 
 FRUIT is a lightweight, zero-dependency UI framework written in JavaScript for JavaScript apps. It uses nested JavaScript objects to represent DOM elements, i.e.,
 
@@ -57,6 +57,6 @@ FRUIT's features include:
 
 with all special functional features (state, controlled rerendering, bindings) accessed through the `this` argument.
 
-### Why use FRUIT over other front-end frameworks?
+## Why use FRUIT over other front-end frameworks?
 
 Smaller apps don't always warrant large, complex frameworks, but interfacing with the DOM directly is a hassle. The ability to declare and mutate state reactively is crucial in web apps with any amount of interactivity. Working in FRUIT and vanilla JS means no complex hidden logic to keep track of, no build step, and no separation of languages for your UI and your internal logic.

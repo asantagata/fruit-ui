@@ -8,6 +8,17 @@ code, code > * {
     font-size: small;
 }
 
+h3 code, h3 code > * {
+    font-size: medium;
+}
+
+#next-button h3 code, #sidebar code {
+    background: hsla(321, 18%, 50%, 0.099);
+    display: inline;
+    padding: var(--xs) var(--sm);
+    border-radius: var(--sm);
+}
+
 :root {
     --pink: #ff659b;
     --yellow: #ffc861;
@@ -18,16 +29,21 @@ code, code > * {
     --xs: 0.1rem;
     --accent: #d35176;
     --bold-opacity: 0.5;
+    --code-bg: #1d191b;
 }
 
-a { color: var(--accent) }
+a, .a { color: var(--accent) }
+
+.a {
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 code:not(pre > code) {
     background: var(--sidebar);
     display: inline;
     padding: var(--xs) var(--sm);
     border-radius: var(--sm);
-    
 }
 
 body {
@@ -122,7 +138,7 @@ body {
 }
 
 pre { 
-    background: #1d191b; 
+    background: var(--code-bg); 
     padding: var(--md);
     border-radius: var(--md);
     overflow: auto;
@@ -141,7 +157,7 @@ pre {
 .dark-code > .token.comment { color: #689f6d; }
 
 .light-code > .token.this { color: hsl(335, 67%, 55%); }
-.light-code > .token.function { color: #ea512b; }
+.light-code > .token.function { color: #b84877; }
 .light-code > .token.symbolic { color: hsl(343, 6%, 17%) }
 .light-code > .token.alphanumeric { color: hsl(335, 68%, 46%); }
 .light-code > .token.ctrlflow { color: hsl(210, 70%, 47%); }
@@ -220,6 +236,13 @@ button:active {
     cursor: default;
 }
 
+.rainbow-text {
+    background: var(--code-bg);
+    display: inline;
+    padding: var(--xs) var(--sm);
+    border-radius: var(--sm);
+}
+
 @media (max-aspect-ratio: 2/3) or (max-width: 600px) {
     body {
         flex-direction: column;
@@ -287,4 +310,17 @@ button:active {
         padding: var(--md);
         overflow-y: auto;
     }
+}
+
+.props-demo {
+    display: flex;
+    padding: var(--md);
+    gap: var(--md);
+    border-radius: var(--md);
+}
+
+.props-demo > div {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
 }
