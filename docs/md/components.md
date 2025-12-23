@@ -90,7 +90,7 @@ By default, FRUIT rerenders entire subtrees. That is to say: if component `Paren
 
 `memo` can be any *non-function* value that can be deep-cloned, i.e., any non-circular combination of objects, iterables (arrays, sets, maps) and primitives. Functions may appear within `memo` but `memo` may not itself be a function (for this use case). When a component with `memo` is made to rerender as part of an ancestor's rerender, FRUIT will compare the old and new values of `memo` with a deep equality check. If the values are found to be the same, FRUIT will not rerender the component. 
 
-One common use case for this is to compare the props (discussed in @[Templates](core-templates)) of a component producer. Here, the `Record` component updates only when its prop updates. Try editing the input to change the third user's name; only one user's "last rendered" timestamp will change..
+One common use case for this is to compare the props (discussed in @[Templates](core-templates)) of a component producer. Here, the `Record` component updates only when its prop updates. Try editing the input to change the third user's name; only one user's "last rendered" timestamp will change.
 
 ```{memo}
 const Record = (user) => ({
