@@ -45,7 +45,7 @@ Templates are the fundamental building-block of FRUIT. They are JavaScript objec
 
 ## Syntax
 
-Templates are JavaScript objects representing HTML elements. Although FRUIT was implemented in vanilla JavaScript with JSDoc type annotations, here's a TypeScript-based signature for FRUIT templates (it's more readable this way):
+Templates are JavaScript objects representing HTML elements. Although FRUIT was implemented in vanilla JavaScript with JSDoc type annotations, here is a TypeScript-based signature for FRUIT templates (it's more readable this way):
 
 ```
 type Template = Partial<({
@@ -130,9 +130,9 @@ Templates can be given a binding by assigning their `binding` property. The bind
 
 All other properties on HTML elements, such as `<img>`'s `src`, `<a>`'s `href` or `<input>`'s `type` can be set with the name of the prop. As with any JavaScript object attribute, you can reference properties that are not [valid JavaScript identifiers](https://developer.mozilla.org/en-US/docs/Glossary/Identifier) by wrapping them in quotes, e.g., `{tag: 'button', 'aria-role': 'Close'}`.
 
-## Template Producers & Props
+## Template producers & props
 
-FRUIT does not offer an inherent mechanism for templates to pass "[props](https://react.dev/learn/passing-props-to-a-component)" to one another. Instead, this can be done by creating *template producers*, or functions which return a template.
+FRUIT does not offer its own mechanism for templates to pass "[props](https://react.dev/learn/passing-props-to-a-component)" to one another. Instead, this can be done by creating *template producers*, or functions which return a template.
 
 ```{props}
 function Circle(color) {
@@ -160,6 +160,6 @@ You can pass any type as a "prop" in this way, including other templates or comp
 
 While these parallel the notion of *components* from other front-end frameworks, they are not stateful or reactive, unlike FRUIT's @[Components](core-components).
 
-## Putting Templates On The DOM
+## Putting templates on the DOM
 
 You can use any of several FRUIT methods such as `appendChild` and `create` to put FRUIT templates on the DOM. See @[Putting FRUIT on the DOM](core-putting-on-dom) to learn more.

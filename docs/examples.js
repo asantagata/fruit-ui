@@ -60,5 +60,56 @@ export const examples = {
         children: ['#d35176', '#ffc861', '#689f6d'].map(color => ({
             style: {background: color}
         }))
-    }
+    },
+    'components-memo': (() => {
+        function Record(user) {
+            return {
+                render() {
+                    return {
+                        class: 'record',
+                        children: [
+                            {tag: 'p', children: `ID: ${user.id}`},
+                            {tag: 'p', children: `Name: ${user.name}`},
+                            {tag: 'p', children: `Last rendered: ${Date.now()}`},
+                        ]
+                    }
+                },
+                memo: user
+            }
+        }
+
+        // ...
+
+        return {
+            state() {
+                return { 
+                    users: [
+                        {id: 1, name: 'Alice'},
+                        {id: 2, name: 'Bob'},
+                        {id: 3, name: 'Parlie'}
+                    ]
+                }
+            },
+            render() {
+                return {
+                    class: 'memo-demo',
+                    children: [
+                        {
+                            tag: 'input',
+                            value: this.state.users[2].name,
+                            on: {
+                                input(e) {
+                                    this.state.users[2].name = e.target.value;
+                                    this.rerender();
+                                }
+                            }
+                        },
+                        {
+                            children: this.state.users.map(user => Record(user))
+                        }
+                    ]
+                }
+            }
+        }
+    })()
 };
