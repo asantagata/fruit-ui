@@ -146,11 +146,11 @@ Neither `memo` nor `memo()` stop a component from rerendering itself; they only 
 
 ### The `key` property
 
-Components can be given a key by assigning their `key` property. The key must be a string. To learn more, see @[keys](core-keys).
+Components can be given a key by assigning their `key` property. The key must be a string. The key is passed to the top-level element of the component. To learn more, see @[keys](core-keys).
 
 ### The `binding` property
 
-Components can be given a binding by assigning their `binding` property. The binding must be a string. To learn more, see @[bindings](core-bindings).
+Components can be given a binding by assigning their `binding` property. The binding must be a string. The binding is passed to the top-level element of the component. To learn more, see @[bindings](core-bindings).
 
 ## Component producers
 
