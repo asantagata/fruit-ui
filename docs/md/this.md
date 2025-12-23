@@ -10,7 +10,7 @@ In JavaScript, the `this` keyword is a property accessible in functions, usually
 
 JavaScript has two significant kinds of functions; we'll call these *non-contextual* and *contextual.*
 
-Non-contextual functions are declared with an arrow (`=>`). They might or might not use curly braces; if they do not, they must consist of only one statement whose value is returned. These functions *cannot* have their own `this`. Instead, they must absorb the `this` of their calling context. Sometimes, this is very useful; when using `.map` or `.filter`, for instance, we'll often want to use the same `this` inside the callback as outside. That is:
+Non-contextual functions are declared with an arrow (`=>`). They might or might not use curly braces; if they do not, they must consist of one expression whose value is returned. These functions *cannot* have their own `this`. Instead, they must absorb the `this` of their calling context. Sometimes, this is very useful; when using `.map` or `.filter`, for instance, we'll often want to use the same `this` inside the callback as outside. That is:
 
 ```
 render() {
@@ -31,10 +31,12 @@ render() {
 }
 ```
 
+Note the syntax on the third line. Curly braces in JavaScript are used for defining both scopes and object literals. In order to disambiguate between these, you can use the syntax `() => ({})` to define an unscoped function that returns an object.
+
 Scoped functions, on the other hand, *always* have their own `this`. There are a few ways to declare these:
 - the standard `function` keyword, as in `function MyFunction() { ... }`;
 - the anonymous `function` keyword, as in `const MyFunction = function() { ... }`;
-- and the object method definition, as in `const MyObject { MyFunction() { ... } }`.
+- and the object method definition, as in `const MyObject = { MyFunction() { ... } }`.
 For most use cases (`render()`, `memo()`, listeners in `on`), we use the third syntax, which allows FRUIT to bind these as needed. (At present, all event callbacks have names that are valid JavaScript identifiers, meaning they can be used as function names in `on`; if this ever changes (or in the case of [custom events](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) with invalid names), the syntax `{on: {'hyphenated-event': function(e) { ... }}}` can be used synonymously.)
 
 ### Passing `this`
