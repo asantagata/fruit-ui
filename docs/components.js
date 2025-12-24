@@ -171,7 +171,7 @@ function JSSyntaxHighlighting(code, mode) {
             currentType = TokenTypes.COMMENT;
         else if (currentType === TokenTypes.COMMENT && token.type === TokenTypes.NEWLINE)
             currentType = null;
-        else if (currentType !== TokenTypes.COMMENT && token.type === TokenTypes.QUOTE) {
+        else if (currentType !== TokenTypes.COMMENT && token.type === TokenTypes.QUOTE && token.text.length === 1) {
             if (insideStringBreak) {
                 if (currentType === TokenTypes.STRING && lastOpeningQuoteInsideStringBreak === token.text) {
                     currentType = null;

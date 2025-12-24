@@ -12,6 +12,10 @@ h3 code, h3 code > * {
     font-size: medium;
 }
 
+h2 code, h2 code > * {
+    font-size: large;
+}
+
 h1 code, h1 code > * {
     font-size: x-large;
 }
