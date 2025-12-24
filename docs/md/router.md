@@ -4,7 +4,7 @@ This is a basic router component for [FRUIT](https://www.npmjs.com/package/@frui
 
 This router provides four significant pieces:
 
-## The Router component
+## The `Router()` component
 
 This is a component producer which takes in three props. 
 - `routes` is an object mapping from paths (strings) to `Route`s. `Route`s are objects with a `route` method (which generates the template/component for that route, and is allowed to be asynchronous.) You can also have a 'wildcard' (*) route whose `route` method can take in the name of the current route as a prop. Each `Route` can also have an attribute `title` which will set the window's title for that path.
@@ -34,7 +34,7 @@ const router = router.Router(
 );
 ```
 
-## The `navigate` function
+## The `navigate()` function
 
 The `navigate` function takes in a path and navigates to that path. Navigation is done with `history.pushState` so it is compatible with the browser forward/back methods. You can navigate to hashed paths (i.e., `navigate('/about#contact')`) to automatically scroll to a certain element ID, depending on scroll settings.
 
@@ -44,5 +44,5 @@ Elements with `data-receive-page-changes` enabled will receive the `pagechange` 
 
 This attribute can be given using `dataset: {receivePageChanges: true}`.
 
-## The `getPage` function
+## The `getPage()` function
 This returns the current path. Note that hashes and opening slashes are automatically removed, so after `navigate('/about#contact')`, a `getPage()` call will return `'about'`.

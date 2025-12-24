@@ -1,4 +1,4 @@
-# Getting Started
+# Getting started
 
 Setting up FRUIT is quick and easy. You do not need to make a new project to use FRUIT; you can easily integrate it alongside existing web projects. FRUIT makes it easy to embellish static HTML pages with stateful, reactive functionality.
 
