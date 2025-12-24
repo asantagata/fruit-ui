@@ -1,4 +1,5 @@
-import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-ui/router@latest/src/router.js";
+// import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-ui/router@latest/src/router.js";
+import { Router, navigate, getPage } from "./router.js"; // fix once jsdelivr is up to date
 import { examples } from "./examples.js";
 
 const ARTICLES = [
@@ -286,6 +287,10 @@ function SyntaxHighlighting(code, mode = 'dark', lang = 'js') {
     }
 }
 
+function idify(str) {
+    return str.toLowerCase().replace(/[^\w -]/g, '').replace(/ /g, '-');
+}
+
 function Markdown(text, article) {
     const lines = text.split('\n');
 
@@ -334,9 +339,9 @@ function Markdown(text, article) {
     // use proper tags for singular non-Ps
     const paragraphs = lines.filter(t => t.children || t.trim().length > 0).map(text => {
         if (text.children) return text;
-        if (text.startsWith('# ')) return {tag: 'h1', children: [text.slice(2)]}
-        if (text.startsWith('## ')) return {tag: 'h2', children: [text.slice(3)]}
-        if (text.startsWith('### ')) return {tag: 'h3', children: [text.slice(4)]}
+        if (text.startsWith('# ')) return {tag: 'h1', id: idify(text.slice(2)), children: [text.slice(2)]}
+        if (text.startsWith('## ')) return {tag: 'h2', id: idify(text.slice(3)), children: [text.slice(3)]}
+        if (text.startsWith('### ')) return {tag: 'h3', id: idify(text.slice(4)), children: [text.slice(4)]}
         if (text.startsWith('- ')) return {tag: 'li', children: [text.slice(2)]}
         return {tag: 'p', children: [text]}
     });
@@ -449,6 +454,6 @@ export const Body = {
                 const section = p.slice(0, delimeterIndex), article = p.slice(delimeterIndex + 1);
                 return Article(ARTICLES.find(a => a.url === article && a.section === section));
             }
-        }))
+        }), {hashed: {behavior: 'smooth'}, unhashed: {behavior: 'smooth', to: {x: 0, y: 0}}})
     ]
 }

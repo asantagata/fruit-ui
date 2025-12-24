@@ -5,68 +5,116 @@
     <link rel="icon" href="data:,">
     <title>Router</title>
     <style>
-        .selected {color: blue}
-        li {
+        body {
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .header {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            background: rgb(218, 142, 172);
+            display: flex;
+            height: 2rem;
+        }
+
+        #router {padding-top: 2rem}
+
+        .header > * {
             cursor: pointer;
-            text-decoration: underline;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .header > *:not(.selected):hover { background: rgb(244, 203, 219) }
+
+        .header > .selected {
+            background: white;
+            cursor: default;
+        }
+
+        #router > div > div {
+            height: 100dvh;
         }
     </style>
 </head>
-<body style="background: #ccc">
+<body>
     <div id="div"></div>
 </body>
 <script type="module">
     import * as fruit from '../../core/src/index.js';
     import * as router from '../src/router.js';
 
+    const Home = () => ({
+        children: [
+            {children: 'Welcome to the home page.'},
+            {children: 'This page is tall.'},
+            {children: 'Is it not?', id: 'question'},
+        ]
+    });
+
+    const About = () => ({
+        children: [
+            {children: `About us - we're normal. Nothing to worry about there!`},
+            {
+                children: 'This text is a link to the bottom of the "package" page.',
+                on: {click() {router.navigate('/packag#async-anchor')}}
+            },
+        ]
+    });
+
+    const Package = async () => {
+        const pack = await fetch('../package.json').then(f => f.text());
+        return {
+            children: [
+                {children: 'Here is package.json, loaded asynchronously:' + pack},
+                {
+                    children: 'This text is a link to the bottom of the "home" page.',
+                    on: {click() {router.navigate('/#question')}}
+                },
+                {},
+                {children: "Async anchor", id: 'async-anchor'},
+                {}
+            ]
+        }
+    }
+
+    const Routes = [
+        {route: Home, title: 'Home', path: ''},
+        {route: About, title: 'About', path: 'about'},
+        {route: Package, title: 'Package', path: 'package'},
+    ];
+
     const Header = {
         state() {
-            return {
-                page: router.getPage()
-            }
+            return { page: router.getPage() };
         },
         render() {
             return {
-                tag: 'ul',
-                children: [
-                    {name: 'Home', href: ''},
-                    {name: 'About', href: 'about'},
-                    {name: 'Contact', href: 'contact'},
-                    {name: 'Bwjfbg', href: 'hfjgbsdjf'}
-                ].map(({name, href}) => ({
-                    tag: 'li',
-                    children: name,
-                    class: {selected: href === this.state.page},
-                    on: {
-                        click() {
-                            router.navigate(href);
-                        },
-                    }
+                class: 'header',
+                children: Routes.map(r => ({
+                    children: r.title,
+                    class: {selected: this.state.page === r.path},
+                    on: {click() {
+                        router.navigate(r.path);
+                    }}
                 })),
-                dataset: {receivePageChanges: true},
-                on: {
-                    pagechange(e) {
-                        this.setState.page(e.detail.page);
-                    }
-                }
-            }
+                dataset: { receivePageChanges: true },
+                on: {pagechange(e) {this.setState.page(e.detail.page)}}
+            };
         }
     }
 
     const Content = router.Router({
-        '': {title: 'Home', route: () => 'You are now on: Home'},
-        'about': {title: 'About', route: async () => {
-            let x = await fetch('/');
-            console.log(x);
-            return 'You are now on: About';
-        }},
-        'contact': {route: () => 'You are now on: Contact'},
-        '*': {title: 'Uh oh!', route: (page) => `You are now on: ${page}`},
-    });
+        '': Routes[0],
+        'about': Routes[1],
+        'package': Routes[2],
+        '*': Routes[0]
+    }, {hashed: {behavior: 'smooth'}, unhashed: {behavior: 'smooth'}});
 
     fruit.replaceWith(document.getElementById("div"), {
         children: [Header, Content]
     });
-
 </script>
 </html>
