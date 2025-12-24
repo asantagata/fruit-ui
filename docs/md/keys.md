@@ -144,4 +144,4 @@ function Item(name, makeFirst, makeLast) {
 }
 ```
 
-Keys make it easy to make dynamic lists in FRUIT.
+This same logic makes it easy to have lists with insertions, deletions, and updates to individual items. Keys make it easy to make dynamic element lists in FRUIT.
