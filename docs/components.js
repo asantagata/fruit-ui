@@ -2,45 +2,45 @@ import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-u
 import { examples } from "./examples.js";
 
 const ARTICLES = [
-    {title: 'FRUIT', url: 'index', mdPath: './md/index.md', section: 'core', 
+    {title: 'FRUIT', url: 'index', section: 'core', 
         results: {
             fun: examples['core-fun'],
             counter: examples['core-counter']
         }
     },
-    {title: 'Getting started', url: 'getting-started', mdPath: './md/getting-started.md', section: 'core'},
-    {title: 'Templates', url: 'templates', mdPath: './md/templates.md', section: 'core',
+    {title: 'Getting started', url: 'getting-started', section: 'core'},
+    {title: 'Templates', url: 'templates', section: 'core',
         results: {
             demo: examples['templates-demo'],
             on: examples['templates-on'],
             props: examples['templates-props']
         }
     },
-    {title: 'Components', url: 'components', mdPath: './md/components.md', section: 'core', 
+    {title: 'Components', url: 'components', section: 'core', 
         results: {
             counter: examples['core-counter'],
             memo: examples['components-memo']
         }
     },
-    {title: 'Superpowered `this`', url: 'this', mdPath: './md/this.md', section: 'core'},
-    {title: 'Keys', url: 'keys', mdPath: './md/keys.md', section: 'core',
+    {title: 'Superpowered `this`', url: 'this', section: 'core'},
+    {title: 'Keys', url: 'keys', section: 'core',
         results: {
             counter: examples['keys-resetable-counter'],
             without: examples['keys-reorder'](false),
             with: examples['keys-reorder'](true),
         }
     },
-    {title: 'Bindings', url: 'bindings', mdPath: './md/bindings.md', section: 'core', 
+    {title: 'Bindings', url: 'bindings', section: 'core', 
         results: {
             example: examples['bindings-example']
         }
     },
-    {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', mdPath: './md/putting-on-dom.md', section: 'core', results: {
+    {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', section: 'core', results: {
         counter: examples['core-counter'],
     }},
 
-    {title: 'FRUIT Router', url: 'index', mdPath: './md/router.md', section: 'router'},
-    {title: 'Getting started with FRUIT Router', url: 'getting-started', mdPath: './md/router-getting-started.md', section: 'router'}
+    {title: 'FRUIT Router', url: 'index', section: 'router'},
+    {title: 'Getting started with FRUIT Router', url: 'getting-started', section: 'router'}
 ];
 
 const CHEVRON_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>`;
@@ -432,7 +432,7 @@ function Next(article) {
 
 function Article(article) {
     return {title: `${article.title} | FRUIT Docs`, route: async () => {
-        const response = await fetch(article.mdPath);
+        const response = await fetch(`./md/${article.section}/${article.url}.md`);
         if (!response.ok) return {};
         const text = await response.text();
         return {
