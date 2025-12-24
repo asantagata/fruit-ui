@@ -1,5 +1,4 @@
-// import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-ui/router@latest/src/router.js";
-import { Router, navigate, getPage } from "./router.js"; // fix once jsdelivr is up to date
+import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-ui/router@latest/src/router.js";
 import { examples } from "./examples.js";
 
 const ARTICLES = [
