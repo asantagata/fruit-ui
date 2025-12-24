@@ -78,18 +78,18 @@ This is the only `this` property not unique to components, and the only one whic
 ```
 render() {
     return {
-        class: 'parent',
+        id: 'parent',
         children: {
-            class: 'child',
+            id: 'child',
             on: { 
                 click() {
                     // this.element is the top-level element,
-                    // in this case .parent
+                    // in this case #parent
                     console.log(this.element);
 
                     // this.target is the calling element,
-                    // in this case .child
-                    console.log(this.child);
+                    // in this case #child
+                    console.log(this.target);
                 } 
             }
         }
