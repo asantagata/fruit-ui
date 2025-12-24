@@ -225,7 +225,7 @@ button:active {
     justify-content: right;
     align-items: center;
     cursor: pointer;
-    min-width: 20%;
+    padding-left: calc(6 * var(--md));
 }
 
 #next-button {
