@@ -100,6 +100,7 @@ function Router(routes, scrollOptions = {hashed: {}, unhashed: {to: {x: 0, y: 0}
                         document.title = getRoute(routes, getPage()).title ?? document.title;
                     },
                     mount() {
+                        document.title = getRoute(routes, getPage()).title ?? document.title;
                         window.onpopstate = () => broadcastPageChange(getPage());
                         const page = getPage();
                         const route = getRoute(routes, page);
