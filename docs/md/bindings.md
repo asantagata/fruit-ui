@@ -85,11 +85,11 @@ function Button(text, listener) {
                 ),
                 Button(
                     'Reset component',
-                    this.bindings['my-component'].rerender
+                    () => this.bindings['my-component'].rerender()
                 ),
                 Button(
                     'Reset all',
-                    this.rerender
+                    () => this.rerender()
                 )
             ]
         };
