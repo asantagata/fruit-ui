@@ -130,11 +130,12 @@ function navigate(page) {
         hash = page.slice(page.indexOf('#'));
         page = page.slice(0, page.indexOf('#'));
     }
-    if (page === getPage()) return;
+    let pageChanged = !(page === getPage() && hash === window.location.hash);
     const url = new URL(window.location.href);
     url.searchParams.set(PARAM_NAME, page);
     url.hash = hash;
-    window.history.pushState({}, '', url);
+    if (pageChanged)
+        window.history.pushState({}, '', url);
     broadcastPageChange(page);
 }
 
