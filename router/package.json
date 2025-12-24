@@ -1,6 +1,6 @@
 {
   "name": "@fruit-ui/router",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A basic router component for FRUIT",
   "main": "src/router.js",
   "homepage": "https://asantagata.github.io/fruit-ui/?page=router-index",
