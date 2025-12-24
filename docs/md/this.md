@@ -33,7 +33,7 @@ render() {
 
 Note the syntax on the third line. Curly braces in JavaScript are used for defining both scopes and object literals. In order to disambiguate between these, you can use the syntax `() => ({})` to define an unscoped function that returns an object.
 
-Scoped functions, on the other hand, *always* have their own `this`. There are a few ways to declare these:
+Contextual functions, on the other hand, *always* have their own `this`. There are a few ways to declare these:
 - the standard `function` keyword, as in `function MyFunction() { ... }`;
 - the anonymous `function` keyword, as in `const MyFunction = function() { ... }`;
 - and the object method definition, as in `const MyObject = { MyFunction() { ... } }`.
