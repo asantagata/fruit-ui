@@ -54,6 +54,7 @@ FRUIT's features include:
 - Keys to preserve state among re-ordered siblings
 - An on-mount listener and handler methods
 - Bindings to elements within components
+- "Memo" handling for tactically skipping rerenders
 
 with all special functional features (state, controlled rerendering, bindings) accessed through the `this` argument.
 
