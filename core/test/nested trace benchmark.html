@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:,">
+    <title>Hi</title>
+</head>
+<body>
+
+</body>
+<script type="module">
+    import * as fruit from "../src/index.js";
+
+    let i = 0;
+
+    fruit.appendChild(document.body, {
+        render() {
+            return {
+                children: [
+                    Array.from({length: i}, (v,k) => k).reduce((acc, cur) => ({
+
+                        // for component
+                        // children: {
+                        //     render() {
+                        //         return acc
+                        //     }
+                        // }
+
+                        // for template
+                        children: acc
+                    }), {
+                        children: [
+                            {tag: 'button', children: 'depth', on: {click() {
+                                this.rerender();
+                                getCallStackDepth();
+                            }}},
+                            {tag: 'button', children: 'stack', on: {click() {
+                                this.rerender();
+                                getCallStack();
+                            }}}
+                        ]
+                    }),
+                    {tag: 'button', children: 'i++', on: {click() {
+                        i++;
+                        this.rerender();
+                    }}},
+                ]
+            }
+        }
+    });
+
+    function getCallStackDepth() {
+        const stack = new Error().stack;
+        const depth = stack.split('\n').length - 1;
+        console.log('i =', i, 'call stack depth =', depth);
+    }
+    
+    function getCallStack() {
+        console.trace();
+    }
+</script>
+</html>
