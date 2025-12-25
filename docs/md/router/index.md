@@ -1,6 +1,6 @@
 # FRUIT Router
 
-This is a basic router component for [FRUIT](https://www.npmjs.com/package/@fruit-ui/core). It uses search params for routes, which minimizes server-side requirements.
+FRUIT Router is a basic router component for [FRUIT](https://www.npmjs.com/package/@fruit-ui/core). It uses search params (i.e., `[[pink]]?page=about`) for routes, which minimizes server-side requirements.
 
 This router provides four significant pieces:
 
@@ -8,10 +8,10 @@ This router provides four significant pieces:
 
 This is a component producer which takes in three props. 
 - `routes` is an object mapping from paths (strings) to `Route`s. `Route`s are objects with a `route` method (which generates the template/component for that route, and is allowed to be asynchronous.) You can also have a 'wildcard' (*) route whose `route` method can take in the name of the current route as a prop. Each `Route` can also have an attribute `title` which will set the window's title for that path.
-- `scrollOptions` is an optional prop. It is an object describing how scrolling should be handled when the Router component rerenders. It has two attributes: `hashed` and `unhashed`. These respectively describe how scrolling should be handled given hashed (`?page=about#contact`) and unhashed (`?page=about`) paths. In each of these, you may select any options from the [scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) method, as well as an option `to: {x: number, y: number}`, which can take coordinates (in which case `scrollTo` will be used rather than `scrollIntoView`). Either can also be `false` in which case no scrolling will occur. The default value is `{hashed: {}, unhashed: {to: {x: 0, y: 0}}}`.
+- `scrollOptions` is an optional prop. It is an object describing how scrolling should be handled when the `Router()` component rerenders. It has two attributes: `hashed` and `unhashed`. These respectively describe how scrolling should be handled given hashed (`[[pink]]?page=about#contact`) and unhashed (`[[pink]]?page=about`) paths. In each of these, you may select any options from the [scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) method, as well as an option `to: {x: number, y: number}`, which can take coordinates (in which case `scrollTo` will be used rather than `scrollIntoView`). Either can also be `false` in which case no scrolling will occur. The default value is `{hashed: {}, unhashed: {to: {x: 0, y: 0}}}`.
 - `asyncLoader` is an optional prop describing what should be displayed while an asynchronous route is loading. This is only used on the first route visited in a session; in subsequent routes, the router displays the old route until the new async route has fully loaded. The default value is `{}` (an empty `div`).
 
-Here is an example router:
+Here is an example router (whose `scrollOptions` match those used on these docs):
 
 ```js
 import * as router from "@fruit-ui/router";
