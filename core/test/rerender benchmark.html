@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:,">
+    <title>Hi</title>
+    <style>
+        .square {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script type="module">
+    import * as fruit from "../src/index.js";
+
+    let i = 0;
+    let N = 1000;
+    let colors = ['red', 'green', 'orange', 'blue'];
+    let init = Date.now();
+    
+    console.log('starting with N =', N);
+
+    fruit.appendChild(document.body, {
+        render() {
+            return {
+                children: [
+                    {tag: 'button', children: 'i++', on: {click() {
+                        let t = Date.now();
+                        i++;
+                        this.rerender();
+                        console.log(`rerender ${i}`, Date.now() - t);
+                    }}},
+                    {
+                        tag: 'table',
+                        children: {
+                            tag: 'tbody',
+                            children: Array.from({length: N}, (v, j) => ({
+                            render() {
+                                return {
+                                    tag: 'tr',
+                                    children: [
+                                        {
+                                            tag: 'td',
+                                            
+                                            children: {class: 'square', style: {background: colors[(j + i) % 4]}},
+                                        },
+                                        {
+                                            tag: 'td',
+                                            children: `${j}, ${i}`
+                                        }
+                                    ]
+                                }
+                            }
+                        }))
+                        }
+                    },
+                ]
+            }
+        }
+    });
+
+    console.log('init', Date.now() - init);
+</script>
+</html>

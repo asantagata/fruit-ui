@@ -12,9 +12,9 @@ In order for keys to be effective, *every* component or template in a set of sib
 
 When keys are not present, it is assumed that the "old" and "new" lists of children correspond based on index alone. If there is a differing number of children, any insertions or deletions take place at the end of the list.
 
-## Only technically siblings
+## Only technically siblings...
 
-Take a look at the Switcheroo component:
+Take a look at the `Switcheroo` component:
 
 ```
 const Switcheroo = {
