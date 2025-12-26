@@ -84,7 +84,7 @@ function Button(text, listener) {
                     () => this.bindings['my-component'].element.style.color = 'blue'
                 ),
                 Button(
-                    'Reset component',
+                    'Reset child',
                     () => this.bindings['my-child'].rerender()
                 ),
                 Button(

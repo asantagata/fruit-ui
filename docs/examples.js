@@ -248,6 +248,15 @@ export const examples = {
                         },
                         {
                             tag: 'button',
+                            children: 'Reset child',
+                            on: {
+                                click() {
+                                    this.bindings['my-child'].rerender();
+                                }
+                            }
+                        },
+                        {
+                            tag: 'button',
                             children: 'Reset component',
                             on: {
                                 click() {
