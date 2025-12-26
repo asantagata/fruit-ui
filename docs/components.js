@@ -73,8 +73,12 @@ const Sidebar = {
                             innerHTML: CHEVRON_RIGHT
                         },
                         {
-                            id: 'logo',
-                            children: [{tag: 'span', children: '🥭'}, ' FRUIT'],
+                            id: 'logo-wrapper',
+                            children: [{
+                                tag: 'img',
+                                src: './assets/logo.svg',
+                                id: 'logo'
+                            }, ' FRUIT'],
                             on: {click() {navigate('core-index')}}
                         }
                     ]

@@ -76,24 +76,30 @@ body {
 #sidebar-upper {
     background: linear-gradient(70deg, var(--pink), var(--yellow));
     min-height: 15dvh;
-    font-size: x-large;
-    color: white;
+    font-size: xx-large;
+    color: var(--back);
     display: flex;
     align-items: stretch;
     justify-content: stretch;
 }
 
-#logo {
+#logo-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-grow: 1;
+    gap: var(--md);
     cursor: pointer;
 }
 
-#logo > span {
-    color: transparent;
-    text-shadow: 0 0 0 #fff;
+#logo {
+    color: var(--back);
+    max-width: 100%;
+    max-height: 100%;
+    --width: 2em;
+    width: var(--width);
+    height: var(--width);
+    font-size: medium;
 }
 
 .index-entry {
@@ -202,7 +208,7 @@ pre {
 
 button {
     background: var(--pink);
-    color: white;
+    color: var(--back);
     padding: var(--md);
     border-radius: var(--md);
     cursor: pointer;
@@ -325,9 +331,10 @@ li {
         justify-content: space-between;
         padding: var(--md);
         flex-shrink: 0;
+        font-size: x-large;
     }
 
-    #logo {
+    #logo-wrapper {
         flex-grow: 0;
     }
 
