@@ -1,6 +1,6 @@
 # Bindings
 
-FRUIT components have stateful reactivity, meaning it is never *necessary* to do direct DOM manipulation; every DOM property *can* be dependent on a manipulated state as needed. However, unlike most other frameworks, FRUIT gives you tools to do fine-grained DOM manipulation on your templates and components if you like; sometimes, a full-fledged component rerender just isn't always necessary.
+FRUIT components have stateful reactivity, meaning it is never *necessary* to do direct DOM manipulation; every DOM property *can* be dependent on a manipulated state as needed. However, unlike most other frameworks, FRUIT gives you tools to do fine-grained DOM manipulation on your templates and components if you like; sometimes, a full-fledged component rerender just isn't necessary.
 
 *Bindings* are references to the descendants of a component. They allow you to target, apply updates to, or even entirely rerender a specific descendant.
 
@@ -31,9 +31,9 @@ App/pink;pink
 ```
 
 In terms of bindings:
-- `[[green]]Listicle` can access `[[green]]ul`, `[[green]]li`, and `[[blue]]SpecialLI`, and can be accessed by `[[pink]]App`, `[[pink]]div` and `[[pink]]p`.
+- `[[green]]Listicle` can access `[[green]]ul`, `[[green]]li`, `[[blue]]SpecialLI`, and `[[object]]Form`, and can be accessed by `[[pink]]App`, `[[pink]]div` and `[[pink]]p`.
 - `[[blue]]SpecialLI` can access nothing, and can be accessed by `[[green]]li`, `[[green]]ul`, and `[[green]]Listicle`.
-- `[[green]]li` can access `[[green]]ul`, `[[blue]]SpecialLI`, and itself, and can be accessed by `[[green]]ul`, `[[green]]Listicle`, and itself.
+- `[[green]]li` can access `[[green]]ul`, `[[blue]]SpecialLI`, `[[object]]Form`, and itself, and can be accessed by `[[green]]ul`, `[[green]]Listicle`, and itself.
 - `[[orange]]fieldset` can only access itself, and can only be accessed by `[[orange]]FieldsetContainer` and itself.
 
 That is: everything can access everything else in its same color (except the top-most component, which can be accessed with the `this.element` and `this.rerender()` properties instead), and everything can be accessed by everything in the color of the branch pointing to it.
@@ -82,6 +82,10 @@ function Button(text, listener) {
                 Button(
                     'Make component blue',
                     () => this.bindings['my-component'].element.style.color = 'blue'
+                ),
+                Button(
+                    'Reset component',
+                    () => this.bindings['my-child'].rerender()
                 ),
                 Button(
                     'Reset component',

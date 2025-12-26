@@ -31,7 +31,7 @@ render() {
 }
 ```
 
-Note the syntax on the third line. Curly braces in JavaScript are used for defining both scopes and object literals. In order to disambiguate between these, you can use the syntax `() => ({})` to define an unscoped function that returns an object.
+Note the syntax on the third line. Curly braces in JavaScript are used for defining both scopes and object literals. In order to disambiguate between these, you can use the syntax `() => ({})` to define a non-contextual function that returns an object.
 
 Contextual functions, on the other hand, *always* have their own `this`. There are a few ways to declare these:
 - the standard `function` keyword, as in `function MyFunction() { ... }`;
@@ -45,7 +45,7 @@ The `this` keyword can be passed to other functions as needed, though most of th
 
 ## Properties of `this`
 
-The following list describes all properties of the `this` keyword. With the exception of `this.target`, they are only available within components.
+The following list describes all properties of the `this` keyword in FRUIT components. With the exception of `this.target`, these are only available within components.
 
 ### `this.producer` and `this.memo`
 
@@ -53,7 +53,7 @@ These are two properties you should not touch. `this.producer` is the saved, bou
 
 ### `this.element`
 
-This is a maintained reference to the top-level `HTMLElement` of the component. You can use it to do your own DOM manipulation on that element. To do DOM manipulation on other elements, see @[Bindings](core-bindings).
+This is a maintained reference to the top-level element of the component. You can use it to do your own DOM manipulation on that element. To do DOM manipulation on other elements, see @[Bindings](core-bindings).
 
 ### `this.rerender()`
 
@@ -61,11 +61,11 @@ This function starts an immediate rerender on the component, starting from `this
 
 ### `this.state`
 
-This is an object whose properties are the component's state values. You can access and non-reactively mutate any state values by reading and writing, say, `this.state.myStateVariable`.
+This is an object whose properties are the component's state values. You can access and non-reactively mutate any state values by getting and setting `this.state.myStateVariable`.
 
 ### `this.setState`
 
-This is an object with the same keys as `this.state`. However, its properties are special setter functions. By calling `this.setState.myStateVariable(2)`, you immediately set `this.state.myStateVariable` to `2` and enqueue a rerender as a [microtask](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide). The queue is based on a set of unique component IDs, meaning that calling `this.setState` functions multiple times in one listener will not cause multiple rerenders. Notably, this queue does *not* perform any checks or depth-sorting on the components before rerendering; if, for instance, a bubbling event causes both a parent component and a child component to enqueue rerenders through `this.setState`, then the child may be rerendered twice (once as its own event, then once again as the propagated call from the parent).
+This is an object with the same keys as `this.state`. However, its properties are special setter functions. By calling `this.setState.myStateVariable(2)`, you immediately set `this.state.myStateVariable` to `2` and enqueue a rerender as a [microtask](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide), which only executes after the main logic of the listener. The queue is based on a set of unique component IDs, meaning that calling `this.setState` functions multiple times in one listener will not cause multiple rerenders. Notably, this queue does *not* perform any checks or depth-sorting on the components before rerendering; if, for instance, a bubbling event causes both a parent component and a child component to enqueue rerenders through `this.setState`, then the child may be rerendered twice (once as its own event, then once again as the propagated call from the parent).
 
 ### `this.bindings`
 
@@ -97,4 +97,4 @@ render() {
 }
 ```
 
-Using `this` to update state, create reactivity, and make the most of your components is the core benefit of using FRUIT.
+Using `this` to update state, create reactivity, and make the most of your components is a core benefit of using FRUIT.

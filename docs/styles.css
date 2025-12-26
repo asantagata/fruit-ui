@@ -298,6 +298,10 @@ input {
     height: fit-content;
 }
 
+li {
+    margin: var(--sm);
+}
+
 @media (max-aspect-ratio: 2/3) or (max-width: 600px) {
     body {
         flex-direction: column;

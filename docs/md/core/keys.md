@@ -4,7 +4,7 @@ As FRUIT's `this.rerender()` rerenders an entire subtree (barring `memo`), it is
 
 ## Syntax
 
-Keys are very simple. Keys must be a `string` and they must be unique among siblings. On components, keys can appear either in the component (i.e., alongside `render()`) or in the top-level element template. If both are present, the component key is prioritized.
+Keys are very simple. Keys must be a `string` and they must be unique among siblings. On components, `key` can appear either in the component (i.e., alongside `render()`) or in the top-level element template. If both are present, the component key is prioritized.
 
 In order for keys to be effective, *every* component or template in a set of siblings must utilize them. (`string` siblings do not need keys; they have their own rerender step that uses adjacent components and templates as anchors.)
 
@@ -60,7 +60,10 @@ Inversely, you can deliberately use keys to trick FRUIT into deleting and re-cre
                     children: 'Reset',
                     on: {
                         click() {
+
+                            // change Counter's key, forcing a rerender
                             this.setState.key(this.state.key + 1);
+
                         }
                     },
                     key: 'reset'
@@ -131,7 +134,7 @@ You might notice that the "props name" and "state name" start to differ and cert
 
 ### With keys
 
-With keys, fixing this example is very easy. By giving each `Item` a key equal to their name, we can easily instruct FRUIT on how to dynamically re-order them.
+With keys, fixing this example is very easy. By giving each `Item` a key equal to its name, we can easily instruct FRUIT on how to dynamically re-order them.
 
 ```{with}
 function Item(name, makeFirst, makeLast) {

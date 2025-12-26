@@ -5,7 +5,7 @@ Templates are the fundamental building-block of FRUIT. They are JavaScript objec
 ```{demo}
 {
     children: [
-        {tag: 'p', children: 'FRUIT is'},
+        {tag: 'p', children: 'FRUIT is...'},
         {tag: 'ul', children: [
             {tag: 'li', children: 'simple,'},
             {
@@ -89,7 +89,7 @@ The `dataset` property defines the element's [dataset](https://developer.mozilla
 
 ### The `on` property
 
-The `on` property defines the element's listeners. It must be a `Record<string, (() => void) | ((event: Event) => void)>`. The name of the function is taken as the type of the listener. (Despite this type signature, you must use named methods rather than anonymous (arrow-based) functions for listeners. This allows `this`-related logic to be consistent.)
+The `on` property defines the element's listeners. It must be a `Record<string, (() => void) | ((event: Event) => void)>`. The name of the function is taken as the type of the listener. Despite this type signature, you must use named methods rather than anonymous (arrow-based) functions for listeners. This allows `this`-related logic to be consistent; see @[Superpowered "this"](core-this#---vs-function) for more on `this`-related syntax.
 
 An element can have listeners for any valid [DOM event](https://www.w3schools.com/jsref/dom_obj_event.asp).
 
@@ -120,15 +120,15 @@ The `cloneFrom` property replaces the element with a clone of a given `HTMLEleme
 
 ### The `key` property
 
-Templates can be given a key by assigning their `key` property. The key must be a string. To learn more, see @[keys](core-keys).
+Templates can be given a key by assigning their `key` property. This must be a `string`. To learn more, see @[keys](core-keys).
 
 ### The `binding` property
 
-Templates can be given a binding by assigning their `binding` property. The binding must be a string. To learn more, see @[bindings](core-bindings).
+Templates can be given a binding by assigning their `binding` property. This must be a `string`. To learn more, see @[bindings](core-bindings).
 
 ### Other properties
 
-All other properties on HTML elements, such as `<img>`'s `src`, `<a>`'s `href` or `<input>`'s `type` can be set with the name of the prop. As with any JavaScript object attribute, you can reference properties that are not [valid JavaScript identifiers](https://developer.mozilla.org/en-US/docs/Glossary/Identifier) by wrapping them in quotes, e.g., `{tag: 'button', 'aria-role': 'Close'}`.
+All other properties on HTML elements, such as `src` on `<img>`, `href` on `<a>`, or `type` on `<input>` can be set with the name of the property. As with any JavaScript object attribute, you can reference properties that are not [valid JavaScript identifiers](https://developer.mozilla.org/en-US/docs/Glossary/Identifier) by wrapping them in quotes, e.g., `{tag: 'button', 'aria-role': 'Close'}`.
 
 ## Template producers & props
 

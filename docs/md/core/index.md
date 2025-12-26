@@ -2,7 +2,7 @@
 
 ## What is FRUIT?
 
-FRUIT is a lightweight, zero-dependency UI framework written in JavaScript for JavaScript apps. It uses nested JavaScript objects to represent DOM elements, i.e.,
+FRUIT is a lightweight, zero-dependency UI framework written in JavaScript for JavaScript apps. It uses nested objects to represent DOM elements, i.e.,
 
 ```{fun}
 import { appendChild } from '@fruit-ui/core';
@@ -54,7 +54,7 @@ FRUIT's features include:
 - Keys to preserve state among re-ordered siblings
 - An on-mount listener and handler methods
 - Bindings to elements within components
-- "Memo" handling for tactically skipping rerenders
+- Memoized handling for tactically skipping rerenders
 
 with all special functional features (state, controlled rerendering, bindings) accessed through the `this` argument.
 

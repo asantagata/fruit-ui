@@ -25,9 +25,7 @@ The canonical example of a component is the `Counter`, seen here:
 }
 ```
 
-By calling `this.setState.i` in the click listener, it is possible to dynamically alter the component's content without engaging in direct DOM manipulation (i.e. by changing the text node's `textContent` or the button's `innerHTML`.)
-
-While this component consists of one template (the `<button>`) and a text node, it is common for a component to contain many children, which may be templates or even other components. However, the root of the subtree defined in `render()` *must* be a template.
+By calling `this.setState.i()` in the click listener, it is possible to dynamically alter the component's content without engaging in direct DOM manipulation (i.e., by changing the text node's `textContent` or the button's `innerHTML`.)
 
 ## Rerendering
 
@@ -36,8 +34,8 @@ While this component consists of one template (the `<button>`) and a text node, 
 - Except in the case of `memo`s (see below), FRUIT rerenders entire subtrees. This means that a component might be rerendered because its own `setState()` or `rerender()` method was called, or it might be rerendered because an ancestor was rerendered and the effect is propagating downward through its children.
 - When a component is rerendered as a result of an ancestor rerendering, its `render()` function is re-evaluated with new props taken into account. This means that props in `render()` do not get "stale."
 - FRUIT rerenders are generally "smooth." This means that instead of deleting and re-creating a component, FRUIT individually updates the component's attributes and those of its descendants. This has several benefits. For instance, it permits CSS transitions to occur reactively and preserves focus.
-- The `tagName` property on elements is read-only. If you attempt to change this property, the element will be deleted and re-created, meaning you do not get the aforementioned benefits.
-- Listeners (i.e., the `on` property) are *not* updated across rerenders. This means you must handle any state-dependent logic within the listener, i.e., prefer `{on: {click() {if (this.state.x) y() else z()}}}` to `{on: {click: this.state.x ? y : z}}`.
+- The `tagName` property on elements is read-only. If you attempt to change `tag`, the element will be deleted and re-created, meaning you do not get the aforementioned benefits.
+- Listeners (i.e., the `on` property) are *not* updated across rerenders. This means you must handle any state-dependent logic within the listener, i.e., prefer `{on: {click() { this.state.x ? y() : z()}}}` to `{on: {click: this.state.x ? y : z}}`.
 - To this end, you should also put any state references *inside* listeners. That is, avoid this pattern:
 ```
 render() {
@@ -45,14 +43,26 @@ render() {
     return {
         on: {
             click() { 
-                console.log(ref); 
+                operateOn(ref);
             }
         }
     };
 }
 ```
 
-At some other point, if `myStateVariable` is updated, `ref` may still hold the old value, meaning the listener `click()` may not operate as desired. Prefer `click() { console.log(this.state.myStateVariable)}`.
+At some other point, if `myStateVariable` is updated, `ref` may still hold the old value, meaning the listener `click()` may not operate as desired. Prefer this pattern:
+```
+render() {
+    return {
+        on: {
+            click() { 
+                const ref = this.state.myStateVariable;
+                operateOn(ref);
+            }
+        }
+    };
+}
+```
 
 ## State
 
@@ -93,18 +103,20 @@ By default, FRUIT rerenders entire subtrees. That is to say: if component `Paren
 One common use case for this is to compare the props (discussed in @[Templates](core-templates)) of a component producer. Here, the `Record` component updates only when its prop updates. Try editing the input to change the third user's name; only one user's "last rendered" timestamp will change.
 
 ```{memo}
-const Record = (user) => ({
-    render() {
-        return {
-            children: [
-                {tag: 'p', children: `ID: ${user.id}`},
-                {tag: 'p', children: `Name: ${user.name}`},
-                {tag: 'p', children: `Last rendered: ${Date.now()}`},
-            ]
-        };
-    },
-    memo: user
-});
+function Record(user) {
+    return {
+        render() {
+            return {
+                children: [
+                    {tag: 'p', children: `ID: ${user.id}`},
+                    {tag: 'p', children: `Name: ${user.name}`},
+                    {tag: 'p', children: `Last rendered: ${Date.now()}`},
+                ]
+            };
+        },
+        memo: user
+    };
+}
 
 // ...
 
@@ -146,15 +158,17 @@ Neither `memo` nor `memo()` stop a component from rerendering itself; they only 
 
 ### The `key` property
 
-Components can be given a key by assigning their `key` property. The key must be a string. The key is passed to the top-level element of the component. To learn more, see @[keys](core-keys).
+Components can be given a key by assigning their `key` property. This must be a `string`. The key is passed to the top-level element of the component. To learn more, see @[keys](core-keys).
 
 ### The `binding` property
 
-Components can be given a binding by assigning their `binding` property. The binding must be a string. The binding is passed to the top-level element of the component. To learn more, see @[bindings](core-bindings).
+Components can be given a binding by assigning their `binding` property. This must be a `string`. The binding is passed to the top-level element of the component. To learn more, see @[bindings](core-bindings).
 
 ## Component producers
 
 Similar to @[template producers](core-templates#template-producers--props), component producers are functions which produce components. These might take in props from other components or pieces of business logic. The `render()` function is always re-evaluated with the newest props taken into account, so you do not have to worry about stale values for props. Using component producers is an effective pattern for managing large applications in FRUIT, as you can utilize both the reactivity of components and the intricacies of small, modular parts.
+
+See the `Record()` component producer in the `memo` example above. 
 
 ## Putting components on the DOM
 
