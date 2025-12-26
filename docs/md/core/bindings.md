@@ -50,7 +50,7 @@ There are two properties you can utilize on bindings:
 const Component = {
     render() {
         return {
-            style: {color: 'black'},
+            style: {color: 'black', transition: 'color 0.2s ease-in-out'},
             children: 'Component text'
         };
     }
@@ -68,7 +68,7 @@ function Button(text, listener) {
             children: [
                 {
                     children: 'Child text',
-                    style: {color: 'black'},
+                    style: {color: 'black', transition: 'color 0.2s ease-in-out'},
                     binding: 'my-child'
                 },
                 {
@@ -101,4 +101,4 @@ function Button(text, listener) {
 }
 ```
 
-In this example, both `binding.element` and `binding.rerender()` are used.
+Notice the smooth transition; both the `[[string]]my-child` and `[[string]]my-component` elements have `transition: 'color 0.2s ease-in-out'`. Since FRUIT updates properties individually rather than replacing elements completely, transitions such as these are possible on rerenders.
