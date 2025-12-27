@@ -73,7 +73,10 @@
                     children: 'This text is a link to the bottom of the "home" page.',
                     on: {click() {router.navigate('/#question')}}
                 },
-                {},
+                {
+                    children: 'Link to #async-anchor',
+                    on: {click() {router.navigateHash('#async-anchor')}}
+                },
                 {children: "Async anchor", id: 'async-anchor'},
                 {}
             ]
@@ -100,8 +103,11 @@
                         router.navigate(r.path);
                     }}
                 })),
-                dataset: { receivePageChanges: true },
-                on: {pagechange(e) {this.setState.page(e.detail.page)}}
+                dataset: { receivePageChanges: true, receiveHashChanges: true },
+                on: {
+                    pagechange(e) {this.setState.page(e.detail.page)},
+                    hashchange(e) {console.log(e.detail.hash, router.getHash())}
+                }
             };
         }
     }

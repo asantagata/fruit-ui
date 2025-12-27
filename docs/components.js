@@ -1,4 +1,5 @@
-import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-ui/router@latest/src/router.js";
+// import { Router, navigate, getPage } from "https://cdn.jsdelivr.net/npm/@fruit-ui/router@latest/src/router.js";
+import { Router, navigate, navigateHash, getPage } from "./router.js";
 import { examples } from "./examples.js";
 
 const ARTICLES = [
@@ -369,7 +370,12 @@ function Markdown(text, article) {
         {split: /(@\[[^\]]+?\]\([^\)]+?\))/g, into: (t) => {
             const slicedT = t.slice(2, -1);
             const [text, url] = slicedT.split('](');
-            return {tag: 'span', class: 'a', on: {click() {navigate(url)}}, target: '_blank', children: text}
+            return {tag: 'span', class: 'a', on: {click() {navigate(url)}}, children: text}
+        }},
+        {split: /(#\[[^\]]+?\]\([^\)]+?\))/g, into: (t) => {
+            const slicedT = t.slice(2, -1);
+            const [text, hash] = slicedT.split('](');
+            return {tag: 'span', class: 'a', on: {click() {navigateHash(hash)}}, children: text}
         }},
         {split: /(\[[^\]]+?\]\([^\)]+?\))/g, into: (t) => {
             const slicedT = t.slice(1, -1);
