@@ -141,10 +141,10 @@ function Item(name, makeFirst, makeLast) {
     return {
         key: name,
         // ... the rest of Item is the same
-    }
-
-    // the main component is the same
+    };
 }
+
+// the main component is the same
 ```
 
 This same logic makes it easy to have lists with insertions, deletions, and updates to individual items. Keys make it easy to make dynamic element lists in FRUIT.
