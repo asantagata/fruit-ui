@@ -44,7 +44,7 @@
 </body>
 <script type="module">
     import * as fruit from '../../core/src/index.js';
-    import * as router from '../src/router.js';
+    import * as router from '../dist/router.js';
 
     const Home = () => ({
         children: [
@@ -59,7 +59,7 @@
             {children: `About us - we're normal. Nothing to worry about there!`},
             {
                 children: 'This text is a link to the bottom of the "package" page.',
-                on: {click() {router.navigate('/packag#async-anchor')}}
+                on: {click() {router.navigate('/package#async-anchor')}}
             },
         ]
     });

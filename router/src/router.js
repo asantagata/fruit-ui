@@ -157,10 +157,11 @@ function broadcastPageChange(page) {
  * @param {string} hash - the hash.
  */
 function navigateHash(hash) {
-    if (hash.slice(1) === getHash()) return;
+    hash = hash.slice(hash.indexOf('#') + 1);
     const url = new URL(window.location.href);
     url.hash = hash;
-    window.history.pushState({}, '', url);
+    if (hash !== getHash())
+        window.history.pushState({}, '', url);
     broadcastHashChange(hash);
 }
 
