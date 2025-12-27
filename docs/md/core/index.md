@@ -38,7 +38,7 @@ const Counter = {
                     this.setState.i(this.state.i + 1);
                 }
             }
-        }
+        };
     }
 }
 

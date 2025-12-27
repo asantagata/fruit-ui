@@ -176,9 +176,8 @@ pre {
 .light-code > .token.this { color: hsl(335, 85%, 60%); }
 .light-code > .token.function, .light-code > .token.blue { color: #e16720; }
 .light-code > .token.symbolic { color: hsl(343, 6%, 17%) }
-.light-code > .token.alphanumeric, .light-code > .token.pink { color: hsl(335, 68%, 46%); }
+.light-code > .token.alphanumeric, .light-code > .token.pink, .light-code > .token.declare { color: hsl(335, 68%, 46%); }
 .light-code > .token.ctrlflow, .light-code > .token.orange { color: hsl(210, 70%, 47%); }
-.light-code > .token.declare { color: hsl(0, 70%, 36%); }
 .light-code > .token.number { color: hsl(340, 93%, 27%); }
 .light-code > .token.object { color: hsl(34, 94%, 40%); }
 .light-code > .token.string { color: hsl(82, 63%, 33%); }

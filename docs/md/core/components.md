@@ -20,8 +20,8 @@ The canonical example of a component is the `Counter`, seen here:
                     this.setState.i(this.state.i + 1);
                 }
             }
-        }
-    };
+        };
+    }
 }
 ```
 
