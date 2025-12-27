@@ -38,11 +38,25 @@ const myRouter = router.Router(
 
 The `navigate()` function takes in a path and navigates to it. Navigation is done with `history.pushState` so it is compatible with the browser forward/back methods. You can navigate to hashed paths (i.e., `navigate('/about#contact')`) to automatically scroll to a certain element ID, depending on scroll settings.
 
+### The `navigateHash()` function
+
+The `navigateHash()` function navigates to a different hash on the same page, i.e., `navigate('#contact')`. This is done with `history.pushState` so it is compatible with the browser forward/back methods. If the given and existing hashes are the same, the `hashchange` event is still dispatched (see below).
+
 ## The `pagechange` event
 
 Elements with `data-receive-page-changes` enabled will receive the `pagechange` event which can be listened for like any other event. This event is broadcast when the `navigate` function is called or forward/back methods are used in the browser. (It is *not*, however, broadcast on page load.) Within the listener, the new path can be accessed using `event.detail.page`.
 
 This attribute can be given using `dataset: {receivePageChanges: true}`.
 
+### The `hashchange` event
+
+Similarly, elements can have `data-receive-hash-changes` (i.e., `dataset: {receiveHashChanges: true}`) to receive the `hashchange` event, on which `event.detail.hash` can be accessed as the new hash. (This is not an instance of the canonical [HashChangeEvent](https://developer.mozilla.org/en-US/docs/Web/API/HashChangeEvent), which `navigateHash` and `navigate` do not fire.)
+
+Note that if the browser back/forward buttons are used, the `pagechange` event will be fired even if only the hash was changed.
+
 ## The `getPage()` function
 This returns the current path. Note that hashes and opening slashes are automatically removed, so after `navigate('/about#contact')`, a `getPage()` call will return `'about'`.
+
+### The `getHash` function
+
+This returns the current hash. Note that opening hashes are automatically removed.

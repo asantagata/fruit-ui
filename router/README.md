@@ -2,7 +2,7 @@
 
 This is a basic router component for [FRUIT](https://www.npmjs.com/package/@fruit-ui/core). It uses search params for routes, which minimizes server-side requirements.
 
-This router provides four significant pieces:
+This router provides these significant pieces:
 
 ## The Router component
 
@@ -29,7 +29,11 @@ const router = router.Router({
 
 ## The `navigate` function
 
-The `navigate` function takes in a path and navigates to that path. Navigation is done with `history.pushState` so it is compatible with the browser forward/back methods. You can navigate to hashed paths (i.e., `navigate('/about#contact')`) to automatically scroll to a certain element ID, depending on scroll settings.
+The `navigate` function takes in a path and navigates to that path. Navigation is done with `history.pushState` so it is compatible with the browser forward/back methods. You can navigate to hashed paths (i.e., `navigate('/about#contact')`) to automatically scroll to a certain element ID, depending on scroll settings. Navigate does nothing (and no `pagechange` event is dispatched) if the given and existing paths are the same.
+
+### The `navigateHash` function
+
+The `navigateHash` function navigates to a different hash on the same page, i.e., `navigate('#contact')`. This is done with `history.pushState` so it is compatible with the browser forward/back methods. If the given and existing hashes are the same, the `hashchange` event is still dispatched (see below).
 
 ## The `pagechange` event
 
@@ -37,7 +41,18 @@ Elements with `data-receive-page-changes` enabled will receive the `pagechange` 
 
 This attribute can be given using `dataset: {receivePageChanges: true}`.
 
+### The `hashchange` event
+
+Similarly, elements can have `data-receive-hash-changes` to receive the `hashchange` event, on which `event.detail.hash` can be accessed as the new hash. (This is not an instance of the canonical `hashchange` event, which `navigateHash` and `navigate` do not fire.)
+
+Note that if the browser back/forward buttons are used, the `pagechange` event will be fired even if only the hash was changed.
+
 ## The `getPage` function
+
 This returns the current path. Note that hashes and opening slashes are automatically removed, so after `navigate('/about#contact')`, a `getPage()` call will return `'about'`.
 
-More thorough documentation for FRUIT Router will be available shortly [here](https://asantagata.github.io/fruit-ui/?page=router-index).
+### The `getHash` function
+
+This returns the current hash. Note that opening hashes (#) are automatically removed.
+
+More thorough documentation for FRUIT Router is available [here](https://asantagata.github.io/fruit-ui/?page=router-index).
