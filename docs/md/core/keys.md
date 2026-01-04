@@ -8,6 +8,10 @@ Keys are very simple. Keys must be a `string` and they must be unique among sibl
 
 In order for keys to be effective, *every* component or template in a set of siblings must utilize them. (`string` siblings do not need keys; they have their own rerender step that uses adjacent components and templates as anchors.)
 
+Note that, in order to be re-ordered, elements must sometimes be un-mounted from and re-mounted to the DOM. When this happens, the re-mounted element's on-mount listener (and those of any children) are called, and any on-load animations are triggered. `this.state`, however, is persistent; if needed, you can utilize a state variable (say, `this.state.alreadyMounted`) to keep track of logic internally and stop on-mount listeners from firing again. 
+
+Be aware, however, that the re-mounted elements may not be the ones you expect; reordering `A B C` to `B A C`, for instance, can be achieved by moving `A` forward or by moving `B` backward. FRUIT uses an [longest increasing subsequence algorithm](https://en.wikipedia.org/wiki/Longest_increasing_subsequence#Efficient_algorithms) to find reorderings with minimal changes, and prefers moving items backward.
+
 ## Rerendering without keys
 
 When keys are not present, it is assumed that the "old" and "new" lists of children correspond based on index alone. If there is a differing number of children, any insertions or deletions take place at the end of the list.
