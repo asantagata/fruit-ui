@@ -155,6 +155,10 @@ function createElementFromTemplate(template, onMounts, producer = null) {
             initializeThis.call(this, element, producer);
         }
         return element;
+    } else if (template.HTML) {
+        const div = document.createElement('div');
+        div.innerHTML = template.HTML;
+        return div.firstChild;
     }
     const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, ...rest} = template;
     const element = document.createElement(template.tag || 'div');
@@ -400,6 +404,10 @@ function rerenderElementFromTemplate(element, template, onMounts) {
     }
     if (template.cloneFrom && !element.isEqualNode(template.cloneFrom)) {
         return element.replaceWith(template.cloneFrom.cloneNode(true));
+    } else if (template.HTML) {
+        const div = document.createElement('div');
+        div.innerHTML = template.HTML;
+        return element.replaceWith(div.firstChild);
     }
     if ((template.tag?.toUpperCase() || 'DIV') !== element.tagName) {
         // tag cannot be changed
