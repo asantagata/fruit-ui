@@ -116,7 +116,15 @@ The `innerHTML` property defines the element's innerHTML as a `string`. This ove
 
 ### The `cloneFrom` property
 
-The `cloneFrom` property replaces the element with a clone of a given `HTMLElement`. This overrides all other properties and is generally not suitable for most use cases.
+The `cloneFrom` property replaces the element with a clone of a given `HTMLElement`. This overrides all other properties.
+
+### The `HTML` property
+
+The `HTML` property defines the element as an HTML `string`.
+
+### The `xmlns` property
+
+The `xmlns` property is a `string` used with `document.createElementNS()` to identify the [XML namespace](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course) of the element. This must be specified for all elements belonging to a non-HTML namespace (i.e., it is not inherited.)
 
 ### The `key` property
 
