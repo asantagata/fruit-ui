@@ -57,7 +57,7 @@
 
     // [text] to [element]
     fruit.appendChild(document.body, {
-        state() { return { children: 'helloo' } },
+        state() { console.log(this); return { children: 'helloo' } },
         render() {
             return {
                 children: this.state.children,

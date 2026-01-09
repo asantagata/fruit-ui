@@ -113,10 +113,13 @@ function enqueueToRerender(componentId) {
  */
 function createThis(component) {
     return {
+        rerender() {},
+        producer() {},
+        element: null,
         state: {},
         setState: {},
         bindings: {},
-        memo: deepClone(component.memo)
+        memo: typeof component.memo === 'object' ? deepClone(component.memo) : component.memo
     };
 }
 
@@ -288,7 +291,7 @@ function createElementFromElementable(elementable, onMounts) {
 function createElementFromComponent(component, onMounts) {
     const boundProducer = bindTemplateProducer(component.render, component);
     thisRecord[boundProducer.componentId] = boundProducer.this;
-    boundProducer.this.state = component.state ? component.state() : {};
+    boundProducer.this.state = component.state ? component.state.call(boundProducer.this) : {};
     const template = boundProducer();
     return createElementFromTemplate.call(boundProducer.this, giveTemplateComponentMetadata(template, boundProducer.componentId, component.key, component.binding), onMounts, boundProducer);
 }
