@@ -160,7 +160,7 @@ function createElementFromTemplate(template, onMounts, producer = null) {
         div.innerHTML = template.HTML;
         return div.firstChild;
     }
-    const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, ...rest} = template;
+    const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, xmlns, ...rest} = template;
     const element = template.xmlns ? document.createElementNS(template.xmlns, template.tag) : document.createElement(template.tag || 'div');
     if (template.class) {
         switch (typeof template.class) {
@@ -438,7 +438,7 @@ function rerenderElementFromTemplate(element, template, onMounts) {
             element.dataset[key] = template.dataset[key];
         }
     }
-    const {tag, cloneFrom, class: _, style, on, key, dataset, componentId, children, innerHTML, binding, ...rest} = template;
+    const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, xmlns, ...rest} = template;
     for (const attribute in rest) {
         element.setAttribute(attribute, template[attribute]);
     }
