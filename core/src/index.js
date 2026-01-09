@@ -161,7 +161,7 @@ function createElementFromTemplate(template, onMounts, producer = null) {
         return div.firstChild;
     }
     const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, ...rest} = template;
-    const element = document.createElement(template.tag || 'div');
+    const element = template.xmlns ? document.createElementNS(template.xmlns, template.tag) : document.createElement(template.tag || 'div');
     if (template.class) {
         switch (typeof template.class) {
             case 'string':
