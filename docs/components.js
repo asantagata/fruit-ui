@@ -228,7 +228,7 @@ function JSSyntaxHighlighting(code, mode) {
                 token.type = TokenTypes.FUNCTION;
             } else if (token.text[0] === token.text[0].toUpperCase()) {
                 token.type = TokenTypes.OBJECT;
-            } else if (declareKeywords.has(token.text)) {
+            } else if (declareKeywords.has(token.text) && i < tokens.length - 1 && !tokens[i + 1].text.startsWith(':')) {
                 token.type = TokenTypes.DECLARE_KEYWORD;
             } else if (ctrlflowKeywords.has(token.text) || (i > 0 && (tokens[i - 1].text.endsWith('<') || tokens[i - 1].text.endsWith('</')))) {
                 token.type = TokenTypes.CTRLFLOW_KEYWORD;

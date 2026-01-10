@@ -35,7 +35,7 @@ Templates are the fundamental building-block of FRUIT. They are JavaScript objec
             },
             {
                 tag: 'li', children: [
-                    'and ', RainbowText('modular'), '.'
+                    'and ', RainbowText('modular'), '.' // (not provided)
                 ]
             }
         ]}
@@ -123,17 +123,19 @@ The `children` property defines the element's children. This can be a `string`, 
 {
     children: [
         'Child node #1 is a text node.',
-        'Child node #2 is also a text node. You can have multiple consecutive text node children.',
+        'Child node #2 is also a text node.',
         {
             tag: 'b', 
-            children: 'Child node #3 is a Template with a text node child.'
+            children: 'Child node #3 is a Template.'
         },
-        {render() {
-            return {
-                tag: 'u', 
-                children: 'Child node #4 is a Component returning a Template with a text node child.'
+        {
+            render() {
+                return {
+                    tag: 'u', 
+                    children: 'Child node #4 is a Component.'
+                }
             }
-        }}
+        }
     ]
 }
 ```

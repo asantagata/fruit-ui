@@ -10,6 +10,6 @@ There are three ways to add FRUIT to a project:
 
 In order to use FRUIT as an imported package, you may need to locally serve the page using `{shell}npx serve .` or `{shell}npx vite .` in your project directory.
 
-## FRUIT template repo
+## FRUIT project template
 
-You can also clone the [FRUIT template repo](https://github.com/asantagata/fruit-ui-template), which contains further instructions for setting up a FRUIT project from scratch.
+You can also use the [FRUIT project template](https://github.com/asantagata/fruit-ui-template) as a template via GitHub. It contains further instructions for setting up a FRUIT project from scratch.

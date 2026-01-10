@@ -79,4 +79,4 @@ function Record(user) {
 
 If both `memo()` and `customMemo()` are present in a component, `customMemo()` takes precedence.
 
-Neither `memo` nor `customMemo()` stop a component from rerendering *itself*; they only stop propagated rerender signals from ancestors. To stop a component from rerendering itself directly, you have to just *not* call `this.rerender()` or `this.setState` within it.
+Neither `memo()` nor `customMemo()` stop a component from rerendering *itself*; they only stop propagated rerender signals from ancestors. To stop a component from rerendering itself directly, you have to just *not* call `this.rerender()` or `this.setState` within it.

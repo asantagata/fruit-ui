@@ -24,6 +24,54 @@ The spread operator (`...`) and ternary operator (`? :`) can be used to create c
 }
 ```
 
+## File organization
+
+Like any larger project, your FRUIT app can become quite complex and messy if limited to one `[[pink]].js` file or, slightly scarier, one `<script>` tag. To this end, it may be useful to distribute your FRUIT project across multiple files.
+
+The simplest way to do this is with [modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
+
+One simple pattern to follow is to make each file export one component or template producer, then import and reuse these as needed. Here is an example of what this might look like:
+
+```
+// inside components/NumberInput.js
+
+export default function NumberInput(value, onChange, {min = '', max = ''}) {
+    return {
+        state: { value },
+        return {
+            tag: 'input',
+            type: 'number',
+            value, min, max
+            on: {
+                change() {
+                    let currentValue = this.target.valueAsNumber;
+                    if (currentValue >= min && currentValue <= max) {
+                        this.state.value = currentValue;
+                        onChange(currentValue);
+                    } else {
+                        this.rerender();
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+And the use of `NumberInput` inside another component:
+
+```
+// inside components/Form.js
+
+import NumberInput from "./NumberInput.js";
+
+export default function Component() {
+
+}
+```
+
+This pattern allows you to distribute your code neatly and promote code reuse. If you would like to initialize a project using this kind of organization, you can use the [FRUIT project template](https://github.com/asantagata/fruit-ui-template).
+
 ## Global context
 
 FRUIT does not by default come with *global context*, i.e., a state that can be accessed by any template or component and trigger a global rerender. However, it is very easy to manufacture this using the tools FRUIT provides.
@@ -37,7 +85,7 @@ The approach to creating global context is similar but slightly varies with thes
 
 ### Global context (one insertion point)
 
-First, create `context.js`:
+First, create `[[pink]]context.js`:
 
 ```
 const context = {
@@ -77,7 +125,7 @@ Note that, as of `state()` being called, `App`'s `this.rerender()` has not yet b
 
 Having several insertion points slightly complicates the matter of context.
 
-First, create `context.js`:
+First, create `[[pink]]context.js`:
 
 ```
 const context = {
