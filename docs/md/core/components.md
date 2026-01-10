@@ -78,7 +78,8 @@ type Component = {
     state?: () => Record<string, any>,
     key?: string,
     binding?: string,
-    memo?: any | () => boolean
+    memo?: () => any,
+    customMemo?: () => boolean
 }
 ```
 
@@ -98,67 +99,9 @@ The return value of `state()` describes the initial status of the component's st
 
 `state()` can be used in patterns like @[global context](core-patterns#global-context).
 
-### The `memo` and `memo()` properties
+### The `memo()` and `customMemo()` properties
 
-By default, FRUIT rerenders entire subtrees. That is to say: if component `Parent` has components `Child1` and `Child2` as children, then rerendering `Parent` will also cause `Child1`, `Child2`, and any grandchildren to rerender as well. Sometimes this is superfluous or unnecessary, but with no compile step, FRUIT does not have any inherent mechanism to know that. To this end, `memo` and `memo()` allow you to *tell* FRUIT that a component does not need to be rerendered.
-
-`memo` can be any acyclic combination of objects, iterables (arrays, sets, maps) and primitives. Functions may appear within `memo` but `memo` may not itself be a function (for this use case). When a component with `memo` is made to rerender as part of an ancestor's rerender, FRUIT will compare the old and new values of `memo` with a deep equality check. If the values are found to be the same, FRUIT will not rerender the component. 
-
-One common use case for this is to compare the props (discussed in @[Templates](core-templates)) of a component producer. Here, the `Record` component updates only when its prop updates. Try editing the input to change the third user's name; only one user's "last rendered" timestamp will change.
-
-```{memo}
-function Record(user) {
-    return {
-        render() {
-            return {
-                children: [
-                    {tag: 'p', children: `ID: ${user.id}`},
-                    {tag: 'p', children: `Name: ${user.name}`},
-                    {tag: 'p', children: `Last rendered: ${Date.now()}`},
-                ]
-            };
-        },
-        memo: user
-    };
-}
-
-// ...
-
-{
-    state() {
-        return { 
-            users: [
-                {id: 1, name: 'Alice'},
-                {id: 2, name: 'Bob'},
-                {id: 3, name: 'Parlie'}
-            ]
-        }
-    },
-    render() {
-        return {
-            children: [
-                {
-                    tag: 'input',
-                    value: this.state.users[2].name,
-                    on: {
-                        input(e) {
-                            this.state.users[2].name = e.target.value;
-                            this.rerender();
-                        }
-                    }
-                },
-                {
-                    children: this.state.users.map(user => Record(user))
-                }
-            ]
-        };
-    }
-}
-```
-
-`memo()` allows you to define custom logic for halting rerendering. `memo()` can use `this`, similar to the `state()` and `render()` functions. If `memo()` returns a [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) value, the component will not rerender; otherwise, it will.
-
-Neither `memo` nor `memo()` stop a component from rerendering itself; they only stop propagated rerender signals from ancestors. To stop a component from rerendering itself directly, you have to just *not* call `this.rerender()` or `this.setState` within it.
+Components can be given a memo by assigning their `memo()` or `customMemo()` property. `memo()` must be a `() => object` and `customMemo()` must be a `() => boolean`. To learn more, see @[memo](core-memo).
 
 ### The `key` property
 

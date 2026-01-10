@@ -18,8 +18,13 @@ const ARTICLES = [
     },
     {title: 'Components', url: 'components', section: 'core', 
         results: {
-            counter: examples['core-counter'],
-            memo: examples['components-memo']
+            counter: examples['core-counter']
+        }
+    },
+    {title: 'Memo', url: 'memo', section: 'core',
+        results: {
+            memo: examples['memo'](false),
+            'custom-memo': examples['memo'](true),
         }
     },
     {title: 'Superpowered `this`', url: 'this', section: 'core'},

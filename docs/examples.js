@@ -61,7 +61,7 @@ export const examples = {
             style: {background: color}
         }))
     },
-    'components-memo': (() => {
+    'memo': ((custom) => {
         function Record(user) {
             return {
                 render() {
@@ -74,7 +74,10 @@ export const examples = {
                         ]
                     }
                 },
-                memo: user
+                memo() {return user;},
+                ...(custom ? {
+                    customMemo() {return user.id % 2 === 1}
+                } : {})
             }
         }
 
@@ -111,7 +114,7 @@ export const examples = {
                 }
             }
         }
-    })(),
+    }),
     'keys-resetable-counter': (() => {
         const Counter = {
             state() {
