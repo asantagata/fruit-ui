@@ -120,7 +120,7 @@ function createThis(component) {
         state: {},
         setState: {},
         bindings: {},
-        memo: 'memo' in component ? deepClone(component.memo) : false
+        memo: 'memo' in component ? deepClone(component.memo()) : false
     };
 }
 
