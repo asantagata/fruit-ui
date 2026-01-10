@@ -49,7 +49,7 @@ export default function NumberInput(value, onChange, {min = '', max = ''}) {
                         this.state.value = currentValue;
                         onChange(currentValue);
                     } else {
-                        this.rerender();
+                        this.rerender(); // reset
                     }
                 }
             }
@@ -65,8 +65,13 @@ And the use of `NumberInput` inside another component:
 
 import NumberInput from "./NumberInput.js";
 
-export default function Component() {
-
+export default function Form() {
+    children: [
+        {tag: 'label', children: 'Enter your favorite number: '},
+        NumberInput(
+            0, (value) => alert(`Your favorite number is: ${value}.`)
+        );
+    ]
 }
 ```
 
