@@ -8,9 +8,7 @@ The canonical example of a component is the `Counter`, seen here:
 
 ```{counter}
 {
-    state() {
-        return {i: 0}; // initialize state
-    },
+    state: { i: 0 }, // initialize state
     render() {
         return {
             tag: 'button',
@@ -75,7 +73,7 @@ Here is a TypeScript-based signature for FRUIT components:
 ```
 type Component = {
     render: () => Template,
-    state?: () => Record<string, any>,
+    state?: Record<string, any> | () => Record<string, any>,
     key?: string,
     binding?: string,
     memo?: () => any,
@@ -91,11 +89,41 @@ The following is a more thorough guide to components.
 
 `render()` is the "recipe" for the component; it instructs FRUIT on how to display the component, not just initially, but every time it needs to be rerendered, such as on a `this.setState` call. `render()` is re-evaluated when the component is rerendered, so you can use mechanisms like the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator), [.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map), and even [IIFEs](https://developer.mozilla.org/en-US/docs/Glossary/IIFE) to achieve functional, state-dependent results.
 
-### The `state()` property
+### The `state` or `state()` property
 
-`state()` defines the initial state of the component. It is called only once in the "life cycle" of the component: at the very beginning before `render()`. While not necessary in every case, it is useful for `state()` to be initialized through a function rather than a static object definition because it allows state variables to be derived from one another.
+`state` and `state()` define the initial state of the component. `state` defines the component's state directly as an object while `state()` is a function whose return value is treated as the initial state.
 
-The return value of `state()` describes the initial status of the component's state. You can also perform other tasks (i.e., side effects) in `state()` which you want to occur only once. Note, however, that most `this` properties (such as `this.element` and `this.rerender`) will not yet be accessible, because `state()` is processed before other properties of components.
+`state()` is called only once in the "life cycle" of the component: at the very beginning before `render()`. While not necessary in every case, it is useful for `state()` to be initialized through a function rather than a static object definition because it allows state variables to be derived from one another. When not needed, you can instead declare `state` directly.
+
+```{component-state}
+{
+    children: [
+        {
+            // object literal syntax for state
+            state: { rand: Math.random() },
+            render() {
+                return { tag: 'p', children: this.state.rand };
+            }
+        },
+        {
+            // functional syntax for state
+            state() {
+                let rand = Math.random();
+                let half = rand / 2;
+                return {rand, half};
+            },
+            render() {
+                return {
+                    tag: 'p', 
+                    children: `${this.state.rand}, ${this.state.half}`
+                };
+            }
+        }
+    ]
+}
+```
+
+You can also perform other tasks in `state()` which you want to occur only once. Note, however, that most `this` properties (such as `this.element` and `this.rerender`) will not yet be accessible because `state()` is processed before other properties of components. If you want to wait until the component is fully initialized, use an @[on-mount function](core-templates#on) instead.
 
 `state()` can be used in patterns like @[global context](core-patterns#global-context).
 

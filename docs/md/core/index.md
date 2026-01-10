@@ -26,9 +26,7 @@ FRUIT is powerful, efficient, and feature-packed. In addition to objects represe
 import { appendChild } from '@fruit-ui/core';
 
 const Counter = {
-    state() {
-        return {i: 0}; // initialize state
-    },
+    state: { i: 0 },
     render() {
         return {
             tag: 'button',

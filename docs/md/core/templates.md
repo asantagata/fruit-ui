@@ -98,7 +98,9 @@ The `dataset` property defines the element's [dataset](https://developer.mozilla
 
 The `on` property defines the element's listeners. It must be a `Record<string, (() => void) | ((event: Event) => void)>`. The name of the function is taken as the type of the listener. Despite this type signature, you must use named methods rather than anonymous (arrow-based) functions for listeners. This allows `this`-related logic to be consistent; see @[Superpowered "this"](core-this#---vs-function) for more on `this`-related syntax.
 
-An element can have listeners for any valid [DOM event](https://www.w3schools.com/jsref/dom_obj_event.asp). You can also have listeners to the `mount` event, which takes place when the element is mounted to the DOM. (In special cases, this can happen more than once; see @[Re-mounting](core-keys#re-mounting).)
+An element can have listeners for any valid [DOM event](https://www.w3schools.com/jsref/dom_obj_event.asp).
+
+You can also have listeners to the `mount` event, which takes place when the element is mounted to the DOM. (In special cases, this can happen more than once; see @[Re-mounting](core-keys#re-mounting).)
 
 ```{on}
 {
@@ -106,7 +108,8 @@ An element can have listeners for any valid [DOM event](https://www.w3schools.co
     children: 'Click or right-click me!',
     on: {
         click() { alert('You clicked!') },
-        contextmenu() { alert('You right-clicked!') }
+        contextmenu() { alert('You right-clicked!') },
+        mount() { console.log("Hello! Here's my 'this': ", this) }
     }
 }
 ```
@@ -137,7 +140,7 @@ The `children` property defines the element's children. This can be a `string`, 
 
 If `children` is a `string`, `Templte` or `Component`, the given value is the element's only child. (This is equivalent to passing an array with 1 element.)
 
-If the `children` property is absent, or explicitly set to `undefined`, the element has no children.
+If the `children` property is absent, an empty array (`[]`), or explicitly set to `undefined`, the element has no children.
 
 ### The `innerHTML` property
 
@@ -149,7 +152,7 @@ The `cloneFrom` property replaces the element with a clone of a given `HTMLEleme
 
 ### The `HTML` property
 
-The `HTML` property defines the element as an HTML `string`. This overrides all other properties (except for `cloneFrom`, which supercedes it.)
+The `HTML` property defines the element as an HTML `string`. This overrides all other properties (except for `cloneFrom`, which has precedence over it.)
 
 ### The `xmlns` property
 
@@ -195,7 +198,7 @@ function Circle(color) {
 
 You can pass any type as a "prop" in this way, including other templates or components.
 
-While these parallel the notion of *components* from other front-end frameworks, they are not stateful or reactive, unlike FRUIT's @[Components](core-components).
+While these parallel the notion of reusable *components* from other front-end frameworks, they are not stateful or reactive, unlike FRUIT's @[Components](core-components).
 
 ## Putting templates on the DOM
 

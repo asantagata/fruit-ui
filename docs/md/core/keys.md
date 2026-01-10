@@ -24,9 +24,7 @@ Take a look at the `Switcheroo` component:
 
 ```
 const Switcheroo = {
-    state() {
-        return { myCondition: true };
-    },
+    state: { myCondition: true },
     render() {
         return {
             on: {
@@ -54,9 +52,7 @@ Inversely, you can deliberately use keys to trick FRUIT into deleting and re-cre
 
 ```{counter}
 {
-    state() {
-        return {key: 0}
-    },
+    state: { key: 0 },
     render() {
         return {
             children: [
@@ -89,7 +85,7 @@ Inversely, you can deliberately use keys to trick FRUIT into deleting and re-cre
 ```{without}
 function Item(name, makeFirst, makeLast) {
     return {
-        state() {return {name}},
+        state: { name },
         render() {
             return {
                 children: [
@@ -117,7 +113,7 @@ function Item(name, makeFirst, makeLast) {
 // ...
 
 {
-    state() { return { list: ['Ape', 'Bomb', 'Chin', 'Duck', 'Ego'] }; },
+    state: { list: ['Ape', 'Bomb', 'Chin', 'Duck', 'Ego'] },
     render() {
         return {
             children: this.state.list.map((name, id) => Item(

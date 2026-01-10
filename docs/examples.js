@@ -8,8 +8,8 @@ export const examples = {
         ]
     },
     'core-counter': {
-        state() {
-            return {i: 0}; // initialize state
+        state: {
+            i: 0
         },
         render() {
             return {
@@ -52,7 +52,8 @@ export const examples = {
         children: 'Click or right-click me!',
         on: {
             click() { alert('You clicked!') },
-            contextmenu() { alert('You right-clicked!') }
+            contextmenu() { alert('You right-clicked!') },
+            mount() { console.log("Hello! Here's my 'this': ", this) }
         }
     },
     'templates-props': {
@@ -84,14 +85,12 @@ export const examples = {
         // ...
 
         return {
-            state() {
-                return { 
-                    users: [
-                        {id: 1, name: 'Alice'},
-                        {id: 2, name: 'Bob'},
-                        {id: 3, name: 'Parlie'}
-                    ]
-                }
+            state: {
+                users: [
+                    {id: 1, name: 'Alice'},
+                    {id: 2, name: 'Bob'},
+                    {id: 3, name: 'Parlie'}
+                ]
             },
             render() {
                 return {
@@ -117,8 +116,8 @@ export const examples = {
     }),
     'keys-resetable-counter': (() => {
         const Counter = {
-            state() {
-                return {i: 0}; // initialize state
+            state: {
+                i: 0
             },
             render() {
                 return {
@@ -134,8 +133,8 @@ export const examples = {
         };
 
         return {
-            state() {
-                return {key: 0}
+            state: {
+                key: 0
             },
             render() {
                 return {
@@ -164,7 +163,7 @@ export const examples = {
     'keys-reorder': (include) => {
         function Item(name, makeFirst, makeLast) {
             return {
-                state() {return {name}},
+                state: {name: name},
                 render() {
                     return {
                         class: 'keys-demo-list-item',
@@ -192,7 +191,7 @@ export const examples = {
         }
 
         return {
-            state() { return { list: ['Ape', 'Bomb', 'Chin', 'Duck', 'Ego'] }; },
+            state: {list: ['Ape', 'Bomb', 'Chin', 'Duck', 'Ego'] },
             render() {
                 return {
                     class: 'keys-demo-list',
@@ -282,9 +281,7 @@ export const examples = {
         }
     })(),
     'conditional-children': {
-        state() {
-            return {condition: false}
-        },
+        state: {condition: false},
         render() {
             return {
                 children: [
