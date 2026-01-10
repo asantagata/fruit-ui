@@ -292,7 +292,7 @@ function createElementFromElementable(elementable, onMounts) {
 function createElementFromComponent(component, onMounts) {
     const boundProducer = bindTemplateProducer(component.render, component);
     thisRecord[boundProducer.componentId] = boundProducer.this;
-    boundProducer.this.state = component.state ? component.state.call(boundProducer.this) : {};
+    boundProducer.this.state = typeof component.state === 'function' ? component.state.call(boundProducer.this) : component.state ?? {};
     const template = boundProducer();
     return createElementFromTemplate.call(boundProducer.this, giveTemplateComponentMetadata(template, boundProducer.componentId, component.key, component.binding), onMounts, boundProducer);
 }

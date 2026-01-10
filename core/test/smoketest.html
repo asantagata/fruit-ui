@@ -36,10 +36,8 @@
 
     function child(name, modifyList, newGuy) {
         return {
-            state() {
-                return {
-                    i: 0
-                };
+            state: {
+                i: 0
             },
             render() {
                 return {
@@ -70,12 +68,10 @@
         const names = ['apple', 'banana', 'christopher', 'diana', 'eee', 'flu', 'glue', 'hue', 'ieaux', 'jieu', 'kueue', 'loo', 'moo', 'new', 'ooh', 'pew', 'q', 'rue', 'shoo', '2', 'u', 'vue', 'woo!', 'xanadu', 'you', 'zoo'];
         const startN = 5;
         return {
-            state() {
-                return {
-                    array: names.slice(0, startN),
-                    i: startN
-                };
-            },
+            state: () => ({
+                array: names.slice(0, startN),
+                i: startN
+            }),
             render() {
                 return {
                     id: 'parent',
