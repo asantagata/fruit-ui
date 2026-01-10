@@ -94,7 +94,9 @@ The following is a more thorough guide to components.
 
 `state()` defines the initial state of the component. It is called only once in the "life cycle" of the component: at the very beginning before `render()`. While not necessary in every case, it is useful for `state()` to be initialized through a function rather than a static object definition because it allows state variables to be derived from one another.
 
-The return value of `state()` describes the initial status of the component's state. You can also perform other tasks in `state()` which you want to occur only once. Note, however, that most `this` properties (such as `this.element` and `this.rerender`) will not yet be accessible, because `state()` is processed before other properties of components.
+The return value of `state()` describes the initial status of the component's state. You can also perform other tasks (i.e., side effects) in `state()` which you want to occur only once. Note, however, that most `this` properties (such as `this.element` and `this.rerender`) will not yet be accessible, because `state()` is processed before other properties of components.
+
+`state()` can be used in patterns like @[global context](core-patterns#global-context).
 
 ### The `memo` and `memo()` properties
 
