@@ -19,7 +19,8 @@ const ARTICLES = [
     },
     {title: 'Components', url: 'components', section: 'core', 
         results: {
-            counter: examples['core-counter']
+            counter: examples['core-counter'],
+            state: examples['component-state']
         }
     },
     {title: 'Memo', url: 'memo', section: 'core',

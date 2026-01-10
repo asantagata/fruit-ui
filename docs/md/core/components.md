@@ -95,7 +95,7 @@ The following is a more thorough guide to components.
 
 `state()` is called only once in the "life cycle" of the component: at the very beginning before `render()`. While not necessary in every case, it is useful for `state()` to be initialized through a function rather than a static object definition because it allows state variables to be derived from one another. When not needed, you can instead declare `state` directly.
 
-```{component-state}
+```{state}
 {
     children: [
         {
@@ -115,7 +115,7 @@ The following is a more thorough guide to components.
             render() {
                 return {
                     tag: 'p', 
-                    children: `${this.state.rand}, ${this.state.half}`
+                    children: `${this.state.rand} / 2 = ${this.state.half}`
                 };
             }
         }
@@ -123,7 +123,7 @@ The following is a more thorough guide to components.
 }
 ```
 
-You can also perform other tasks in `state()` which you want to occur only once. Note, however, that most `this` properties (such as `this.element` and `this.rerender`) will not yet be accessible because `state()` is processed before other properties of components. If you want to wait until the component is fully initialized, use an @[on-mount function](core-templates#on) instead.
+You can also perform other tasks in `state()` which you want to occur only once. Note, however, that most `this` properties (such as `this.element` and `this.rerender`) will not yet be accessible because `state()` is processed before other properties of components. If you want to wait until the component is fully initialized, use an @[on-mount function](core-templates#the-on-property) instead.
 
 `state()` can be used in patterns like @[global context](core-patterns#global-context).
 

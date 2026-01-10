@@ -62,6 +62,31 @@ export const examples = {
             style: {background: color}
         }))
     },
+    'component-state': {
+        children: [
+            {
+                // object literal syntax for state
+                state: { rand: Math.random() },
+                render() {
+                    return { tag: 'p', children: this.state.rand };
+                }
+            },
+            {
+                // functional syntax for state
+                state() {
+                    let rand = Math.random();
+                    let half = rand / 2;
+                    return {rand, half};
+                },
+                render() {
+                    return {
+                        tag: 'p', 
+                        children: `${this.state.rand} / 2 = ${this.state.half}`
+                    };
+                }
+            }
+        ]
+    },
     'memo': ((custom) => {
         function Record(user) {
             return {
