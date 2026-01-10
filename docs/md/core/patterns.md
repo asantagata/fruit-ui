@@ -71,7 +71,7 @@ export default function App() {
 
 Now, once the `App` component's `state()` method has been called, `context.rerender()` will rerender `App` and therefore everything inside using the new value of `context`. From here, you can set up your own custom methods, like [setters with side-effects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set), to control rerendering further.
 
-Note that, as of `state()` being called, `App`'s `this.rerender()` has not yet been configured since `this.render()` has not yet run. As such, we cannot assign the function directly (i.e., `context.rerender = this.rerender`) because it is currently the no-op function `() => {}`. Instead, passing by reference (i.e., `() => this.rerender()`) allows us to access a reference to the up-to-date value of `this.rerender()` as desired.
+Note that, as of `state()` being called, `App`'s `this.rerender()` has not yet been configured since `App`'s `render()` method has not yet run. As such, we cannot assign the function directly (i.e., `context.rerender = this.rerender`) because it is currently the no-op function `() => {}`. Instead, passing by reference (i.e., `() => this.rerender()`) allows us to access a reference to the up-to-date value of `this.rerender()` as desired.
 
 ### Global context (several insertion points)
 
