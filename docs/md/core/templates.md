@@ -49,12 +49,19 @@ Templates are JavaScript objects representing HTML elements. Although FRUIT was 
 
 ```
 type Template = Partial<({
+    tag: string,
     class: string | string[] | Record<string, any>,
+    id: string,
     style: CSSStyleDeclaration,
     dataset: Record<string, string>,
     on: Record<string, (() => void) | ((event: Event) => void)>,
     children: Template | Component | string | (Template | Component | string)[],
+    innerHTML: string,
     cloneFrom: HTMLElement,
+    HTML: string,
+    xmlns: string,
+    key: string,
+    binding: string
 } & Record<string, string>)>
 ```
 
@@ -91,7 +98,7 @@ The `dataset` property defines the element's [dataset](https://developer.mozilla
 
 The `on` property defines the element's listeners. It must be a `Record<string, (() => void) | ((event: Event) => void)>`. The name of the function is taken as the type of the listener. Despite this type signature, you must use named methods rather than anonymous (arrow-based) functions for listeners. This allows `this`-related logic to be consistent; see @[Superpowered "this"](core-this#---vs-function) for more on `this`-related syntax.
 
-An element can have listeners for any valid [DOM event](https://www.w3schools.com/jsref/dom_obj_event.asp).
+An element can have listeners for any valid [DOM event](https://www.w3schools.com/jsref/dom_obj_event.asp). You can also have listeners to the `mount` event, which takes place when the element is mounted to the DOM. (In special cases, this can happen more than once; see @[Re-mounting](core-keys#re-mounting).)
 
 ```{on}
 {
@@ -108,7 +115,29 @@ Listeners always have access to the `this.target` property. Inside of components
 
 ### The `children` property
 
-The `children` property defines the element's children. This can be a `string`, a `Template`, a `Component`, or an `Array` of these types. If it is a `string`, `Templte` or `Component`, the given value is the element's only child. If it is an `Array`, the children appear in the given order. In either case, `string` entries correspond to text nodes.
+The `children` property defines the element's children. This can be a `string`, a `Template`, a `Component`, or an `Array` of any these types. `Array`s are interpreted as a list of child nodes:
+```
+{
+    children: [
+        'Child node #1 is a text node.',
+        'Child node #2 is also a text node. You can have multiple consecutive text node children.',
+        {
+            tag: 'b', 
+            children: 'Child node #3 is a Template with a text node child.'
+        },
+        {render() {
+            return {
+                tag: 'u', 
+                children: 'Child node #4 is a Component returning a Template with a text node child.'
+            }
+        }}
+    ]
+}
+```
+
+If `children` is a `string`, `Templte` or `Component`, the given value is the element's only child. (This is equivalent to passing an array with 1 element.)
+
+If the `children` property is absent, or explicitly set to `undefined`, the element has no children.
 
 ### The `innerHTML` property
 
@@ -120,11 +149,11 @@ The `cloneFrom` property replaces the element with a clone of a given `HTMLEleme
 
 ### The `HTML` property
 
-The `HTML` property defines the element as an HTML `string`.
+The `HTML` property defines the element as an HTML `string`. This overrides all other properties (except for `cloneFrom`, which supercedes it.)
 
 ### The `xmlns` property
 
-The `xmlns` property is a `string` used with `document.createElementNS()` to identify the [XML namespace](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course) of the element. This must be specified for all elements belonging to a non-HTML namespace (i.e., it is not inherited.)
+The `xmlns` property is a `string` used with `document.createElementNS()` to identify the [XML namespace](https://developer.mozilla.org/en-US/docs/Web/SVG/Guides/Namespaces_crash_course) of the element, if it is non-standard. This includes all [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG) and [MathML](https://developer.mozilla.org/en-US/docs/Web/MathML) elements.
 
 ### The `key` property
 

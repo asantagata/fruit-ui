@@ -35,6 +35,11 @@ const ARTICLES = [
             example: examples['bindings-example']
         }
     },
+    {title: 'Patterns', url: 'patterns', section: 'core',
+        results: {
+            'conditional-children': examples['conditional-children']
+        }
+    },
     {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', section: 'core', results: {
         counter: examples['core-counter'],
     }},
@@ -162,7 +167,7 @@ function tokenize(code) {
 
 function JSSyntaxHighlighting(code, mode) {
     const declareKeywords = new Set(['const', 'function', 'let', 'new', 'document', 'type']);
-    const ctrlflowKeywords = new Set(['break', 'do', 'while', 'for', 'in', 'of', 'if', 'else', 'return', 'import', 'from', 'as', 'string', 'boolean', 'null', 'any', 'void', 'true', 'false']);
+    const ctrlflowKeywords = new Set(['break', 'do', 'while', 'for', 'in', 'of', 'if', 'else', 'return', 'import', 'export', 'default', 'from', 'as', 'string', 'boolean', 'null', 'any', 'void', 'true', 'false']);
     const tokens = tokenize(code);
     let currentType = null;
     let insideStringBreak = false;

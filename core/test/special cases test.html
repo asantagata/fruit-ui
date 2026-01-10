@@ -70,6 +70,18 @@
         tag: 'svg', xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", children: {
             tag: 'path', xmlns: "http://www.w3.org/2000/svg", d: "M17 10C17.7 9.3 18.69 10 19.5 10A2.5 2.5 0 1 0 19.5 5A0.5 0.5 0 0 1 19 4.5A2.5 2.5 0 1 0 14 4.5C14 5.31 14.7 6.3 14 7L7 14C6.3 14.7 5.31 14 4.5 14A2.5 2.5 0 0 0 4.5 19C4.78 19 5 19.22 5 19.5A2.5 2.5 0 1 0 10 19.5C10 18.69 9.3 17.7 10 17Z"
         }
+    });
+
+    fruit.appendChild(document.body, {
+        state() {return {i: true}},
+        render() {
+            return {
+                children: [
+                    {tag: 'button', children: 'toggle', on: {click() {this.setState.i(!this.state.i)}}},
+                    ...(this.state.i ? [{children: 'hello'}] : [])
+                ]
+            }
+        }
     })
 
     fruit.appendChild(document.body, {HTML: '<a href="whatssup">hi</a>', tag: 'div', children: 'Ahhh'});

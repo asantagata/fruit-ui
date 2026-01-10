@@ -277,5 +277,27 @@ export const examples = {
                 }
             }
         }
-    })()
+    })(),
+    'conditional-children': {
+        state() {
+            return {condition: false}
+        },
+        render() {
+            return {
+                children: [
+                    {
+                        tag: 'button', 
+                        children: 'Toggle this ↓', 
+                        on: {click() {
+                            this.setState.condition(!this.state.condition)
+                        }}
+                    },
+                    ...(this.state.condition 
+                        ? [{tag: 'p', children: 'Hello!'}]
+                        : []
+                    )
+                ]
+            }
+        }
+    }
 };
