@@ -6,7 +6,7 @@ By default, FRUIT rerenders entire subtrees. That is to say: if component `Paren
 
 `memo()` is a function which returns any value. This function is called before the component is rerendered as part of an ancestor's rerender, and the returned value is compared against the previous stored return value of `memo()`. If the values are found to be the same, FRUIT will not rerender the component. 
 
-The return value of `memo()` can be any *acyclic* (i.e., not self-referential) combination of objects, iterables (arrays, sets, maps), functions, and primitives. When a component with `memo` is made to rerender as part of an ancestor's rerender, FRUIT will compare the old and new values of `memo` with a deep equality check.
+The return value of `memo()` can be any *acyclic* (i.e., not self-referential) combination of objects, iterables (arrays, sets, maps), functions, and primitives. When a component with `memo()` is made to rerender as part of an ancestor's rerender, FRUIT will compare the old and new return values of `memo()` with a deep equality check.
 
 One common use case for this is to compare the props (discussed in @[Templates](core-templates)) of a component producer. Here, the `Record` component updates only when its prop updates. Try editing the input to change the third user's name; only one user's "last rendered" timestamp will change.
 
