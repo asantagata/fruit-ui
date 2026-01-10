@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" href="data:," />
+        <title>FRUIT UI - Array Memoization</title>
+        <style></style>
+    </head>
+    <body style="background: #ccc">
+        <div id="div"></div>
+    </body>
+    <script type="module">
+        import * as fruit from "../src/index.js";
+
+        const obj = { items: [], rerender() {} };
+        obj.items = [1, 2, 3];
+
+        function parent() {
+            return {
+                render() {
+                    return {
+                        tag: "div",
+                        id: "parent",
+                        children: [Producer, Displayer, Sanity],
+                        on: {
+                            mount() {
+                                console.log("mounted");
+                                obj.rerender = () => this.rerender();
+                            },
+                        },
+                    };
+                },
+            };
+        }
+
+        const Producer = {
+            render() {
+                return {
+                    tag: "button",
+                    children: "click me to add a new object",
+                    on: {
+                        click() {
+                            const newId = obj.items.length + 1;
+                            obj.items = [...obj.items, newId];
+                            obj.rerender();
+                        },
+                    },
+                };
+            },
+        };
+
+        const Displayer = {
+            render() {
+                return {
+                    children: obj.items.map((item) => ({
+                        tag: "div",
+                        key: item,
+                        children: `Item ID: ${item}`,
+                    })),
+                };
+            },
+            memo: obj.items,
+        };
+
+        const Sanity = {
+            render() {
+                return {
+                    tag: "div",
+                    children: obj.items.toString(),
+                };
+            },
+        };
+
+        fruit.replaceWith(document.getElementById("div"), parent());
+    </script>
+</html>
