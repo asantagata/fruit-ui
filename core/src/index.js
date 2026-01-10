@@ -49,7 +49,7 @@
  * @property {object} state - The component's state.
  * @property {object} setState - Functions to set the component's state with automatic reactivity.
  * @property {Object.<string, Binding>} bindings - The component's bindings.
- * @property {object} [memo] - The component's last memo value, if given.
+ * @property {*} [memo] - The component's last memo value, if given.
  */
 
 /**
@@ -66,7 +66,7 @@
  * @property {() => Object.<string, any>} [state] - The initializer for local state.
  * @property {string} [key] - The element's key, used to distinguish re-ordered siblings and preserve state.
  * @property {string} [binding] - The element's binding.
- * @property {() => object} [memo] - The element's memoized props, used to control rerendering.
+ * @property {() => any} [memo] - The element's memo, used to control rerendering.
  * @property {() => boolean} [customMemo] - The element's custom memo, used to control rerendering.
  */
 
