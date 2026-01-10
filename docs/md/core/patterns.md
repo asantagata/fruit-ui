@@ -103,4 +103,4 @@ state() {
 }
 ```
 
-This is the same logic, only with multiple methods in `rerenders` wrangled by the one `rerender` method.
+This is the same logic, only with multiple methods in `context.rerenders` wrangled by the one `context.rerender()` method.
