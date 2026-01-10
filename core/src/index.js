@@ -181,7 +181,7 @@ function createElementFromTemplate(template, onMounts, producer = null) {
     }
     if (template.style) {
         for (const k in template.style) {
-            element.style[k] = template.style[k];
+            element.style.setProperty(k, template.style[k]);
         }
     }
     if (template.on) {
@@ -432,8 +432,8 @@ function rerenderElementFromTemplate(element, template, onMounts) {
         }
     }
     if (template.style) {
-        for (let key in template.style) {
-            element.style[key] = template.style[key];
+        for (const k in template.style) {
+            element.style.setProperty(k, template.style[k]);
         }
     }
     if (template.dataset) {

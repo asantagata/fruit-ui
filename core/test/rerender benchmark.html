@@ -15,7 +15,7 @@
  
 </body>
 <script type="module">
-    import * as fruit from "../dist/index.js";
+    import * as fruit from "../src/index.js";
 
     let i = 0;
     let N = 1000;
@@ -42,11 +42,12 @@
                             render() {
                                 return {
                                     tag: 'tr',
+                                    style: {'--n': j+i},
                                     children: [
                                         {
                                             tag: 'td',
-                                            
-                                            children: {class: 'square', style: {background: colors[(j + i) % 4]}},
+                                            children: {class: 'square', 
+                                            style: {background: colors[(j + i) % 4]}},
                                         },
                                         {
                                             tag: 'td',
