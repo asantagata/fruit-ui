@@ -200,7 +200,7 @@ For most cases where removing an key from one of these objects is desirable, oth
 - In the `class` object, simply set that key to `false` or a [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) value.
 - In the `style` object, simply set that key to the empty string `''`.
 - The `dataset` attribute does not offer a method to remove attributes by setting them to a certain value. If you need to make a `[[pink]]data-*` attribute conditional, use the `{'data-name': 'asantagata'}` syntax.
-- In the `Template` object, explicitly setting an attribute to `undefined` causes it to be removed.
+- In the `Template` object, explicitly setting any #[miscellaneous attribute](other-properties) to `undefined` causes it to be removed.
 
 ## Template producers & props
 
