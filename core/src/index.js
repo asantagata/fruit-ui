@@ -469,7 +469,7 @@ function rerenderElementFromTemplate(element, template, onMounts) {
 function deepEqual(a, b) {
     if (typeof a !== typeof b) return false;
     if (typeof a === 'function') return true;
-    if (typeof a === 'object' && a !== null) {
+    if (typeof a === 'object' && a !== null && b !== null) {
         if (typeof a[Symbol.iterator] === "function") { // is iterable
             if (a.length === b.length && a.size === b.size) {
                 const itA = a[Symbol.iterator](), itB = b[Symbol.iterator]();
