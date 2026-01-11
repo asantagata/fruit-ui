@@ -315,22 +315,49 @@ function Markdown(text, headings = []) {
         }
     }
 
+    let visibleHeadings = new Set();
+    const intersectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                visibleHeadings.add(entry.target);
+            } else {
+                visibleHeadings.delete(entry.target);
+            }
+        });
+        if (visibleHeadings.size) {
+            document.getElementById('selected-toc-entry')?.setAttribute('id', '');
+            const lastVisibleHeading = Array.from(visibleHeadings).reduce((acc, cur) => {
+                if (+cur.dataset.headerIndex > (acc?.dataset?.headerIndex ?? -1))
+                    return cur;
+                return acc;
+            }, {});
+            document.getElementById('toc').children[+lastVisibleHeading.dataset.headerIndex].setAttribute('id', 'selected-toc-entry');
+        }
+    });
+
     // use proper tags for singular non-Ps
+    let headerCount = 0;
     const paragraphs = lines.filter(t => t.children || t.trim().length > 0).map(text => {
         let lineTemplate;
         if (text.children) lineTemplate = text;
         else if (text.startsWith('# ')) 
-            lineTemplate = {tag: 'h1', id: idify(text.slice(2)), children: [text.slice(2)]};
+            lineTemplate = {tag: 'h1', id: idify(text.slice(2)), 'data-header-index': `${headerCount++}`, children: [text.slice(2)]};
         else if (text.startsWith('## ')) 
-            lineTemplate = {tag: 'h2', id: idify(text.slice(3)), children: [text.slice(3)]};
+            lineTemplate = {tag: 'h2', id: idify(text.slice(3)), 'data-header-index': `${headerCount++}`, children: [text.slice(3)]};
         else if (text.startsWith('### ')) 
-            lineTemplate = {tag: 'h3', id: idify(text.slice(4)), children: [text.slice(4)]};
+            lineTemplate = {tag: 'h3', id: idify(text.slice(4)), 'data-header-index': `${headerCount++}`, children: [text.slice(4)]};
         else if (text.startsWith('- ')) 
             lineTemplate = {tag: 'li', children: [text.slice(2)]};
         else
             lineTemplate = {tag: 'p', children: [text]};
-        if (lineTemplate.tag?.startsWith('h'))
+        if (lineTemplate.tag?.startsWith('h')) {
             headings.push(lineTemplate);
+            Object.assign(lineTemplate, {
+                on: {mount() {
+                    intersectionObserver.observe(this.target);
+                }}
+            })
+        }
         return lineTemplate;
     });
 
@@ -442,6 +469,7 @@ function Article(article) {
                     children: headings.map(h => ({
                         ...h,
                         id: undefined,
+                        'data-heading': h.id,
                         on: {click() { navigateHash(h.id) }}
                     }))
                 }
