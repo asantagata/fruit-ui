@@ -196,8 +196,10 @@ function createElementFromTemplate(template, onMounts, producer = null) {
         }
     }
     for (const attribute in rest) {
-        if (!template[attribute]) continue;
-        element.setAttribute(attribute, template[attribute]);
+        if (template[attribute] === undefined)
+            element.removeAttribute(attribute);
+        else
+            element.setAttribute(attribute, template[attribute]);
     }
     if (template.dataset) {
         for (const k in template.dataset) {
@@ -444,7 +446,10 @@ function rerenderElementFromTemplate(element, template, onMounts) {
     }
     const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, xmlns, ...rest} = template;
     for (const attribute in rest) {
-        element.setAttribute(attribute, template[attribute]);
+        if (template[attribute] === undefined)
+            element.removeAttribute(attribute);
+        else
+            element.setAttribute(attribute, template[attribute]);
     }
     if (template.innerHTML) {
         element.innerHTML = template.innerHTML;
