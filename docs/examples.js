@@ -141,9 +141,7 @@ export const examples = {
     }),
     'keys-resetable-counter': (() => {
         const Counter = {
-            state: {
-                i: 0
-            },
+            state() { return { i: 0 }; },
             render() {
                 return {
                     tag: 'button',
@@ -169,7 +167,7 @@ export const examples = {
                         gap: 'var(--md)'
                     },
                     children: [
-                        {...Counter, key: `${this.state.key}`},
+                        {...Counter, key: `counter-${this.state.key}`},
                         {
                             tag: 'button',
                             children: 'Reset',

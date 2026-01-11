@@ -48,15 +48,22 @@ When using ternary operators like these on components, it is a good idea to use 
 
 ## Using keys to wipe state
 
-Inversely, you can deliberately use keys to trick FRUIT into deleting and re-creating a child, wiping its state and hard-replacing its content:
+Inversely, you can deliberately use keys to "trick" FRUIT into deleting and re-creating a child, wiping its state and hard-replacing its content:
 
 ```{counter}
+const Counter = {
+    state() { return { i: 0 }; },
+    render() { return { ... } } // same as before
+};
+
+// ...
+
 {
-    state: { key: 0 },
+    state() { return { key: 0 }; },
     render() {
         return {
             children: [
-                {...Counter, key: `${this.state.key}`},
+                {...Counter, key: `counter-${this.state.key}`},
                 {
                     tag: 'button',
                     children: 'Reset',
@@ -76,9 +83,15 @@ Inversely, you can deliberately use keys to trick FRUIT into deleting and re-cre
 }
 ```
 
-## Examples
+Note that for this version of `Counter`, we *must* use `state()` rather than `state`. If we used `state: { i: 0 }`, the following issue would emerge:
+- As the `Counter` component is processed, the object `{ i: 0 }` is copied by reference as `Counter`'s `this.state` value.
+- The `Counter` component is clicked a few times, incrementing `i`. Now we have `this.state = { i: 3 }`. Keeping in mind that this was copied by reference as all objects are, we also have `Counter.state = { i: 3 }`.
+- The "reset" button is clicked, incrementing the `Counter` component's key.
+- As the main component rerenders, FRUIT sees that the keys on the child component have gone from `['counter-0', 'reset']` to `['counter-1', 'reset']`. So the existing `Counter` component is deleted (as the key `'counter-0'` is gone) and a new `Counter` component is created (with the key `'counter-1'`) ...
+- ... but the `Counter.state` object is still `{ i: 3 }`. So the new `Counter` component's `this.state` object is also `{ i: 3 }`.
+If you want to utilize this trick, make sure to use the functional definition of `state()`!
 
-### No keys
+## List without keys
 
 (You'll find this example does not work. That's deliberate! See the explanation below.)
 
@@ -134,7 +147,7 @@ function Item(name, makeFirst, makeLast) {
 
 You might notice that the "props name" and "state name" start to differ and certain buttons stop working. Since listeners are not re-evaluated, the listener on each button becomes stale, referring to the same name as the "props" name. If "Ape" is moved from first to last, for instance, then the first card's listeners will still be "move Ape to last place," even though the card's props name now reads "Bomb." This is problematic and means our re-orderable list is very unstable.
 
-### With keys
+### Lists with keys
 
 With keys, fixing this example is very easy. By giving each `Item` a key equal to its name, we can easily instruct FRUIT on how to dynamically re-order them.
 

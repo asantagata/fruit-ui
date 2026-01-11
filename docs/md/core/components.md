@@ -37,7 +37,7 @@ By calling `this.setState.i()` in the click listener, it is possible to dynamica
 - To this end, you should also put any state references *inside* listeners. That is, avoid this pattern:
 ```
 render() {
-    const ref = this.state.myStateVariable;
+    const ref = someFunctionOf(this.state.myStateVariable);
     return {
         on: {
             click() { 
@@ -54,7 +54,7 @@ render() {
     return {
         on: {
             click() { 
-                const ref = this.state.myStateVariable;
+                const ref = someFunctionOf(this.state.myStateVariable);
                 operateOn(ref);
             }
         }
