@@ -3,53 +3,16 @@ import { Router, navigate, navigateHash, getPage } from "./router.js";
 import { examples } from "./examples.js";
 
 const ARTICLES = [
-    {title: 'FRUIT', url: 'index', section: 'core', 
-        results: {
-            fun: examples['core-fun'],
-            counter: examples['core-counter']
-        }
-    },
+    {title: 'FRUIT', url: 'index', section: 'core'},
     {title: 'Getting started', url: 'getting-started', section: 'core'},
-    {title: 'Templates', url: 'templates', section: 'core',
-        results: {
-            demo: examples['templates-demo'],
-            on: examples['templates-on'],
-            props: examples['templates-props']
-        }
-    },
-    {title: 'Components', url: 'components', section: 'core', 
-        results: {
-            counter: examples['core-counter'],
-            state: examples['component-state']
-        }
-    },
-    {title: 'Memo', url: 'memo', section: 'core',
-        results: {
-            memo: examples['memo'](false),
-            'custom-memo': examples['memo'](true),
-        }
-    },
+    {title: 'Templates', url: 'templates', section: 'core'},
+    {title: 'Components', url: 'components', section: 'core'},
+    {title: 'Memo', url: 'memo', section: 'core'},
     {title: 'Superpowered `this`', url: 'this', section: 'core'},
-    {title: 'Keys', url: 'keys', section: 'core',
-        results: {
-            counter: examples['keys-resetable-counter'],
-            without: examples['keys-reorder'](false),
-            with: examples['keys-reorder'](true),
-        }
-    },
-    {title: 'Bindings', url: 'bindings', section: 'core', 
-        results: {
-            example: examples['bindings-example']
-        }
-    },
-    {title: 'Patterns', url: 'patterns', section: 'core',
-        results: {
-            'conditional-children': examples['conditional-children']
-        }
-    },
-    {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', section: 'core', results: {
-        counter: examples['core-counter'],
-    }},
+    {title: 'Keys', url: 'keys', section: 'core'},
+    {title: 'Bindings', url: 'bindings', section: 'core'},
+    {title: 'Patterns', url: 'patterns', section: 'core'},
+    {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', section: 'core'},
 
     {title: 'FRUIT Router', url: 'index', section: 'router'},
     {title: 'Getting started with FRUIT Router', url: 'getting-started', section: 'router'}
@@ -326,7 +289,7 @@ function Markdown(text, article) {
                                 tag: 'pre',
                                 children: SyntaxHighlighting(code)
                             },
-                            {class: 'resultbox', children: article.results[tag]}
+                            {class: 'resultbox', children: examples[tag]}
                         ]
                     });
                 } else if (line.startsWith('```[')) {

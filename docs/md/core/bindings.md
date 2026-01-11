@@ -44,9 +44,7 @@ There are two properties you can utilize on bindings:
 - `this.bindings['binding-name'].element` returns a reference to that element on which you can perform whatever DOM manipulation you like.
 - `this.bindings['binding-name'].rerender()` rerenders only the subtree starting from that descendant.
 
-## Example
-
-```{example}
+```{bindings}
 const Component = {
     render() {
         return {

@@ -50,7 +50,7 @@ When using ternary operators like these on components, it is a good idea to use 
 
 Inversely, you can deliberately use keys to "trick" FRUIT into deleting and re-creating a child, wiping its state and hard-replacing its content:
 
-```{counter}
+```{reset-counter}
 const Counter = {
     state() { return { i: 0 }; },
     render() { return { ... } } // same as before
@@ -95,7 +95,7 @@ If you want to utilize this trick, make sure to use the functional definition of
 
 (You'll find this example does not work. That's deliberate! See the explanation below.)
 
-```{without}
+```{reorder-nokeys}
 function Item(name, makeFirst, makeLast) {
     return {
         state: { name },
@@ -151,7 +151,7 @@ You might notice that the "props name" and "state name" start to differ and cert
 
 With keys, fixing this example is very easy. By giving each `Item` a key equal to its name, we can easily instruct FRUIT on how to dynamically re-order them.
 
-```{with}
+```{reorder-keys}
 function Item(name, makeFirst, makeLast) {
     return {
         key: name,

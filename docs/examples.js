@@ -1,5 +1,103 @@
+const memo = ((custom) => {
+    function Record(user) {
+        return {
+            render() {
+                return {
+                    class: 'record',
+                    children: [
+                        {tag: 'p', children: `ID: ${user.id}`},
+                        {tag: 'p', children: `Name: ${user.name}`},
+                        {tag: 'p', children: `Last rendered: ${Date.now()}`},
+                    ]
+                }
+            },
+            memo() {return user;},
+            ...(custom ? {
+                customMemo() {return user.id % 2 === 1}
+            } : {})
+        }
+    }
+
+    // ...
+
+    return {
+        state: {
+            users: [
+                {id: 1, name: 'Alice'},
+                {id: 2, name: 'Bob'},
+                {id: 3, name: 'Parlie'}
+            ]
+        },
+        render() {
+            return {
+                class: 'memo-demo',
+                children: [
+                    {
+                        tag: 'input',
+                        value: this.state.users[2].name,
+                        on: {
+                            input(e) {
+                                this.state.users[2].name = e.target.value;
+                                this.rerender();
+                            }
+                        }
+                    },
+                    {
+                        children: this.state.users.map(user => Record(user))
+                    }
+                ]
+            }
+        }
+    }
+});
+
+const reorder = (include) => {
+    function Item(name, makeFirst, makeLast) {
+        return {
+            state: {name: name},
+            render() {
+                return {
+                    class: 'keys-demo-list-item',
+                    children: [
+                        `props name: ${name}, state name: ${this.state.name}`,
+                        {
+                            children: [
+                                {
+                                    tag: 'button',
+                                    children: 'make me first',
+                                    on: {click() { makeFirst() }}
+                                },
+                                {
+                                    tag: 'button',
+                                    children: 'make me last',
+                                    on: {click() { makeLast() }}
+                                }
+                            ]
+                        }
+                    ]
+                };
+            },
+            ...(include ? {key: name} : {})
+        }
+    }
+
+    return {
+        state: {list: ['Ape', 'Bomb', 'Chin', 'Duck', 'Ego'] },
+        render() {
+            return {
+                class: 'keys-demo-list',
+                children: this.state.list.map(name => Item(
+                    name,
+                    () => this.setState.list([name, ...this.state.list.filter(n => n !== name)]),
+                    () => this.setState.list([...this.state.list.filter(n => n !== name), name]),
+                ))
+            };
+        }
+    }
+};
+
 export const examples = {
-    'core-fun': {
+    'fun': {
         tag: 'p',
         children: [
             'Writing in ',
@@ -7,7 +105,7 @@ export const examples = {
             ' is fun!'
         ]
     },
-    'core-counter': {
+    'counter': {
         state: {
             i: 0
         },
@@ -23,7 +121,7 @@ export const examples = {
             }
         }
     },
-    'templates-demo': {
+    'demo': {
         children: [
             {tag: 'p', children: 'FRUIT is...'},
             {tag: 'ul', children: [
@@ -47,7 +145,7 @@ export const examples = {
             ]}
         ]
     },
-    'templates-on': {
+    'on': {
         tag: 'button',
         children: 'Click or right-click me!',
         on: {
@@ -56,13 +154,13 @@ export const examples = {
             mount() { console.log("Hello! Here's my 'this': ", this) }
         }
     },
-    'templates-props': {
+    'props': {
         class: 'props-demo',
         children: ['#d35176', '#ffc861', '#689f6d'].map(color => ({
             style: {background: color}
         }))
     },
-    'component-state': {
+    'state': {
         children: [
             {
                 // object literal syntax for state
@@ -87,59 +185,9 @@ export const examples = {
             }
         ]
     },
-    'memo': ((custom) => {
-        function Record(user) {
-            return {
-                render() {
-                    return {
-                        class: 'record',
-                        children: [
-                            {tag: 'p', children: `ID: ${user.id}`},
-                            {tag: 'p', children: `Name: ${user.name}`},
-                            {tag: 'p', children: `Last rendered: ${Date.now()}`},
-                        ]
-                    }
-                },
-                memo() {return user;},
-                ...(custom ? {
-                    customMemo() {return user.id % 2 === 1}
-                } : {})
-            }
-        }
-
-        // ...
-
-        return {
-            state: {
-                users: [
-                    {id: 1, name: 'Alice'},
-                    {id: 2, name: 'Bob'},
-                    {id: 3, name: 'Parlie'}
-                ]
-            },
-            render() {
-                return {
-                    class: 'memo-demo',
-                    children: [
-                        {
-                            tag: 'input',
-                            value: this.state.users[2].name,
-                            on: {
-                                input(e) {
-                                    this.state.users[2].name = e.target.value;
-                                    this.rerender();
-                                }
-                            }
-                        },
-                        {
-                            children: this.state.users.map(user => Record(user))
-                        }
-                    ]
-                }
-            }
-        }
-    }),
-    'keys-resetable-counter': (() => {
+    'memo': memo(false),
+    'custom-memo': memo(true),
+    'reset-counter': (() => {
         const Counter = {
             state() { return { i: 0 }; },
             render() {
@@ -183,51 +231,9 @@ export const examples = {
             }
         }
     })(),
-    'keys-reorder': (include) => {
-        function Item(name, makeFirst, makeLast) {
-            return {
-                state: {name: name},
-                render() {
-                    return {
-                        class: 'keys-demo-list-item',
-                        children: [
-                            `props name: ${name}, state name: ${this.state.name}`,
-                            {
-                                children: [
-                                    {
-                                        tag: 'button',
-                                        children: 'make me first',
-                                        on: {click() { makeFirst() }}
-                                    },
-                                    {
-                                        tag: 'button',
-                                        children: 'make me last',
-                                        on: {click() { makeLast() }}
-                                    }
-                                ]
-                            }
-                        ]
-                    };
-                },
-                ...(include ? {key: name} : {})
-            }
-        }
-
-        return {
-            state: {list: ['Ape', 'Bomb', 'Chin', 'Duck', 'Ego'] },
-            render() {
-                return {
-                    class: 'keys-demo-list',
-                    children: this.state.list.map(name => Item(
-                        name,
-                        () => this.setState.list([name, ...this.state.list.filter(n => n !== name)]),
-                        () => this.setState.list([...this.state.list.filter(n => n !== name), name]),
-                    ))
-                };
-            }
-        }
-    },
-    'bindings-example': (() => {
+    'reorder-nokeys': reorder(false),
+    'reorder-keys': reorder(true),
+    'bindings': (() => {
         const Component = {
             render() {
                 return {

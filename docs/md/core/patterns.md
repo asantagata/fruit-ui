@@ -13,7 +13,7 @@ The spread operator (`...`) and ternary operator (`? :`) can be used to create c
             tag: 'button', 
             children: 'Toggle this ↓', 
             on: {click() {
-                this.setState.condition(!this.state.condition)
+                this.setState.condition(!this.state.condition);
             }}
         },
         ...(this.state.condition 
@@ -45,7 +45,7 @@ export default function NumberInput(value, onChange, {min = '', max = ''}) {
             on: {
                 change() {
                     let currentValue = this.target.valueAsNumber;
-                    if (currentValue >= min && currentValue <= max) {
+                    if ((currentValue >= min || min === '') && (currentValue <= max || max === '')) {
                         this.state.value = currentValue;
                         onChange(currentValue);
                     } else {
