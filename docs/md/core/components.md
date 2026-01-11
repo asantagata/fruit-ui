@@ -29,7 +29,7 @@ By calling `this.setState.i()` in the click listener, it is possible to dynamica
 
 *Rerendering* is the act of updating a component's display and content to reflect changes in state. Assorted notes on rerendering:
 
-- Except in the case of `memo`s (see #[below](#the-memo-and-memo-properties)), FRUIT rerenders entire subtrees. This means that a component might be rerendered because its own `setState()` or `rerender()` method was called, or it might be rerendered because an ancestor was rerendered and the effect is propagating downward through its children.
+- Except in the case of `memo`s (see @[memo](core-memo)), FRUIT rerenders entire subtrees. This means that a component might be rerendered because its own `setState()` or `rerender()` method was called, or it might be rerendered because an ancestor was rerendered and the effect is propagating downward through its children.
 - When a component is rerendered as a result of an ancestor rerendering, its `render()` function is re-evaluated with new props taken into account. This means that props in `render()` do not get "stale."
 - FRUIT rerenders are generally "smooth." This means that instead of deleting and re-creating a component, FRUIT individually updates the component's attributes and those of its descendants. This has several benefits. For instance, it permits CSS transitions to occur reactively and preserves focus.
 - The `tagName` property on elements is read-only. If you attempt to change `tag`, the element will be deleted and re-created, meaning you do not get the aforementioned benefits.

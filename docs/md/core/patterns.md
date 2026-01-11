@@ -24,6 +24,52 @@ The spread operator (`...`) and ternary operator (`? :`) can be used to create c
 }
 ```
 
+## Using keys to wipe state
+
+You can deliberately use keys to "trick" FRUIT into deleting and re-creating a child, wiping its state and hard-replacing its content:
+
+```{reset-counter}
+const Counter = {
+    state() { return { i: 0 }; },
+    render() { return { ... } } // same as before
+};
+
+// ...
+
+{
+    state() { return { key: 0 }; },
+    render() {
+        return {
+            children: [
+                {...Counter, key: `counter-${this.state.key}`},
+                {
+                    tag: 'button',
+                    children: 'Reset',
+                    on: {
+                        click() {
+
+                            // change Counter's key, forcing a rerender
+                            this.setState.key(this.state.key + 1);
+
+                        }
+                    },
+                    key: 'reset'
+                }
+            ]
+        }
+    }
+}
+```
+
+Note that for this version of `Counter`, we *must* use `state()` rather than `state`. If we used `state: { i: 0 }`, the following issue would emerge:
+- As the `Counter` component is processed, the object `{ i: 0 }` is copied by reference as `Counter`'s `this.state` value.
+- The `Counter` component is clicked a few times, incrementing `i`. Now we have `this.state = { i: 3 }`. Keeping in mind that this was copied by reference as all objects are, we also have `Counter.state = { i: 3 }`.
+- The "reset" button is clicked, incrementing the `Counter` component's key.
+- As the main component rerenders, FRUIT sees that the keys on the child component have gone from `['counter-0', 'reset']` to `['counter-1', 'reset']`. So the existing `Counter` component is deleted (as the key `'counter-0'` is gone) and a new `Counter` component is created (with the key `'counter-1'`) ...
+- ... but the `Counter.state` object is still `{ i: 3 }`. So the new `Counter` component's `this.state` object is also `{ i: 3 }`.
+If you want to utilize this trick, make sure to use the functional definition of `state()`!
+
+
 ## File organization
 
 Like any larger project, your FRUIT app can become quite complex and messy if limited to one `[[pink]].js` file or, slightly scarier, one `<script>` tag. To this end, it may be useful to distribute your FRUIT project across multiple files.
