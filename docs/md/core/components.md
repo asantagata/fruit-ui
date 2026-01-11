@@ -85,7 +85,7 @@ The following is a more thorough guide to components.
 
 ### The `render()` property
 
-`render()` is the only mandatory property for a component. `render()` is a function returns a template (see @[Templates](core-templates)). This is significant: `render()` cannot return another component (i.e. `render() { return { render() { ... } } }`) and cannot return a `string`.
+`render()` is the only mandatory property for a component. `render()` is a function returns a template (see @[Templates](core-templates)). This is significant: `render()` cannot return another component (i.e. `render() { return { render() { ... } } }`), a `string`, or an array. The template returned by `render()` is called the "top-level template" of the component.
 
 `render()` is the "recipe" for the component; it instructs FRUIT on how to display the component, not just initially, but every time it needs to be rerendered, such as on a `this.setState` call. `render()` is re-evaluated when the component is rerendered, so you can use mechanisms like the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator), [.map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map), and even [IIFEs](https://developer.mozilla.org/en-US/docs/Glossary/IIFE) to achieve functional, state-dependent results.
 
@@ -133,11 +133,11 @@ Components can be given a memo by assigning their `memo()` or `customMemo()` pro
 
 ### The `key` property
 
-Components can be given a key by assigning their `key` property. This must be a `string`. The key is passed to the top-level element of the component. To learn more, see @[keys](core-keys).
+Components can be given a key by assigning their `key` property. This must be a `string`. The key is passed to the top-level template of the component. To learn more, see @[keys](core-keys).
 
 ### The `binding` property
 
-Components can be given a binding by assigning their `binding` property. This must be a `string`. The binding is passed to the top-level element of the component. To learn more, see @[bindings](core-bindings).
+Components can be given a binding by assigning their `binding` property. This must be a `string`. The binding is passed to the top-level template of the component. To learn more, see @[bindings](core-bindings).
 
 ## Component producers
 

@@ -4,7 +4,7 @@ As FRUIT's `this.rerender()` rerenders an entire subtree (barring `memo`), it is
 
 ## Syntax
 
-Keys are very simple. Keys must be a `string` and they must be unique among siblings. On components, `key` can appear either in the component (i.e., alongside `render()`) or in the top-level element template. If both are present, the component key is prioritized.
+Keys must be a `string` and they must be unique among siblings. Keys can appear in components and templates alike. Note that a `key` in a top-level template does nothing; on components, `key` must appear in the component (i.e., alongside `render()`) instead.
 
 In order for keys to be effective, *every* component or template in a set of siblings must utilize them. (`string` siblings do not need keys; they have their own rerender step that uses adjacent components and templates as anchors.)
 

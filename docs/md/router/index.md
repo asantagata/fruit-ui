@@ -57,6 +57,6 @@ Note that if the browser back/forward buttons are used, the `pagechange` event w
 ## The `getPage()` function
 This returns the current path. Note that hashes and opening slashes are automatically removed, so after `navigate('/about#contact')`, a `getPage()` call will return `'about'`.
 
-### The `getHash` function
+### The `getHash()` function
 
 This returns the current hash. Note that opening hashes are automatically removed.

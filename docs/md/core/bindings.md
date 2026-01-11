@@ -8,7 +8,7 @@ FRUIT components have stateful reactivity, meaning it is never *necessary* to do
 
 ### Assigning bindings
 
-The `binding` property is a `string`, and it must be unique among the descendants of a component. On components, bindings can appear either in the component (i.e., alongside `render()`) or in the top-level element template. If both are present, the component binding is prioritized.
+The `binding` property is a `string`, and it must be unique among the descendants of a component. Bindings can appear in components and templates alike. A `binding` in a top-level template does nothing; on components, `binding` must appear in the component (i.e., alongside `render()`) instead. To access the top-level component from within that component, use `this.element` or `this.rerender()` instead.
 
 ### Defining "descendants"
 
