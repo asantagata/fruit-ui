@@ -59,3 +59,7 @@ with all special functional features (state, controlled rerendering, bindings) a
 ## Why use FRUIT over other front-end frameworks?
 
 Smaller apps don't always warrant large, complex frameworks, but interfacing with the DOM directly is a hassle. The ability to declare and mutate state reactively is crucial in web apps with any amount of interactivity. Working in FRUIT and vanilla JS means no complex hidden logic to keep track of, no build step, and no separation of languages for your UI and your internal logic.
+
+FRUIT's uniform object and function-based structure allows you to apply all the flexibility of JavaScript objects to your front-end, avoiding casting DOM types or working with HTML strings while still working in a pure JavaScript environment. Instead, you work on your DOM elements the same way you work on your other data. In fact, the only exports from the `[[pink]]@fruit-ui/core` package are utilities for attaching FRUIT elements to the DOM, which means that until you're appending them to `document.body`, your components are just regular JavaScript objects and functions. 
+
+This makes FRUIT an ideal environment for web applications with complex DOM-related logic.

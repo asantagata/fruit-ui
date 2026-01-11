@@ -10,7 +10,7 @@ Templates are the fundamental building-block of FRUIT. They are JavaScript objec
             {tag: 'li', children: 'simple,'},
             {
                 tag: 'li', 
-                style: {color: 'pink', fontFamily: 'serif'}, 
+                style: {color: 'pink', 'font-family': 'serif'}, 
                 children: 'stylized,'
             },
             {
@@ -52,7 +52,7 @@ type Template = Partial<({
     tag: string,
     class: string | string[] | Record<string, any>,
     id: string,
-    style: CSSStyleDeclaration,
+    style: Record<string, string>,
     dataset: Record<string, string>,
     on: Record<string, (() => void) | ((event: Event) => void)>,
     children: Template | Component | string | (Template | Component | string)[],
@@ -90,18 +90,11 @@ The `id` property is a `string` defining the element's ID.
 
 ### The `style` property
 
-The `style` property defines the element's style. It must be a `CSSStyleDeclaration`, which is the kind of object returned by `HTMLElement.style` and is indexable by camel-case versions of most CSS property names. `{style: {backgroundColor: 'green', borderTopLeftRadius: '20px'}}` corresponds to `<div style="background-color: green; border-top-left-radius: 20px"></div>`.
+The `style` property defines the element's style. It must be a `Record<string, string>` matching style property names to values. Names including hyphens must be wrapped in quotes. `{style: {'background-color': 'green', 'border-top-left-radius': '20px'}}` corresponds to `<div style="background-color: green; border-top-left-radius: 20px"></div>`.
+
+You can define [CSS variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascading_variables/Using_custom_properties) programmatically through this property, i.e., `{'--my-var': 2}`.
 
 Note that FRUIT expects the `style` object to have #[consistent keys](objects-with-consistent-key-sets).
-
-```
-{
-    style: {
-        backgroundColor: 'green', 
-        ...(Math.random() < 0.5 ? {borderTopLeftRadius: string} : {})
-    }
-}
-```
 
 ### The `dataset` property
 

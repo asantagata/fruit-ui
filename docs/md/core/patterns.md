@@ -81,24 +81,26 @@ One simple pattern to follow is to make each file export one component or templa
 ```
 // inside components/NumberInput.js
 
-export default function NumberInput(value, onChange, {min = '', max = ''}) {
+export default function NumberInput(value, onChange, {min = '', max = ''} = {}) {
     return {
         state: { value },
-        return {
-            tag: 'input',
-            type: 'number',
-            value, min, max
-            on: {
-                change() {
-                    let currentValue = this.target.valueAsNumber;
-                    if ((currentValue >= min || min === '') && (currentValue <= max || max === '')) {
-                        this.state.value = currentValue;
-                        onChange(currentValue);
-                    } else {
-                        this.rerender(); // reset
+        render() {
+            return {
+                tag: 'input',
+                type: 'number',
+                value, min, max,
+                on: {
+                    change() {
+                        let currentValue = this.target.valueAsNumber;
+                        if ((currentValue >= min || min === '') && (currentValue <= max || max === '')) {
+                            this.state.value = currentValue;
+                            onChange(currentValue);
+                        } else {
+                            this.element.value = this.state.value;
+                        }
                     }
                 }
-            }
+            };
         }
     }
 }
@@ -112,12 +114,15 @@ And the use of `NumberInput` inside another component:
 import NumberInput from "./NumberInput.js";
 
 export default function Form() {
-    children: [
-        {tag: 'label', children: 'Enter your favorite number: '},
-        NumberInput(
-            0, (value) => alert(`Your favorite number is: ${value}.`)
-        );
-    ]
+    return {
+        children: [
+            {tag: 'label', children: 'Enter your favorite number: '},
+            NumberInput(
+                0, (value) => alert(`Your favorite number is: ${value}.`),
+                {min: 0}
+            )
+        ]
+    };
 }
 ```
 

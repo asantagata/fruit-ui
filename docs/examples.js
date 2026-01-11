@@ -126,7 +126,7 @@ export const examples = {
             {tag: 'p', children: 'FRUIT is...'},
             {tag: 'ul', children: [
                 {tag: 'li', children: 'simple,'},
-                {tag: 'li', style: {color: 'var(--pink)', fontFamily: 'serif'}, children: 'stylized,'},
+                {tag: 'li', style: {color: 'var(--pink)', 'font-family': 'serif'}, children: 'stylized,'},
                 {tag: 'li', children: {tag: 'button', on: {click() {alert('See?')}}, children: 'interactive,'}},
                 {tag: 'li', children: {tag: 'b', children: {tag: 'u', children: {tag: 'i', children: 'nested,'}}}},
                 {tag: 'li', children: ['and ', {
@@ -211,7 +211,7 @@ export const examples = {
                 return {
                     style: {
                         display: 'flex',
-                        flexDirection: 'column',
+                        'flex-direction': 'column',
                         gap: 'var(--md)'
                     },
                     children: [
