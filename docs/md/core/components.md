@@ -143,7 +143,7 @@ Components can be given a binding by assigning their `binding` property. This mu
 
 Similar to @[template producers](core-templates#template-producers--props), component producers are functions which produce components. These might take in props from other components or pieces of business logic. The `render()` function is always re-evaluated with the newest props taken into account, so you do not have to worry about stale values for props. Using component producers is an effective pattern for managing large applications in FRUIT, as you can utilize both the reactivity of components and the intricacies of small, modular parts.
 
-See the `Record()` component producer in the `memo` example #[above](the-memo-and-memo-properties). 
+See the `Record()` component producer in the `memo` example @[above](core-memo). 
 
 ## Putting components on the DOM
 
