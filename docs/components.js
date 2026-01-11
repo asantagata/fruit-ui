@@ -270,7 +270,7 @@ function idify(str) {
     return str.toLowerCase().replace(/[^\w -]/g, '').replace(/ /g, '-');
 }
 
-function Markdown(text, article) {
+function Markdown(text, headings = []) {
     const lines = text.split('\n');
 
     // recognize codeblocks
@@ -317,12 +317,21 @@ function Markdown(text, article) {
 
     // use proper tags for singular non-Ps
     const paragraphs = lines.filter(t => t.children || t.trim().length > 0).map(text => {
-        if (text.children) return text;
-        if (text.startsWith('# ')) return {tag: 'h1', id: idify(text.slice(2)), children: [text.slice(2)]}
-        if (text.startsWith('## ')) return {tag: 'h2', id: idify(text.slice(3)), children: [text.slice(3)]}
-        if (text.startsWith('### ')) return {tag: 'h3', id: idify(text.slice(4)), children: [text.slice(4)]}
-        if (text.startsWith('- ')) return {tag: 'li', children: [text.slice(2)]}
-        return {tag: 'p', children: [text]}
+        let lineTemplate;
+        if (text.children) lineTemplate = text;
+        else if (text.startsWith('# ')) 
+            lineTemplate = {tag: 'h1', id: idify(text.slice(2)), children: [text.slice(2)]};
+        else if (text.startsWith('## ')) 
+            lineTemplate = {tag: 'h2', id: idify(text.slice(3)), children: [text.slice(3)]};
+        else if (text.startsWith('### ')) 
+            lineTemplate = {tag: 'h3', id: idify(text.slice(4)), children: [text.slice(4)]};
+        else if (text.startsWith('- ')) 
+            lineTemplate = {tag: 'li', children: [text.slice(2)]};
+        else
+            lineTemplate = {tag: 'p', children: [text]};
+        if (lineTemplate.tag?.startsWith('h'))
+            headings.push(lineTemplate);
+        return lineTemplate;
     });
 
     // recognize inline md
@@ -419,10 +428,24 @@ function Article(article) {
         const response = await fetch(`./md/${article.section}/${article.url}.md`);
         if (!response.ok) return {};
         const text = await response.text();
+        let headings = [];
         return {
-            tag: 'article',
-            id: 'article',
-            children: [...Markdown(text, article), Next(article)]
+            id: 'content-wrapper',
+            children: [
+                {
+                    tag: 'article',
+                    id: 'article',
+                    children: [...Markdown(text, headings), Next(article)]
+                },
+                {
+                    id: 'toc',
+                    children: headings.map(h => ({
+                        ...h,
+                        id: undefined,
+                        on: {click() { navigateHash(h.id) }}
+                    }))
+                }
+            ]
         }
     }};
 }
