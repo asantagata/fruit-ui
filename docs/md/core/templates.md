@@ -210,7 +210,7 @@ FRUIT does not offer its own mechanism for templates to pass "[props](https://re
 function Circle(color) {
     return {
         style: {
-            borderRadius: '50%',
+            'border-radius': '50%',
             background: color
         }
     }
