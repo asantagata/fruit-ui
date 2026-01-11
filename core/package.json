@@ -1,6 +1,6 @@
 {
   "name": "@fruit-ui/core",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "A vanilla JS toolkit for reactive UI",
   "main": "src/index.js",
   "homepage": "https://asantagata.github.io/fruit-ui/",
