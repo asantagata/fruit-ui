@@ -82,7 +82,7 @@ The `class` property defines the element's class. This can be one of three types
 - an array of strings, which are treated as the element's class list (e.g., `{class: ['large', 'green']}` corresponds to `<div class="large green"></div>`);
 - or an object, where each `{key: value}` pair consists of a class name and a condition which decides whether that class name will be used (e.g., `{class: {red: true, small: Math.random() < 0.5}}` corresponds to either `<div class="red small"></div>` or `<div class="red"></div>`.) While more abstruse in its syntax, this makes it far easier to use conditional class names. As with any JavaScript object attribute, you can reference classes that are not [valid JavaScript identifiers](https://developer.mozilla.org/en-US/docs/Glossary/Identifier) by wrapping them in quotes, e.g., `{class: {'light-blue': true}}`.
 
-Note when using the object syntax that FRUIT expects the `class` object to have #[consistent keys](objects-with-consistent-keys).
+Note when using the object syntax that FRUIT expects the `class` object to have #[consistent keys](objects-with-consistent-key-sets).
 
 ### The `id` property
 
@@ -92,7 +92,7 @@ The `id` property is a `string` defining the element's ID.
 
 The `style` property defines the element's style. It must be a `CSSStyleDeclaration`, which is the kind of object returned by `HTMLElement.style` and is indexable by camel-case versions of most CSS property names. `{style: {backgroundColor: 'green', borderTopLeftRadius: '20px'}}` corresponds to `<div style="background-color: green; border-top-left-radius: 20px"></div>`.
 
-Note that FRUIT expects the `style` object to have #[consistent keys](objects-with-consistent-keys).
+Note that FRUIT expects the `style` object to have #[consistent keys](objects-with-consistent-key-sets).
 
 ```
 {
@@ -107,7 +107,7 @@ Note that FRUIT expects the `style` object to have #[consistent keys](objects-wi
 
 The `dataset` property defines the element's [dataset](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset). It must be a `Record<string, string>`. As always when working with element datasets, keys are automatically converted from camel-case to `data`-prefixed kebab-case and vice-versa, e.g., `{dataset: {myName: 'asantagata', userID: 'user 5'}}` corresponds to `<div data-my-name="asantagata" data-user-i-d="user 5"></div>`.
 
-Note that FRUIT expects the `dataset` object to have #[consistent keys](objects-with-consistent-keys).
+Note that FRUIT expects the `dataset` object to have #[consistent keys](objects-with-consistent-key-sets).
 
 Dataset properties can also be set directly using `data`-prefixed kebab-case, i.e., `{'data-my-friends': 'myriad'}`
 
@@ -191,9 +191,9 @@ All other properties on HTML elements, such as `src` on `<img>`, `href` on `<a>`
 
 Properties that are explicitly set to `undefined` are removed from the element using [removeAttribute](https://developer.mozilla.org/en-US/docs/Web/API/Element/removeAttribute) while all others are set using [setAttribute](https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute).
 
-### Objects with consistent keys
+### Objects with consistent key-sets
 
-The `style`, `dataset`, and object-syntax `class` properties, as well as the `Template` object, are required to have *consistent sets of keys*, meaning that FRUIT may not produce intended behavior if a certain key of the object is present only conditionally.
+The `style`, `dataset`, and object-syntax `class` properties, as well as the `Template` object itself, are required to have *consistent sets of keys*, meaning that FRUIT may not produce intended behavior if a certain key of the object is present only conditionally.
 
 This means that, for these objects, the following pattern is not acceptable:
 ```
