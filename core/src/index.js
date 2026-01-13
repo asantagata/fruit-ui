@@ -333,7 +333,7 @@ function doOnMountHandling(func) {
 function rerender() {
     doOnMountHandling((onMounts) => {
         const template = this.producer();
-        rerenderElementFromTemplate.call(this, this.element, giveTemplateComponentMetadata(template, this.producer.componentId), onMounts);
+        rerenderElementFromTemplate.call(this, this.element, giveTemplateComponentMetadata(template, this.element.dataset.componentId, this.element.dataset.key, this.element.dataset.binding), onMounts);
     });
 }
 
@@ -415,7 +415,7 @@ function rerenderElementFromTemplate(element, template, onMounts) {
         div.innerHTML = template.HTML;
         return element.replaceWith(div.firstChild);
     }
-    if ((template.tag?.toUpperCase() || 'DIV') !== element.tagName) {
+    if ((template.tag?.toUpperCase() || 'DIV') !== element.tagName.toUpperCase()) {
         // tag cannot be changed
         return element.replaceWith(createElementFromElementable.call(this, template, onMounts));
     }
@@ -533,7 +533,7 @@ function rerenderChildComponent(element, component, onMounts) {
         return;
     }
     cmpThis.producer = component.render.bind(cmpThis);
-    rerenderElementFromTemplate.call(cmpThis, element, cmpThis.producer(), onMounts);
+    rerenderElementFromTemplate.call(cmpThis, element, giveTemplateComponentMetadata(cmpThis.producer(), element.dataset.componentId, component.key, component.binding), onMounts);
 }
 
 /**
