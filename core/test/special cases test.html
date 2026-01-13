@@ -29,6 +29,7 @@
     </style>
 </head>
 <body style="background: #ccc">
+    <div>hi i'm clonefrommed</div>
 </body>
 <script type="module">
     import * as fruit from '../src/index.js';
@@ -130,5 +131,21 @@
     });
 
     fruit.appendChild(document.body, {HTML: '<a href="whatssup">hi</a>', tag: 'div', children: 'Ahhh'});
+
+    fruit.appendChild(document.body, {
+        state() {
+            window.setInterval(() => {
+                this.setState.i((this.state.i + 1) % 3);
+            }, 500);
+            return {i: 0};
+        },
+        render() {
+            return [
+                {tag: 'div', children: "hi i'm normal fruit element"},
+                {HTML: "<div>hi i'm written HTML</div>"},
+                {cloneFrom: document.body.children[0]}
+            ][this.state.i];
+        }
+    });
 </script>
 </html>

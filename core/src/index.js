@@ -143,6 +143,14 @@ function initializeThis(element, producer) {
             }
         }
     });
+    this.bindings = new Proxy({}, {
+        get: (o, p, r) => {
+            return {
+                element: findSubelement(this.element, p),
+                rerender: () => rerenderByBinding.call(this, p)
+            }
+        }
+    });
 }
 
 /**
@@ -156,14 +164,20 @@ function initializeThis(element, producer) {
 function createElementFromTemplate(template, onMounts, producer = null) {
     if ('cloneFrom' in template) {
         const element = template.cloneFrom.cloneNode(true);
-        if (this && !this.element) {
+        if (template.componentId !== undefined) {
+            element.dataset.componentId = template.componentId;
             initializeThis.call(this, element, producer);
         }
         return element;
     } else if ('HTML' in template) {
         const div = document.createElement('div');
         div.innerHTML = template.HTML;
-        return div.firstChild;
+        const element = div.firstChild;
+        if (template.componentId !== undefined) {
+            element.dataset.componentId = template.componentId;
+            initializeThis.call(this, element, producer);
+        }
+        return element;
     }
     const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, xmlns, ...rest} = template;
     const element = template.xmlns ? document.createElementNS(template.xmlns, template.tag) : document.createElement(template.tag || 'div');
@@ -224,19 +238,8 @@ function createElementFromTemplate(template, onMounts, producer = null) {
             element.replaceChildren(
                 ...template.children.map(ct => createElementFromElementable.call(this, ct, onMounts))
             );
-            // handle bindings
-            for (let i = 0; i < template.children.length; i++) {
-                const childTm = template.children[i];
-                if (childTm.binding && this) {
-                    setBinding.call(this, childTm.binding, element.childNodes[i]);
-                }
-            }
         } else {
             element.replaceChildren(createElementFromElementable.call(this, template.children, onMounts));
-            // handle binding
-            if (template.children.binding && this) {
-                setBinding.call(this, template.children.binding, element.childNodes[0]);
-            }
         }
     }
     return element;
@@ -333,14 +336,6 @@ function rerender() {
     doOnMountHandling((onMounts) => {
         const template = this.producer();
         rerenderElementFromTemplate.call(this, this.element, giveTemplateComponentMetadata(template, this.element.dataset.componentId, this.element.dataset.key, this.element.dataset.binding), onMounts);
-
-        // update parent component binding, if any
-        if (this.element.dataset.binding) {
-            const componentAncestor = this.element.parentElement?.closest('[data-component-id]');
-            if (componentAncestor && thisRecord[componentAncestor.dataset.componentId]) {
-                setBinding.call(thisRecord[componentAncestor.dataset.componentId], this.element.dataset.binding, this.element);
-            }
-        }
     });
 }
 
@@ -424,15 +419,20 @@ function rerenderElementFromTemplate(element, template, onMounts) {
     }
     if ('cloneFrom' in template && !element.isEqualNode(template.cloneFrom)) {
         const newElement = template.cloneFrom.cloneNode(true);
-        if ('componentId' in template)
+        if (template.componentId !== undefined) {
+            newElement.dataset.componentId = template.componentId;
             this.element = newElement;
+        }
         return element.replaceWith(newElement);
     } else if ('HTML' in template) {
         const div = document.createElement('div');
         div.innerHTML = template.HTML;
-        if ('componentId' in template)
-            this.element = div.firstChild;
-        return element.replaceWith(div.firstChild);
+        const newElement = div.firstChild;
+        if (template.componentId !== undefined) {
+            newElement.dataset.componentId = template.componentId;
+            this.element = newElement;
+        }
+        return element.replaceWith(newElement);
     }
     if ((template.tag?.toUpperCase() || 'DIV') !== element.tagName.toUpperCase()) {
         const newElement = createElementFromElementable.call(this, template, onMounts);
@@ -633,7 +633,6 @@ function rerenderChildren(element, template, onMounts) {
                         delete thisRecord[childEl.dataset.componentId];
                     }
                 }
-                if ('binding' in childEl.dataset) delete this.bindings[childEl.dataset.binding];
                 childEl.remove();
             }
         }
@@ -662,8 +661,6 @@ function rerenderChildren(element, template, onMounts) {
         // handle first Min(M,N) elements
         for (let i = 0; i < Math.min(elChildrenArray.length, tmChildrenArray.length); i++) {
             let childEl = elChildrenArray[i], childTm = tmChildrenArray[i];
-            if ('binding' in childEl.dataset && childEl.dataset.binding !== childTm.binding) 
-                delete this.bindings[childEl.dataset.binding];
             if (elementableIsComponent(childTm)) {
                 if ('componentId' in childEl.dataset) rerenderChildComponent(childEl, childTm, onMounts);
                 else childEl.replaceWith(createElementFromComponent(childTm, onMounts));
@@ -684,7 +681,6 @@ function rerenderChildren(element, template, onMounts) {
             for (let i = elChildrenArray.length - 1; i >= tmChildrenArray.length; i--) {
                 let childEl = elChildrenArray[i];
                 if ('componentId' in childEl.dataset) delete thisRecord[childEl.dataset.componentId];
-                if ('binding' in childEl.dataset) delete this.bindings[childEl.dataset.binding];
                 childEl.remove();
             }
         }
@@ -693,7 +689,6 @@ function rerenderChildren(element, template, onMounts) {
         for (let i = elChildrenArray.length - 1; i >= 0; i--) {
             let childEl = elChildrenArray[i];
             if ('componentId' in childEl.dataset) delete thisRecord[childEl.dataset.componentId];
-            if ('binding' in childEl.dataset) delete this.bindings[childEl.dataset.binding];
             childEl.remove();
         }
     } else if (tmChildrenArray.length > 0 && elChildrenArray.length === 0) {
@@ -702,14 +697,6 @@ function rerenderChildren(element, template, onMounts) {
             let childTm = tmChildrenArray[i];
             const newChild = createElementFromElementable.call(this, childTm, onMounts);
             element.appendChild(newChild);
-        }
-    }
-
-    // handle bindings
-    for (let i = 0; i < tmChildrenArray.length; i++) {
-        const childTm = tmChildrenArray[i];
-        if (childTm.binding) {
-            setBinding.call(this, childTm.binding, element.children[i]);
         }
     }
 
@@ -767,19 +754,6 @@ function LIS(arr) {
 		k = P[k];
 	}
 	return S;
-}
-
-/**
- * Sets a binding in a This.
- * @param {This} this - the This.
- * @param {string} bindingName - the name of the binding.
- * @param {HTMLElement} element - the element being bound.
- */
-function setBinding(bindingName, element) {
-    this.bindings[bindingName] = {
-        element,
-        rerender: () => rerenderByBinding.call(this, bindingName)
-    };
 }
 
 /**

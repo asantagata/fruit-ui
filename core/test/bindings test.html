@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:,">
+    <title>Hi</title>
+    <style>
+        div {
+            border: 1px solid #0008;
+        }
+    </style>
+</head>
+<body style="background: #ccc">
+</body>
+
+<script type="module">
+    import * as fruit from '../src/index.js';
+
+    fruit.appendChild(document.body, {
+        render() {
+            return {
+                binding: 'top-level',
+                children: [
+                    {tag: 'button', binding: 'tl-button', on: {click() {console.log(
+                        this.bindings['top-level'],
+                        this.bindings['tl-button'],
+                        this.bindings['tl-rerend'],
+                        this.bindings['normal-p'],
+                        this.bindings['html-u'],
+                        this.bindings['component'],
+                        this.bindings['top-level inside'],
+                        
+                    )}}, children: 'see bindings'},
+                    {tag: 'button', binding: 'tl-rerend', on: {click() {this.rerender()}}, children: 'rerenda'},
+                    {tag: 'p', binding: 'normal-p', children: "normal p"},
+                    {HTML: '<u data-binding="html-u">html p</u>'},
+                    {
+                        binding: 'component',
+                        render() {
+                            return {
+                                binding: 'top-level inside',
+                                children: "I AM A COMPONENT"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    })
+</script>
+
+</html>
