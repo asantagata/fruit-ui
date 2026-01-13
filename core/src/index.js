@@ -422,12 +422,12 @@ function rerenderElementFromTemplate(element, template, onMounts) {
     if (typeof template !== 'object') {
         element.replaceWith(template.toString());
     }
-    if (template.cloneFrom && !element.isEqualNode(template.cloneFrom)) {
+    if ('cloneFrom' in template && !element.isEqualNode(template.cloneFrom)) {
         const newElement = template.cloneFrom.cloneNode(true);
         if ('componentId' in template)
             this.element = newElement;
         return element.replaceWith(newElement);
-    } else if (template.HTML) {
+    } else if ('HTML' in template) {
         const div = document.createElement('div');
         div.innerHTML = template.HTML;
         if ('componentId' in template)
@@ -440,7 +440,7 @@ function rerenderElementFromTemplate(element, template, onMounts) {
             this.element = newElement;
         return element.replaceWith(newElement);
     }
-    if (template.class) {
+    if ('class' in template) {
         if (typeof template.class === 'string') {
             element.className = template.class;
         } else if (Array.isArray(template)) {
@@ -455,12 +455,12 @@ function rerenderElementFromTemplate(element, template, onMounts) {
             }
         }
     }
-    if (template.style) {
+    if ('style' in template) {
         for (const k in template.style) {
             element.style.setProperty(k, template.style[k]);
         }
     }
-    if (template.dataset) {
+    if ('dataset' in template) {
         for (let key in template.dataset) {
             element.dataset[key] = template.dataset[key];
         }
@@ -472,9 +472,9 @@ function rerenderElementFromTemplate(element, template, onMounts) {
         else
             element.setAttribute(attribute, template[attribute]);
     }
-    if (template.innerHTML) {
+    if ('innerHTML' in template) {
         element.innerHTML = template.innerHTML;
-    } else if (template.children === undefined || template.children.length === 0) {
+    } else if (template.children === undefined || ('length' in template.children && template.children.length === 0)) {
         element.innerHTML = "";
     } else {
         rerenderChildren.call(this, element, template, onMounts);
