@@ -57,7 +57,7 @@
 
     // [text] to [element]
     fruit.appendChild(document.body, {
-        state() { console.log(this); return { children: 'helloo' } },
+        state() { return { children: 'helloo' } },
         render() {
             return {
                 children: this.state.children,
@@ -78,23 +78,54 @@
         }
     })
 
+    // fruit.appendChild(document.body, {
+    //     state: {i: false},
+    //     render() {
+    //         return {
+    //             tag: 'input',
+    //             type: 'checkbox',
+    //             checked: this.state.i || undefined,
+    //             autocomplete: 'off',
+    //             on: {
+    //                 mount() {
+    //                     window.setInterval(() => {
+    //                         this.setState.i(!this.state.i);
+    //                     }, 500)
+    //                 }
+    //             }
+    //         };
+    //     }
+    // });
+
     fruit.appendChild(document.body, {
-        state: {i: false},
+        state() {
+            window.setInterval(() => {
+                console.log(this.bindings['switching-monkey']);
+            }, 12538)
+        },
         render() {
             return {
-                tag: 'input',
-                type: 'checkbox',
-                checked: this.state.i || undefined,
-                autocomplete: 'off',
-                on: {
-                    mount() {
-                        window.setInterval(() => {
-                            console.log('hi');
-                            this.setState.i(!this.state.i);
-                        }, 500)
-                    }
+                tag: 'div',
+                children: {
+                    children: [{}, {}, {
+                        children: ['hi', {
+                            binding: 'switching-monkey',
+                            state() {
+                                window.setInterval(() => {
+                                    this.setState.i(!this.state.i);
+                                }, 500)
+                                return { i: false };
+                            },
+                            render() {
+                                return {
+                                    tag: this.state.i ? 'b' : 'u',
+                                    children: 'test'
+                                };
+                            }
+                        }, {}, {}]
+                    }]
                 }
-            };
+            }
         }
     });
 

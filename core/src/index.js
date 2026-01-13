@@ -132,6 +132,7 @@ function createThis(component) {
  */
 function initializeThis(element, producer) {
     this.element = element;
+    if (producer === null) return;
     this.producer = producer;
     this.rerender = rerender.bind(this);
     this.setState = new Proxy({}, {
@@ -153,20 +154,20 @@ function initializeThis(element, producer) {
  * @returns {HTMLElement} - An HTMLElement.
  */
 function createElementFromTemplate(template, onMounts, producer = null) {
-    if (template.cloneFrom) {
+    if ('cloneFrom' in template) {
         const element = template.cloneFrom.cloneNode(true);
         if (this && !this.element) {
             initializeThis.call(this, element, producer);
         }
         return element;
-    } else if (template.HTML) {
+    } else if ('HTML' in template) {
         const div = document.createElement('div');
         div.innerHTML = template.HTML;
         return div.firstChild;
     }
     const {tag, class: c, style, on, componentId, children, cloneFrom, dataset, key, binding, innerHTML, xmlns, ...rest} = template;
     const element = template.xmlns ? document.createElementNS(template.xmlns, template.tag) : document.createElement(template.tag || 'div');
-    if (template.class) {
+    if ('class' in template) {
         switch (typeof template.class) {
             case 'string':
                 element.className = template.class;
@@ -180,12 +181,12 @@ function createElementFromTemplate(template, onMounts, producer = null) {
                 }
         }
     }
-    if (template.style) {
+    if ('style' in template) {
         for (const k in template.style) {
             element.style.setProperty(k, template.style[k]);
         }
     }
-    if (template.on) {
+    if ('on' in template) {
         const {mount: onMount, ...listeners} = template.on;
         for (const type in listeners) {
             if (!listeners[type]) continue;
@@ -201,26 +202,24 @@ function createElementFromTemplate(template, onMounts, producer = null) {
         else
             element.setAttribute(attribute, template[attribute]);
     }
-    if (template.dataset) {
+    if ('dataset' in template) {
         for (const k in template.dataset) {
             element.dataset[k] = template.dataset[k];
         }
     }
-    if (template.componentId) {
-        element.dataset.componentId = template.componentId;
-    }
-    if (template.key) {
+    if (template.key !== undefined) {
         element.dataset.key = template.key;
     }
-    if (template.binding) {
+    if (template.binding !== undefined) {
         element.dataset.binding = template.binding;
     }
-    if (this && !this.element) {
+    if (template.componentId !== undefined) {
+        element.dataset.componentId = template.componentId;
         initializeThis.call(this, element, producer);
     }
-    if (template.innerHTML) {
+    if ('innerHTML' in template) {
         element.innerHTML = template.innerHTML;
-    } else if (template.children !== undefined) {
+    } else if ('children' in template) {
         if (Array.isArray(template.children)) {
             element.replaceChildren(
                 ...template.children.map(ct => createElementFromElementable.call(this, ct, onMounts))
@@ -334,6 +333,14 @@ function rerender() {
     doOnMountHandling((onMounts) => {
         const template = this.producer();
         rerenderElementFromTemplate.call(this, this.element, giveTemplateComponentMetadata(template, this.element.dataset.componentId, this.element.dataset.key, this.element.dataset.binding), onMounts);
+
+        // update parent component binding, if any
+        if (this.element.dataset.binding) {
+            const componentAncestor = this.element.parentElement?.closest('[data-component-id]');
+            if (componentAncestor && thisRecord[componentAncestor.dataset.componentId]) {
+                setBinding.call(thisRecord[componentAncestor.dataset.componentId], this.element.dataset.binding, this.element);
+            }
+        }
     });
 }
 
@@ -372,7 +379,11 @@ function findSubelement(element, bindingName, atRoot = true) {
     } else if (!atRoot && 'componentId' in element.dataset) {
         return undefined;
     }
-    return Array.from(element.children).find(c => !!findSubelement(c, bindingName, false));
+    for (const child of element.children) {
+        const found = findSubelement(child, bindingName, false);
+        if (found) return found;
+    }
+    return undefined;
 }
 
 /**
@@ -389,7 +400,10 @@ function findSubtemplate(template, bindingName, atRoot = true) {
     }
     if (template.children) {
         if (Array.isArray(template.children)) {
-            return template.children.find(c => findSubtemplate(c, bindingName, false));
+            for (const child of template.children) {
+                const found = findSubtemplate(child, bindingName, false);
+                if (found) return found;
+            }
         } else {
             return findSubtemplate(template.children, bindingName, false);
         }
@@ -406,18 +420,25 @@ function findSubtemplate(template, bindingName, atRoot = true) {
  */
 function rerenderElementFromTemplate(element, template, onMounts) {
     if (typeof template !== 'object') {
-        return element.replaceWith(template.toString());
+        element.replaceWith(template.toString());
     }
     if (template.cloneFrom && !element.isEqualNode(template.cloneFrom)) {
-        return element.replaceWith(template.cloneFrom.cloneNode(true));
+        const newElement = template.cloneFrom.cloneNode(true);
+        if ('componentId' in template)
+            this.element = newElement;
+        return element.replaceWith(newElement);
     } else if (template.HTML) {
         const div = document.createElement('div');
         div.innerHTML = template.HTML;
+        if ('componentId' in template)
+            this.element = div.firstChild;
         return element.replaceWith(div.firstChild);
     }
     if ((template.tag?.toUpperCase() || 'DIV') !== element.tagName.toUpperCase()) {
-        // tag cannot be changed
-        return element.replaceWith(createElementFromElementable.call(this, template, onMounts));
+        const newElement = createElementFromElementable.call(this, template, onMounts);
+        if ('componentId' in template)
+            this.element = newElement;
+        return element.replaceWith(newElement);
     }
     if (template.class) {
         if (typeof template.class === 'string') {
