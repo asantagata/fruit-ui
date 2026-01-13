@@ -474,7 +474,7 @@ function rerenderElementFromTemplate(element, template, onMounts) {
     }
     if ('innerHTML' in template) {
         element.innerHTML = template.innerHTML;
-    } else if (template.children === undefined || ('length' in template.children && template.children.length === 0)) {
+    } else if (template.children === undefined || template.children.length === 0) {
         element.innerHTML = "";
     } else {
         rerenderChildren.call(this, element, template, onMounts);
