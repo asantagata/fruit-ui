@@ -106,8 +106,8 @@ export const examples = {
         ]
     },
     'counter': {
-        state: {
-            i: 0
+        state() {
+            return {i: 0};
         },
         render() {
             return {
