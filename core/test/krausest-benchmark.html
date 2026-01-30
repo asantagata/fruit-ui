@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:,">
+    <title>Krausest benchmark</title>
+</head>
+<body>
+    <div id="buttons">
+        <button id="add1k">Add 1,000 rows</button>
+        <button id="add10k">Add 10,000 rows</button>
+        <button id="update">Update every 10th row</button>
+        <button id="swap">Swap rows 2 and 999</button>
+        <button id="clear">Clear</button>
+    </div>
+    <table>
+        <tbody id="tbody"></tbody>
+    </table>
+</body>
+<script type="module">
+    import * as fruit from "../src/index.js";
+    
+    let data = [];
+
+    const actions = {
+        add1k() {
+            data.push(...Array.from({length: 1000}, getDataPoint));
+        },
+        add10k() {
+            data.push(...Array.from({length: 10000}, getDataPoint));
+        },
+        update() {
+            data.forEach((d, i) => {
+                if (i % 10 === 0) d.text += ' !!!';
+            })
+        },
+        swap() {
+            if (data.length >= 999) {
+                [data[1], data[998]] = [data[998], data[1]];
+            } else {
+                throw new Error('too little information to swap');
+            }
+        },
+        clear() {
+            data = [];
+        }
+    }
+
+    let render = null;
+
+    fruit.replaceWith(document.getElementById('tbody'), {
+        state() {
+            render = () => this.rerender();
+        },
+        render() {
+            return {
+                tag: 'tbody',
+                id: 'tbody',
+                children: data.map(d => ({
+                    tag: 'tr', children: [
+                        {tag: 'td', children: d.id},
+                        {tag: 'td', children: d.text}
+                    ]
+                }))
+            };
+        }
+    });
+
+    function doAction(name) {
+        const status = {operation: name, startTime: Date.now()};
+        actions[name]();
+        render();
+        console.log(`finished rerender for "${status.operation}" in ${Date.now() - status.startTime}ms`);
+    }
+
+    let adjectives = ["pretty","large","big","small","tall","short","long","handsome","plain","quaint","clean","elegant","easy","angry","crazy","helpful","mushy","odd","unsightly","adorable","important","inexpensive","cheap","expensive","fancy",];
+    let colours = ["red", "yellow", "blue", "green", "pink", "brown", "purple", "brown", "white", "black", "orange"];
+    let nouns = ["table","chair","house","bbq","desk","car","pony","cookie","sandwich","burger","pizza","mouse","keyboard",];
+    let id = 0;
+
+    function randomIn(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function getDataPoint() {
+        return {id: id++, text: `${randomIn(adjectives)} ${randomIn(colours)} ${randomIn(nouns)}`};
+    }
+
+    Array.from(document.getElementsByTagName('button')).forEach(d => {
+        d.addEventListener('click', () => doAction(d.id));
+    })
+</script>
+</html>
