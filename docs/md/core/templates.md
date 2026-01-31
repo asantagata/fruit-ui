@@ -150,7 +150,7 @@ The `children` property defines the element's children. This can be a `string`, 
 }
 ```
 
-If `children` is a `string`, `Templte` or `Component`, the given value is the element's only child. (This is equivalent to passing an array with 1 element.)
+If `children` is a `string`, `Template` or `Component`, the given value is the element's only child. (This is equivalent to passing an array with 1 element.)
 
 If the `children` property is absent, an empty array (`[]`), or explicitly set to `undefined`, the element has no children.
 
