@@ -1,0 +1,20 @@
+[
+    {
+        "name": "SVG Editor",
+        "URL": "https://asantagata.github.io/svg-editor/",
+        "desc": "An editor for simple SVG icons",
+        "img": "svg.png",
+        "author": "asantagata",
+        "authorURL": "https://alexsantagata.dev/",
+        "date": "Jan 2026"
+    },
+    {
+        "name": "Century Golem Edition",
+        "URL": "https://boardgames.alexsantagata.dev/century",
+        "desc": "An online client for the strategy board game",
+        "img": "century.png",
+        "author": "asantagata",
+        "authorURL": "https://alexsantagata.dev",
+        "date": "Jan 2026"
+    }
+]

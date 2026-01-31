@@ -13,6 +13,7 @@ const ARTICLES = [
     {title: 'Bindings', url: 'bindings', section: 'core'},
     {title: 'Patterns', url: 'patterns', section: 'core'},
     {title: 'Putting FRUIT on the DOM', url: 'putting-on-dom', section: 'core'},
+    {title: 'See FRUIT in action', url: 'projects', section: 'core'},
 
     {title: 'FRUIT Router', url: 'index', section: 'router'},
     {title: 'Getting started with FRUIT Router', url: 'getting-started', section: 'router'}
@@ -478,6 +479,65 @@ function Article(article) {
     }};
 }
 
+function ProjectsArticle() {
+    return {title: `See FRUIT in action | FRUIT Docs`, route: async () => {
+        const response = await fetch(`./projects/projects.json`);
+        if (!response.ok) return {};
+        const projects = await response.text().then(d => JSON.parse(d));
+        return {
+            id: 'content-wrapper',
+            children: [
+                {
+                    tag: 'article',
+                    id: 'article',
+                    children: [
+                        {tag: 'h1', children: 'See FRUIT in action'},
+                        {tag: 'p', children: 'Check out some projects FRUIT users have built with the framework:'},
+                        {  
+                            class: 'project-list',
+                            children: projects.map(Project)
+                        },
+                        Next(ARTICLES[10])
+                    ]
+                }
+            ]
+        }
+    }};
+}
+
+function Project(project) {
+    return {
+        class: 'project',
+        children: [
+            {
+                tag: 'a',
+                href: project.URL,
+                target: '_blank',
+                children: {
+                    tag: 'img',
+                    class: 'project-img',
+                    src: `./projects/screenshots/${project.img}`
+                },
+            },
+            {
+                class: 'project-data',
+                children: [
+                    {tag: 'h3', children: project.name},
+                    {tag: 'p', children: project.desc},
+                    {tag: 'p', class: 'author', children: [
+
+                        `${project.date} • by `,
+                        project.authorURL 
+                        ? {tag: 'a', href: project.authorURL, target: '_blank', children: project.author}
+                        : project.author
+
+                    ]}
+                ]
+            }
+        ]
+    }
+}
+
 export const Body = {
     tag: 'body',
     children: [
@@ -485,6 +545,7 @@ export const Body = {
         Router(new Proxy({}, {
             get(o, p, r) {
                 if (p === '/' || p === '') return Article(ARTICLES[0]);
+                if (p === '/core-projects' || p === 'core-projects') return ProjectsArticle();
                 const delimeterIndex = p.indexOf('-');
                 const section = p.slice(0, delimeterIndex), article = p.slice(delimeterIndex + 1);
                 return Article(ARTICLES.find(a => a.url === article && a.section === section));
