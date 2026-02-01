@@ -67,8 +67,7 @@ Note that for this version of `Counter`, we *must* use `state()` rather than `st
 - The "reset" button is clicked, incrementing the `Counter` component's key.
 - As the main component rerenders, FRUIT sees that the keys on the child component have gone from `['counter-0', 'reset']` to `['counter-1', 'reset']`. So the existing `Counter` component is deleted (as the key `'counter-0'` is gone) and a new `Counter` component is created (with the key `'counter-1'`) ...
 - ... but the `Counter.state` object is still `{ i: 3 }`. So the new `Counter` component's `this.state` object is also `{ i: 3 }`.
-If you want to utilize this trick, make sure to use the functional definition of `state()`!
-
+If you want to utilize this trick, make sure to use the functional definition of `state()`. Also note that a component's key is not re-evaluated when calling `this.rerender()` on it directly; keys are only considered in rerenders propagated downward from ancestor components.
 
 ## File organization
 

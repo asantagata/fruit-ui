@@ -147,5 +147,18 @@
             ][this.state.i];
         }
     });
+
+
+    let i = 0;
+    fruit.appendChild(document.body, {
+        render() {
+            return {
+                tag: 'button',
+                children: 'rerender',
+                on: {click() {this.rerender()}}
+            };
+        },
+        key: `${i++}`
+    })
 </script>
 </html>

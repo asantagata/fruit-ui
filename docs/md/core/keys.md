@@ -102,7 +102,7 @@ function Item(name, makeFirst, makeLast) {
 
 You might notice that the "props name" and "state name" start to differ and certain buttons stop working. Since listeners are not re-evaluated, the listener on each button becomes stale, referring to the same name as the "props" name. If "Ape" is moved from first to last, for instance, then the first card's listeners will still be "move Ape to last place," even though the card's props name now reads "Bomb." This is problematic and means our re-orderable list is very unstable.
 
-### Lists with keys
+## Lists with keys
 
 With keys, fixing this example is very easy. By giving each `Item` a key equal to its name, we can easily instruct FRUIT on how to dynamically re-order them.
 
