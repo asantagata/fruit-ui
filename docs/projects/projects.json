@@ -16,5 +16,14 @@
         "author": "asantagata",
         "authorURL": "https://alexsantagata.dev",
         "date": "Jan 2026"
+    },
+    {
+        "name": "spip",
+        "URL": "https://spip.samranda.com",
+        "desc": "A better way to play Pips",
+        "img": "spip.png",
+        "author": "samranda",
+        "authorURL": "https://samranda.com",
+        "date": "Jan 2026"
     }
 ]
