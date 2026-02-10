@@ -18,15 +18,15 @@ import * as router from "@fruit-ui/router";
 
 const myRouter = router.Router(
     {
-        '': () => HomePage,
-        'about': () => AboutPage,
-        'contact': () => ContactPage,
-        '*': (path) => ({
+        '': {route: () => HomePage},
+        'about': {route: () => AboutPage},
+        'contact': {route: () => ContactPage},
+        '*': {route: (path) => ({
             children: [
                 {tag: 'h2', children: '404'}, 
                 {tag: 'p', children: `The page "${path}" does not exist.`}
             ]
-        })
+        })}
     }, {
         hashed: {behavior: 'smooth'}, 
         unhashed: {behavior: 'smooth', to: {x: 0, y: 0}}
