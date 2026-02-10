@@ -56,13 +56,15 @@ function handleScrolling(element, scrollOptions) {
  * @param {Object.<string, {route: () => object, title?: string}>} routes - the collection of routes.
  * @param {object | false} [scrollOptions] - scrolling options.
  * @param {object} [asyncLoader] - loader to use while processing initial async resources
+ * @param {() => void} [initFunction] - function to run on initialization.
  * @returns {object} a component.
  */
-function Router(routes, scrollOptions = {hashed: {}, unhashed: {to: {x: 0, y: 0}}}, asyncLoader = {}) {
+function Router(routes, scrollOptions = {hashed: {}, unhashed: {to: {x: 0, y: 0}}}, asyncLoader = {}, initFunction = () => {}) {
     return {
         state() {
             const page = getPage();
             const route = getRoute(routes, page);
+            initFunction.call(this);
             return {
                 element: (() => {
                     if (Object.getPrototypeOf(route.route).constructor.name === "AsyncFunction") {
