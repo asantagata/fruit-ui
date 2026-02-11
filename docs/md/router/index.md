@@ -39,6 +39,8 @@ const myRouter = router.Router(
 
 The `navigate()` function takes in a path and navigates to it. Navigation is done with `history.pushState` so it is compatible with the browser forward/back methods. You can navigate to hashed paths (i.e., `navigate('/about#contact')`) to automatically scroll to a certain element ID, depending on scroll settings.
 
+`navigate()` can also take in an object for search params, i.e., `navigate('/about#contact', {param1: 'hello', param2: 'world'})`. By default, `navigate()` clears all search params already present.
+
 ### The `navigateHash()` function
 
 The `navigateHash()` function navigates to a different hash on the same page, i.e., `navigate('#contact')`. This is done with `history.pushState` so it is compatible with the browser forward/back methods. If the given and existing hashes are the same, the `hashchange` event is still dispatched (see below).

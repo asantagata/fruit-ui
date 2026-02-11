@@ -17,20 +17,29 @@ Here is an example router:
 ```js
 import * as router from "@fruit-ui/router";
 
-const router = router.Router({
-    '': () => HomePage,
-    'about': () => AboutPage,
-    'contact': () => ContactPage,
-    '*': (page) => ({children: [{tag: 'h2', children: '404'}, {tag: 'p', children: `The page "${page}" does not exist.`}]})
-}, {
-    hashed: {behavior: 'smooth'}, 
-    unhashed: {behavior: 'smooth', to: {x: 0, y: 0}}
-})
+const myRouter = router.Router(
+    {
+        '': {route: () => HomePage},
+        'about': {route: () => AboutPage},
+        'contact': {route: () => ContactPage},
+        '*': {route: (path) => ({
+            children: [
+                {tag: 'h2', children: '404'}, 
+                {tag: 'p', children: `The page "${path}" does not exist.`}
+            ]
+        })}
+    }, {
+        hashed: {behavior: 'smooth'}, 
+        unhashed: {behavior: 'smooth', to: {x: 0, y: 0}}
+    }
+);
 ```
 
 ## The `navigate` function
 
 The `navigate` function takes in a path and navigates to that path. Navigation is done with `history.pushState` so it is compatible with the browser forward/back methods. You can navigate to hashed paths (i.e., `navigate('/about#contact')`) to automatically scroll to a certain element ID, depending on scroll settings. Navigate does nothing (and no `pagechange` event is dispatched) if the given and existing paths are the same.
+
+`navigate` also takes an optional object `searchParams` representing any other search params to be used.
 
 ### The `navigateHash` function
 

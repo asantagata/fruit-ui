@@ -127,8 +127,9 @@ function Router(routes, scrollOptions = {hashed: {}, unhashed: {to: {x: 0, y: 0}
 /**
  * Navigates to a page.
  * @param {string} page - the page.
+ * @param {Object.<string, string>} [searchParams] - other search params.
  */
-function navigate(page) {
+function navigate(page, searchParams = {}) {
     if (page.startsWith('/')) page = page.slice(1);
     let hash = '';
     if (page.includes('#')) {
@@ -137,7 +138,11 @@ function navigate(page) {
     }
     if (page === getPage()) return;
     const url = new URL(window.location.href);
+    url.search = '';
     url.searchParams.set(PARAM_NAME, page);
+    Object.keys(searchParams).forEach(key => {
+        url.searchParams.set(key, searchParams[key]);
+    });
     url.hash = hash;
     window.history.pushState({}, '', url);
     broadcastPageChange(page);
