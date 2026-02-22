@@ -136,7 +136,6 @@ function navigate(page, searchParams = {}) {
         hash = page.slice(page.indexOf('#'));
         page = page.slice(0, page.indexOf('#'));
     }
-    if (page === getPage()) return;
     const url = new URL(window.location.href);
     url.search = '';
     url.searchParams.set(PARAM_NAME, page);
